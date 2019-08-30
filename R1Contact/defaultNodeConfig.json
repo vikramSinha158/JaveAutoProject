@@ -1,0 +1,27 @@
+{
+  "capabilities":
+      [
+        {
+          "browserName": "chrome",
+          "platform": "WINDOWS",
+          "maxInstances": 5
+        },
+        {
+          "browserName": "internet explorer",
+          "platform": "WINDOWS",
+          "maxInstances": 3
+        },
+		{
+          "browserName": "firefox",
+          "platform": "WINDOWS",
+          "maxInstances": 3
+        }
+      ],
+    "configuration":
+        {
+        "port":5555,
+		"hubPort":4444,
+        "hubHost":"localhost",
+		"maxSession":5
+        }
+}

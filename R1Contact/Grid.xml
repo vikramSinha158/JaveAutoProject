@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+
+<suite name="Suite" parallel="tests">
+
+	<test name="FireFoxTest">
+		<parameter name="portNo" value='4446'></parameter>
+		<!--<parameter name="DefaultUrl" value="https://www.google.com"></parameter>-->
+		<classes>
+			<class name="" />
+		</classes>
+	</test>
+
+	<test name="ChromeTest">
+		<parameter name="portNo" value='4447'></parameter>
+		<!--<parameter name="DefaultUrl" value="https://www.google.com"></parameter>-->
+		<classes>
+			<class name="" />
+		</classes>
+	</test>
+</suite>
+
