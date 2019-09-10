@@ -8,7 +8,7 @@ import net.serenitybdd.cucumber.CucumberWithSerenity;
 
 @RunWith(CucumberWithSerenity.class)
 @CucumberOptions(features = { "src/test/resources/features/R1Contact/HomeAndReminder.feature" }, 
-tags = { "@homeReminder"}, 
+tags = { "@408188"}, 
 glue = "r1.steps.definitions",
 dryRun = false,
 monochrome=true)
