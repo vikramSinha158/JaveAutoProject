@@ -1,11 +1,13 @@
 package r1.pages;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import junit.framework.Assert;
+import net.serenitybdd.core.annotations.findby.By;
 import net.serenitybdd.core.annotations.findby.FindBy;
 import net.serenitybdd.core.pages.WebElementFacade;
 import r1.commons.BasePage;
@@ -13,14 +15,19 @@ import r1.commons.R1ContactCommonMethods;
 import r1.commons.utilities.CommonMethods;
 
 public class ReminderPage extends BasePage  {
-	R1ContactCommonMethods com;
+	R1ContactCommonMethods contactCommon;
 	CommonMethods.common common;
-	HomePage c;
+	HomePage Home;
 	Date date;
-	//Calendar cal;
+    private static int DATE_REMINDER=40;
+
+		
+	
 	
 	@FindBy(xpath = "//span[@id='Reminder']")
 	private WebElementFacade ReminderIcon;
+	
+
 	
 	String accountRows = "//div[@id='Accounts']/table/tbody/tr";
 	
@@ -56,11 +63,12 @@ public class ReminderPage extends BasePage  {
 	@FindBy(xpath ="//input[@id='ReminderDate']")
 	private WebElementFacade dateField;
 	
-	
+	static String accountnumber="0002671680104";
 	public void selectAndClickAccount() {
-		com.getTableColValue(accountRows, colNum, "0002671680104");
+		contactCommon.getTableColValue(accountRows, colNum, accountnumber);
 			
 		}
+
 	
 	public void enterLastNameTxt(String txtValue)
 	{
@@ -84,6 +92,7 @@ public class ReminderPage extends BasePage  {
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void reminderIcon()
 	{
 		Assert.assertTrue("Reminder icon is not coming", reminderIcon.isDisplayed());
@@ -91,9 +100,11 @@ public class ReminderPage extends BasePage  {
 	
 	public void ClickreminderIcon()
 	{
+		
 		reminderIcon.click();
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void IsreminderContainerDisplayed()
 	{
 		Assert.assertTrue("Reminder container is not coming", ReminderContainer.isDisplayed());
@@ -101,34 +112,126 @@ public class ReminderPage extends BasePage  {
 	}
 	
 	@SuppressWarnings("deprecation")
-	public void tommorrowdate()
+	public static String tommorrowdate()
 	{
 		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.DAY_OF_MONTH, 1);
-		System.out.println(cal);
-		
-		  // SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
-		   //String strDate= formatter.format(cal);
-		   //System.out.println(strDate);
-	}
+		cal.add(Calendar.DAY_OF_MONTH, DATE_REMINDER);
+	    Date date = cal.getTime();
+	    SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+	    String reminderDate = formatter.format(date);
+	    return reminderDate;
+	  }
 	
-	public void fillreminder()
+	public void FillreminderDate()
 	{
 		dateField.clear();
-		dateField.sendKeys("9/15/2019");
-		reminderNote.clear();
-		reminderNote.sendKeys("Set remindar");
-		submitreminder.click();
-		
-		
+		String reminderDate = tommorrowdate();
+		dateField.sendKeys(reminderDate);
 	}
 	
-	public void verifyDuplicateRem()
+	public void setReminderNote(String note )
 	{
-		common.switchWindow();
+		reminderNote.clear();
+		reminderNote.sendKeys(note);
 		
-		getDriver().switchTo().window(getDriver().getWindowHandle());
+	
 	}
+	
+	
+	public void submitReminder()
+	{
+		submitreminder.click();
+	}
+	
+	@SuppressWarnings("deprecation")
+	public void verifyDuplicateReminder()
+	{
+		common.VerifyDuplicateReminderAlert();
+		
+	}
+	String accountRowLocator="//table[@ng-table='tableParams']/thead/tr";
+	String accountColLocator="//table[@ng-table='tableParams']/thead/tr/th";
+	//table[@ng-table='tableParams']/thead/tr/th//span[text()='Account Number']
+
+	public void verifyReminder()
+	{
+		//contactCommon.getColValue(accountRowLocator, accountColLocator, "Account Number");
+	}
+	
+
+	
+/*	public boolean checkRemindar()
+    {
+		Boolean flag=true;
+    for(int i=1;i<=reminderList.size()-1;i++)
+    {
+    	String rowlocator2=reminderRow+ "[" + i + "]";
+    	
+    	for(int j=1;j<reminderListColumn.size();j++)
+    	{
+    		String colLocator1=rowlocator2+"/td["+j+"]/a";
+    		System.out.println(colLocator1);
+    		String accountNumber=element(By.xpath(colLocator1)).getText();
+    		String date=element(rowlocator2+"/td[1]/a").getText();
+    		if(accountNumber.equalsIgnoreCase(ReminderPage.accountnumber)&&date.equalsIgnoreCase(ReminderPage.tommorrowdate()))
+    		{
+    			
+    			flag=false;
+    			System.out.println(flag);
+    			break;
+    			
+    		}
+    		
+    		}
+    	if(flag=false)
+    	{
+    		break;
+    	}
+    	System.out.println(flag);
+    }
+    
+    return flag;
+    
+    }*/
+	
+	public boolean isAlertPresents() {
+		try {
+		getDriver().switchTo().alert();
+		return true;
+		}// try
+		catch (Exception e) {
+		return false;
+		}// catch
+		}
+	
+	@SuppressWarnings("deprecation")
+	public void VerifyDuplicateReminderAlert() {
+		
+		/*boolean status=Home.checkRemindar();
+		System.out.println(status);*/
+		
+		
+
+		if(isAlertPresents()) {
+		String reminderAlert = getDriver().switchTo().alert().getText();
+		System.out.println(reminderAlert);
+		getDriver().switchTo().alert().dismiss();
+		Assert.assertTrue("Expected Alert Message is not coming!", reminderAlert.contains("already exists"));
+	}
+		else
+		{
+			ClickreminderIcon();
+			FillreminderDate();
+			setReminderNote("Hi" );
+			submitReminder();
+			String reminderAlert = getDriver().switchTo().alert().getText();
+			System.out.println(reminderAlert);
+			getDriver().switchTo().alert().dismiss();
+			Assert.assertTrue("Expected Alert Message is not coming!", reminderAlert.contains("already exists"));
+		}
+	}
+	
+	
 	}
 	
 	

@@ -13,6 +13,7 @@ glue = "r1.steps.definitions",
 dryRun = false,
 monochrome=true)
 
+
 public class RunnerTest {
 
 }

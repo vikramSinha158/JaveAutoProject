@@ -17,12 +17,14 @@ public class HomeReminderStepDef {
 	    
 		home.switchHeaderFrame();
 		home.verifyAgentName();
+		home.checkRemindar();
 	}
 
 	@Then("^Reminders list\\(If any reminder set by the agent\\)$")
 	public void reminders_list_If_any_reminder_set_by_the_agent() {
 	    
 		home.checkreminderList();
+		
 		//home.defaultFrame();
 	}
 
@@ -80,25 +82,25 @@ public class HomeReminderStepDef {
 	@Then("^A pop up window should be displayed and user would be able to submit Reminder by filling required details$")
 	public void a_pop_up_window_should_be_displayed_and_user_would_be_able_to_submit_Reminder_by_filling_required_details() {
 	    rem.IsreminderContainerDisplayed();
-	    rem.fillreminder();
+	    rem.FillreminderDate();
 	    
 	}
 
 	@When("^Enter text in the Note box$")
 	public void enter_text_in_the_Note_box() {
-	    rem.verifyDuplicateRem();	    
+	    rem.setReminderNote("Hello");    
 	}
 
 	@When("^click on 'Set Reminder' on the same date where a reminder has already set$")
 	public void click_on_Set_Reminder_on_the_same_date_where_a_reminder_has_already_set() {
-	    
+	    rem.submitReminder();
 	    
 	}
 
 	@Then("^An alert should be displayed with the below alert message\\.Reminder on account already exists$")
 	public void an_alert_should_be_displayed_with_the_below_alert_message_Reminder_on_account_already_exists() {
 	    
-	    
+	    rem.VerifyDuplicateReminderAlert();
 	}
 	
 	

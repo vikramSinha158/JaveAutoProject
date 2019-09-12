@@ -5,12 +5,15 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 
 import junit.framework.Assert;
+import net.serenitybdd.core.annotations.findby.By;
 import net.serenitybdd.core.annotations.findby.FindBy;
 import net.serenitybdd.core.pages.WebElementFacade;
 import r1.commons.BasePage;
 import r1.commons.utilities.CommonMethods;
 
 public class HomePage extends BasePage {
+	 
+	static int counter ;
 	
 	/***************************** HomeAndReminder***************************/
 	
@@ -19,6 +22,13 @@ public class HomePage extends BasePage {
 	
 	@FindBy(xpath ="//table[@ng-table='tableParams']//tbody//tr")
 	private List<WebElementFacade> reminderList;
+	
+	//static int HomePageReminderListsize =reminderList.size();
+	
+	@FindBy(xpath ="//table[@ng-table='tableParams']//tbody//tr[1]/td")
+	private List<WebElementFacade> reminderListColumn;
+	
+	String reminderRow="//table[@ng-table='tableParams']//tbody//tr";
 	
 	@FindBy(xpath="//iframe[@src='/Home/SiteEntry']")
 	private WebElementFacade headerframeName;
@@ -84,14 +94,7 @@ public class HomePage extends BasePage {
 	
 	
 	@SuppressWarnings("deprecation")
-	public void checkreminderList() {
-		
-	if(reminderList.size()<2)
-	{
-		System.out.println("No reminders present!");
-	}
 
-	}
 	
 	public void switchHeaderFrame()
 	{
@@ -145,7 +148,59 @@ public class HomePage extends BasePage {
 		CommonMethods.isDisplayedMethod(notes);
 		CommonMethods.isDisplayedMethod(Balance);
 		
-		System.out.println(agentPrintName.getText());
 	}
+
+	public void checkreminderList() {
+		
+		if(reminderList.size()<2)
+		{
+			System.out.println("No reminders present!");
+		}
+
+		}
+		
+	
+	
+	public boolean checkRemindar()
+    {
+		Boolean flag=true;
+    for(int i=1;i<=reminderList.size()-1;i++)
+    {
+    	String rowlocator2=reminderRow+ "[" + i + "]";
+    	
+    	for(int j=1;j<reminderListColumn.size();j++)
+    	{
+    		String colLocator1=rowlocator2+"/td["+j+"]/a";
+    		System.out.println(colLocator1);
+    		String accountNumber=element(By.xpath(colLocator1)).getText();
+    		String date=element(rowlocator2+"/td[1]/a").getText();
+    		if(accountNumber.equalsIgnoreCase(ReminderPage.accountnumber)&&date.equalsIgnoreCase(ReminderPage.tommorrowdate()))
+    		{
+    			
+    			flag=false;
+    			System.out.println(flag);
+    			counter++;
+    			System.out.println(counter);
+    			
+    			break;
+    			
+    		}
+    		
+    		}
+    	if(flag=false)
+    	{
+    		break;
+    	}
+    	System.out.println(flag);
+    }
+    
+    return flag;
+    
+    }
+	
 	
 }
+	
+	
+    	
+
