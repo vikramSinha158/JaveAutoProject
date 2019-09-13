@@ -80,6 +80,8 @@ public class HomePage extends BasePage {
 	@FindBy(xpath="//table[@ng-table='tableParams']/tbody/tr")
 	private WebElementFacade reminderTableRowsCnt;
 	
+	final int remindarSize=2;
+	
 	@SuppressWarnings("deprecation")
 	public void verifyAgentName() throws InterruptedException
 	{
@@ -150,7 +152,9 @@ public class HomePage extends BasePage {
 		
 	}
 
+	@SuppressWarnings("deprecation")
 	public void checkreminderList() {
+		
 		
 		if(reminderList.size()<2)
 		{
@@ -158,9 +162,9 @@ public class HomePage extends BasePage {
 		}
 
 		}
-		
 	
 	
+	// Check remindar on homepage
 	public boolean checkRemindar()
     {
 		Boolean flag=true;
@@ -171,15 +175,13 @@ public class HomePage extends BasePage {
     	for(int j=1;j<reminderListColumn.size();j++)
     	{
     		String colLocator1=rowlocator2+"/td["+j+"]/a";
-    		System.out.println(colLocator1);
     		String accountNumber=element(By.xpath(colLocator1)).getText();
     		String date=element(rowlocator2+"/td[1]/a").getText();
     		if(accountNumber.equalsIgnoreCase(ReminderPage.accountnumber)&&date.equalsIgnoreCase(ReminderPage.tommorrowdate()))
     		{
     			
     			flag=false;
-    			System.out.println(flag);
-    			counter++;
+     			counter++;
     			System.out.println(counter);
     			
     			break;
@@ -187,7 +189,7 @@ public class HomePage extends BasePage {
     		}
     		
     		}
-    	if(flag=false)
+    	if(flag==false)
     	{
     		break;
     	}

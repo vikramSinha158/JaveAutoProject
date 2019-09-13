@@ -20,6 +20,7 @@ public class ReminderHeaderStepDef extends BasePage {
 		home.switchHeaderFrame();  
 		home.reminderHeader();
 		home.checkRemindar();
+		
 	}
 	
 

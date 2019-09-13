@@ -16,7 +16,6 @@ When user Click on 'Search' account link
 Then Search account page should be displayed with searching criterias like..Account Number, First Name, Last Name etc
 When Enter last name as "K" and press ENTER and List of Accounts should be displayed
 When Pick one account from the list by click on Arrow
-#Then Account info page should be displayed having account information like Patient,Gurantor,Balance and Account Details etcs
 Then Verify the 'Set a reminder' icon 
 When Click on the 'Set a reminder' icon
 Then A pop up window should be displayed and user would be able to submit Reminder by filling required details
