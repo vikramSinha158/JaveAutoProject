@@ -71,7 +71,7 @@ public class R1ContactCommonMethods extends BasePage {
 		}
 	}
 	
-	/*find columns*/
+	/*****************************************find columns*******************************************/
 	
 	public ArrayList<String> getColValue(String rowLocator, String colLocator, String colName) {
     	colValues = new ArrayList<String>();
