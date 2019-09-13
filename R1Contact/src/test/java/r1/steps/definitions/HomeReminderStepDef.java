@@ -49,6 +49,7 @@ public class HomeReminderStepDef {
 	public void enter_last_name_as_and_press_ENTER_and_List_of_Accounts_should_be_displayed(String arg1) {
 		rem.enterLastNameTxt("K");
 		rem.lastNameSearchclk();
+		rem.verifyFirstCharForLastName("K");
 		
 	}
 

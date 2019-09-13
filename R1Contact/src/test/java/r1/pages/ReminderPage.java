@@ -2,6 +2,7 @@ package r1.pages;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -21,6 +22,13 @@ public class ReminderPage extends BasePage  {
 	Date date;
 
 	private static int DATE_REMINDER=40;
+	String accountColHeader="Patient Name";
+	private static int counter=0;
+	
+	String accountRowLocator="//table[@cellspacing='0']/tbody/tr";
+	
+	String accountColLocator="//table[@cellspacing='0']//thead/tr/th";
+	
 	@FindBy(xpath = "//span[@id='Reminder']")
 	private WebElementFacade ReminderIcon;
 
@@ -30,7 +38,10 @@ public class ReminderPage extends BasePage  {
 
 	@FindBy(xpath="//button[@id='NameSubmit']")
 	private WebElementFacade lastNameSearchclk; 
-
+	
+	@FindBy(xpath="//table[@cellspacing='0']/tbody/tr")
+	private List<WebElementFacade> accountTablerOW; 
+	
 	@FindBy(xpath="//input[@id='LastName']")
 	private WebElementFacade lastNametxt;
 
@@ -64,9 +75,10 @@ public class ReminderPage extends BasePage  {
 
 	static String accountnumber="0002671680104";
 
-	String accountRowLocator="//table[@ng-table='tableParams']/thead/tr";
+/*	String accountRowLocator="//table[@ng-table='tableParams']/thead/tr";
 
-	String accountColLocator="//table[@ng-table='tableParams']/thead/tr/th";
+	String accountColLocator="//table[@ng-table='tableParams']/thead/tr/th";*/
+	
 	public void selectAndClickAccount() {
 		contactCommon.getTableColValue(accountRows, colNum, accountnumber);
 
@@ -187,7 +199,29 @@ public class ReminderPage extends BasePage  {
 		}
 	}
 
-
+   // List of patient matching with last name
+	
+	@SuppressWarnings("deprecation")
+	public void verifyFirstCharForLastName(String firstCharLastName)
+	{
+	    	
+			ArrayList<String> patientList=contactCommon.getColValue(accountRowLocator, accountColLocator, accountColHeader);
+			
+			for(String patientName:patientList)
+			{
+				String[] patientNameSplit=patientName.split(" ");
+				String LastName=patientNameSplit[patientNameSplit.length-1];				
+				
+				if(LastName.toUpperCase().startsWith(firstCharLastName.toUpperCase()))
+				{
+					counter++;
+					
+				}
+				
+			}
+						
+			Assert.assertEquals("Number of row not match for search element "+ firstCharLastName,accountTablerOW.size(), counter);
+	} 
 }
 
 

@@ -12,8 +12,9 @@ import net.serenitybdd.core.pages.WebElementFacade;
 
 public class R1ContactCommonMethods extends BasePage {
 
-	/*	public ArrayList colValues;
-	public ArrayList columnValue;*/
+	public ArrayList<String> colValues;
+	private int rowSize;
+	private int colSize; 
 	boolean flag;
 
 
@@ -69,5 +70,25 @@ public class R1ContactCommonMethods extends BasePage {
 			return false;
 		}
 	}
+	
+	/*find columns*/
+	
+	public ArrayList<String> getColValue(String rowLocator, String colLocator, String colName) {
+    	colValues = new ArrayList<String>();
+    	rowSize = findAll(By.xpath(rowLocator)).size();
+		colSize = findAll(By.xpath(colLocator)).size();
+		for (int col = 1; col <= colSize; col++) {
+			String colLocator1 = colLocator + "[" + col + "]";
+			if (element(By.xpath(colLocator1)).getText().equalsIgnoreCase(colName)) {
+				for (int row = 1; row <= rowSize; row++) {
+					String rowLocator2 = rowLocator + "[" + row + "]/td[" + col + "]";
+					colValues.add(element(By.xpath(rowLocator2)).getText());
+				}
+				break;
+			}
+		}
+		return colValues;
+	} 
+
 }
 
