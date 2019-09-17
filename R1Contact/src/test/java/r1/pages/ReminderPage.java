@@ -21,8 +21,10 @@ public class ReminderPage extends BasePage  {
 	HomePage Home;
 	Date date;
 
-	private static int DATE_REMINDER=40;
+	private static int DATE_REMINDER=4;
+	
 	String accountColHeader="Patient Name";
+	
 	private static int counter=0;
 	
 	String accountRowLocator="//table[@cellspacing='0']/tbody/tr";
@@ -66,9 +68,22 @@ public class ReminderPage extends BasePage  {
 	@FindBy(xpath ="//div[contains(@id,'TooltipPopupContainer')]")
 	private WebElementFacade ReminderContainer;
 
+	@FindBy(xpath ="//input[@id='ReminderTime']")
+	private WebElementFacade TimeField;
+	
 	@FindBy(xpath ="//input[@id='ReminderDate']")
 	private WebElementFacade dateField;
-
+	
+	@FindBy(xpath ="//span[contains(text(),'time view')]")
+	private WebElementFacade timeIcon;
+	
+	@FindBy(xpath ="//img[@src='/Content/images/close.png']")
+	private WebElementFacade remindarclose;
+	
+	@FindBy(xpath="//img[@src='/Content/images/save.PNG']")
+	private WebElementFacade reminderSave;
+	
+	
 	final String containCheck ="already exists";
 
 	final String noteText="Please check!";
@@ -148,6 +163,7 @@ public class ReminderPage extends BasePage  {
 	{
 		reminderNote.clear();
 		reminderNote.sendKeys(note);
+		
 	}
 
 
@@ -179,12 +195,11 @@ public class ReminderPage extends BasePage  {
 	public void reminderAlertAssertion()
 	{
 		String reminderAlert = getDriver().switchTo().alert().getText();
-		getDriver().switchTo().alert().dismiss();
 		Assert.assertTrue("Expected Alert Message is not coming!", reminderAlert.contains(containCheck));
+		getDriver().switchTo().alert().dismiss();
+		
 		
 	}
-
-
 
 	public void VerifyDuplicateReminderAlert() {
 		if(contactCommon.checkAlert()) {
@@ -194,7 +209,7 @@ public class ReminderPage extends BasePage  {
 		else
 		{	
 			fillRemindarForm();		
-			getDriver().switchTo().alert().dismiss();
+			getDriver().switchTo().alert();
 			reminderAlertAssertion();
 		}
 	}
@@ -221,7 +236,52 @@ public class ReminderPage extends BasePage  {
 			}
 						
 			Assert.assertEquals("Number of row not match for search element "+ firstCharLastName,accountTablerOW.size(), counter);
+			
 	} 
+	
+	public void verifyRemindarPopup()
+	{
+		if(dateField.isDisplayed()) {
+			dateField.clear();
+			dateField.sendKeys(tommorrowdate());
+			dateField.clear();
+		} else
+		{
+			Assert.assertTrue(false);
+		}
+		
+		if(calenderPicker.isClickable())
+		{
+			calenderPicker.click();
+		} else
+		{
+			Assert.assertTrue(false);
+		}
+		if(TimeField.isDisplayed())
+		{
+			timeIcon.click();
+		} else
+		{
+			Assert.assertTrue(false);
+		}
+		if(reminderNote.isEnabled())
+		{
+			reminderNote.clear();
+			reminderNote.sendKeys(noteText);
+		} else
+		{
+			Assert.assertTrue(false);
+		}
+		if(remindarclose.isDisplayed())
+		{
+			remindarclose.click();
+		}else
+		{
+			Assert.assertTrue(false);
+		}
+	}
+	
+	
 }
 
 

@@ -4,6 +4,7 @@ import static org.junit.Assert.assertFalse;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import junit.framework.Assert;
 import net.serenitybdd.core.annotations.findby.By;
@@ -16,6 +17,7 @@ public class R1ContactCommonMethods extends BasePage {
 	private int rowSize;
 	private int colSize; 
 	boolean flag;
+	private static int searchEleCount=0;
 
 
 
@@ -73,7 +75,7 @@ public class R1ContactCommonMethods extends BasePage {
 	
 	/*****************************************find columns*******************************************/
 	
-	public ArrayList<String> getColValue(String rowLocator, String colLocator, String colName) {
+	public ArrayList<String> getColumnValue(String rowLocator, String colLocator, String colName) {
     	colValues = new ArrayList<String>();
     	rowSize = findAll(By.xpath(rowLocator)).size();
 		colSize = findAll(By.xpath(colLocator)).size();
@@ -90,5 +92,50 @@ public class R1ContactCommonMethods extends BasePage {
 		return colValues;
 	} 
 
+	
+    /*................................... Get TABLE COLUMN VALUE  .........................................*/
+	
+    public ArrayList<String> getColValue(String rowLocator, String colLocator, String colName) {
+           colValues = new ArrayList<String>();
+           rowSize = findAll(By.xpath(rowLocator)).size();
+                  colSize = findAll(By.xpath(colLocator)).size();
+                  for (int col = 1; col <= colSize; col++) {
+                         String colLocator1 = colLocator + "[" + col + "]";
+                         try {
+                                             if (element(By.xpath(colLocator1)).getText().equalsIgnoreCase(colName)) {
+                                                    for (int row = 1; row <= rowSize-1; row++) {
+                                                           String rowLocator2 = rowLocator + "[" + row + "]/td[" + col + "]";
+                                                           colValues.add(element(By.xpath(rowLocator2)).getText());
+                                                    }
+                                                    break;
+                                             }
+                                      } catch (NoSuchElementException e) {
+                                             break;
+                                      }
+                  }
+                  return colValues;
+           } 
+    
+    /*------------------------------------------------------------------------------------------------*/
+    
+    public int checkElementcontain(String homeReminderInfoRow, String homeReminderInfoCol,String columnHeader,String searchElement)
+    {
+           
+           
+           ArrayList<String> homeTablecolData =getColValue(homeReminderInfoRow, homeReminderInfoCol, columnHeader);
+           for (int i = 0; i < homeTablecolData.size(); i++) {
+              if(homeTablecolData.get(i).contains(searchElement))
+          {
+                         searchEleCount++;
+          }
+           }
+           return searchEleCount;
+           
+    }
+
 }
+
+	
+	
+
 
