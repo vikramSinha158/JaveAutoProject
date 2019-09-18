@@ -20,6 +20,7 @@ public class ReminderHeaderStepDef extends BasePage {
 	public void verify_the_header_in_Reminders_section() {
 	
 		home.reminderHeader();
+		home.checkRemindar();
 		
 		
 	}

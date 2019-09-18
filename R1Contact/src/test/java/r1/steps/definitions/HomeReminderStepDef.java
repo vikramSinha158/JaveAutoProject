@@ -121,7 +121,7 @@ public class HomeReminderStepDef {
 	}
 
 	@Then("^Verify the type of Search box$")
-	public void verify_the_type_of_Search_box() {
+	public void verify_the_type_of_Search_box() throws NoSuchFieldException {
 		home.checkContainHometable();
 	}
 

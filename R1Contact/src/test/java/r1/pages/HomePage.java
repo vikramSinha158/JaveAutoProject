@@ -117,7 +117,7 @@ public class HomePage extends BasePage {
 	@FindBy(xpath="//button//div[@class='revert']")
 	private WebElementFacade buttonToShowDate;
 
-	@FindBy(xpath="//table[@ng-table='tableParams']//tbody//tr")
+	@FindBy(xpath="//table[@ng-table='tableParams']//tbody//tr[@ng-repeat='row in $data']")
 	private List<WebElementFacade> homeReminderTableRow;
 
 	final int remindarSize=2;
@@ -140,13 +140,27 @@ public class HomePage extends BasePage {
 	@FindBy(xpath="//th[@data-title-text='Balance']")
 	private WebElementFacade balanceReminderSearch;
 	
-	
-	
-	String homeReminderInfoRow = "//table[@ng-table='tableParams']//tbody//tr";
+	String defaultTime="12:00 AM";
+	String homeReminderInfoRow = "//table[@ng-table='tableParams']//tbody//tr[@ng-repeat='row in $data']";
 	String homeReminderInfoCol="//table[@ng-table='tableParams']//thead//tr[@class='ng-table-sort-header']//th";
 
 	/************************************************ Reminder Filter***********************************/
-
+	public int checkCountofTablerRow()
+	{
+		boolean check=true;
+		if(homeReminderTableRow.size()<1)
+		{
+			check=false;
+			Assert.assertTrue("Rowcount is less then Zero,NoRow found",check);
+		}
+		else
+		{
+			homeRiminderRowCount=homeReminderTableRow.size();
+		}
+		
+		return homeRiminderRowCount;
+		
+	}
 
 	int totalcount;
 	public void checkContainHometable()
@@ -168,26 +182,26 @@ public class HomePage extends BasePage {
 
 
 			txtSearchDate.sendKeys(searchElement);
-			homeRiminderRowCount=homeReminderTableRow.size()-1;
+			homeRiminderRowCount=checkCountofTablerRow();
 			searchEleRow=r1ComMethod.checkElementcontain(homeReminderInfoRow, homeReminderInfoCol, columnHeader, searchElement);
 
 		} else if (columnHeader.equalsIgnoreCase("Facility")) {
 
 			txtSearchFacility.sendKeys(searchElement);
-			homeRiminderRowCount=homeReminderTableRow.size()-1;
+			homeRiminderRowCount=checkCountofTablerRow();
 			searchEleRow=r1ComMethod.checkElementcontain(homeReminderInfoRow, homeReminderInfoCol, columnHeader, searchElement);
 
 
 		} else if (columnHeader.equalsIgnoreCase("Notes")) {
 
 			txtSearchNote.sendKeys(searchElement);
-			homeRiminderRowCount=homeReminderTableRow.size()-1;
+			homeRiminderRowCount=checkCountofTablerRow();
 			searchEleRow=r1ComMethod.checkElementcontain(homeReminderInfoRow, homeReminderInfoCol, columnHeader, searchElement);
 
 		}else if (columnHeader.equalsIgnoreCase("Balance")) {
 
 			txtSearchBalance.sendKeys(searchElement);
-			homeRiminderRowCount=homeReminderTableRow.size()-1;
+			homeRiminderRowCount=checkCountofTablerRow();
 			searchEleRow=r1ComMethod.checkElementcontain(homeReminderInfoRow, homeReminderInfoCol, columnHeader, searchElement);
 
 		}
@@ -288,8 +302,10 @@ public class HomePage extends BasePage {
 	public boolean checkRemindar()
 	{
 		Boolean flag=true;
+		System.out.println(reminderList.size());
 		for(int i=1;i<=reminderList.size()-1;i++)
 		{
+			System.out.println("kundan");
 			String rowlocator2=reminderRow+ "[" + i + "]";
 
 			for(int j=1;j<reminderListColumn.size();j++)
@@ -326,10 +342,10 @@ public class HomePage extends BasePage {
 	public void verifyBalance()
 	{
 
-		ArrayList<String> ListOFAccounts = r1ComMethod.getColValue(homeReminderInfoRow, homeReminderInfoCol, "Balance");
-		if(ListOFAccounts.size()>1)
+		ArrayList<String> ListOfBalance = r1ComMethod.getColValue(homeReminderInfoRow, homeReminderInfoCol, "Balance");
+		if(ListOfBalance.size()>1)
 		{
-			String TopBalance=ListOFAccounts.get(0).substring(1);
+			String TopBalance=ListOfBalance.get(0).substring(1);
 			topReminder.click();
 			String amount=amountAtHompage.getText();
 			Assert.assertEquals(TopBalance, amount);
@@ -351,6 +367,32 @@ public class HomePage extends BasePage {
 	CommonMethods.isDisplayedMethod(balanceReminderSearch);
 	
 	}
+	
+	/**********************************************************Verify default time **********************************************/
+	int accountIndex;
+	
+	public void verifyDefaultTime()
+	{
+		ArrayList<String> listOfAccount = r1ComMethod.getColValue(homeReminderInfoRow, homeReminderInfoCol, "Account Number");
+		ArrayList<String> listOfTime = r1ComMethod.getColValue(homeReminderInfoRow, homeReminderInfoCol, "Time");
+		for(int i=0;i<listOfAccount.size();i++)
+		{
+			String accountNum=listOfAccount.get(i);
+			if(accountNum.contentEquals(ReminderPage.accountnumber))
+			{
+				accountIndex=i;
+			}
+		}
+		String ActualTime =listOfTime.get(accountIndex);
+		Assert.assertEquals(ActualTime , defaultTime);
+		
+		
+		}
+			
+	
+	
+	
+	
 }
 
 

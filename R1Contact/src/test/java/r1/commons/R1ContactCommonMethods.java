@@ -123,12 +123,17 @@ public class R1ContactCommonMethods extends BasePage {
            
            
            ArrayList<String> homeTablecolData =getColValue(homeReminderInfoRow, homeReminderInfoCol, columnHeader);
-           for (int i = 0; i < homeTablecolData.size(); i++) {
-              if(homeTablecolData.get(i).contains(searchElement))
-          {
-                         searchEleCount++;
-          }
-           }
+           try {
+			for (int i = 0; i < homeTablecolData.size(); i++) {
+			      if(homeTablecolData.get(i).contains(searchElement))
+			  {
+			                 searchEleCount++;
+			  }
+			   }
+		} catch (NoSuchElementException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
            return searchEleCount;
            
     }
