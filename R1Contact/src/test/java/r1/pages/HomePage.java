@@ -121,11 +121,27 @@ public class HomePage extends BasePage {
 	private List<WebElementFacade> homeReminderTableRow;
 
 	final int remindarSize=2;
-
-	/*
-	@FindBy(xpath="//table[@ng-table='tableParams']//thead//tr[@class='ng-table-sort-header']//th")
-	private WebElementFacade homeReminderInfoCol*/;
-
+	
+	@FindBy(xpath="//th[@data-title-text='Date']")
+	private WebElementFacade dateReminderSearch;
+	
+	@FindBy(xpath="//th[@data-title-text='Time']")
+	private WebElementFacade timeReminderSearch;
+	
+	@FindBy(xpath="//th[@data-title-text='Facility']")
+	private WebElementFacade facilityReminderSearch;
+	
+	@FindBy(xpath="//th[@data-title-text='Account Number']")
+	private WebElementFacade accountNumReminderSearch;
+	
+	@FindBy(xpath="//th[@data-title-text='Notes']")
+	private WebElementFacade notesReminderSearch;
+	
+	@FindBy(xpath="//th[@data-title-text='Balance']")
+	private WebElementFacade balanceReminderSearch;
+	
+	
+	
 	String homeReminderInfoRow = "//table[@ng-table='tableParams']//tbody//tr";
 	String homeReminderInfoCol="//table[@ng-table='tableParams']//thead//tr[@class='ng-table-sort-header']//th";
 
@@ -322,7 +338,18 @@ public class HomePage extends BasePage {
 		}
 
 	}
-
+	
+	/**************************************************************ReminderSearchField*********************************************/
+	
+	public void verifyReminderSearch()
+	{
+	CommonMethods.isDisplayedMethod(dateReminderSearch);
+	CommonMethods.isDisplayedMethod(timeReminderSearch);
+	CommonMethods.isDisplayedMethod(facilityReminderSearch);
+	CommonMethods.isDisplayedMethod(accountNumReminderSearch);
+	CommonMethods.isDisplayedMethod(notesReminderSearch);
+	CommonMethods.isDisplayedMethod(balanceReminderSearch);
+	}
 }
 
 

@@ -117,7 +117,7 @@ public class HomeReminderStepDef {
 	@Then("^Verify the filter option in 'Reminders' list\\.$")
 	public void verify_the_filter_option_in_Reminders_list() {
 	    
-		
+		home.verifyReminderSearch();
 	}
 
 	@Then("^Verify the type of Search box$")

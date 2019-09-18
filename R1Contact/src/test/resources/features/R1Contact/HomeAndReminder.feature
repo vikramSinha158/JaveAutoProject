@@ -50,7 +50,7 @@ Scenario: Home_Reminder_Verify the current balance for reminders on Home page
 Given Verify the header in 'Reminders' section
 Then Compare Balance in Reminders at Home page and Balance on the account page corresponding to one account
  
-@408190 @homeReminder
+@408191 @homeReminder
 Scenario: Reminder_Verify the filter option in 'Reminder' home screen
 Given  Verify the header in 'Reminders' section
 Then Verify the filter option in 'Reminders' list.

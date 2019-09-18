@@ -18,7 +18,7 @@ public class ReminderHeaderStepDef extends BasePage {
 
 	@Given("^Verify the header in 'Reminders' section$")
 	public void verify_the_header_in_Reminders_section() {
-		
+	
 		home.reminderHeader();
 		
 		
