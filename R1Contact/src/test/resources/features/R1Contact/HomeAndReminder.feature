@@ -57,4 +57,7 @@ Then Verify the filter option in 'Reminders' list.
 And Verify the type of Search box
 And Verify the Search box inputs
 
+
+
+
  

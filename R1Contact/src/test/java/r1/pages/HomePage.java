@@ -349,7 +349,7 @@ public class HomePage extends BasePage {
 	CommonMethods.isDisplayedMethod(accountNumReminderSearch);
 	CommonMethods.isDisplayedMethod(notesReminderSearch);
 	CommonMethods.isDisplayedMethod(balanceReminderSearch);
-	System.out.println();
+	
 	}
 }
 
