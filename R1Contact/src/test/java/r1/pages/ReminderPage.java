@@ -16,34 +16,32 @@ import r1.commons.R1ContactCommonMethods;
 import r1.commons.utilities.CommonMethods;
 
 public class ReminderPage extends BasePage  {
+
 	R1ContactCommonMethods contactCommon;
 	CommonMethods.common common;
 	HomePage Home;
 	Date date;
 
 	private static int DATE_REMINDER=4;
-	
-	String accountColHeader="Patient Name";
-	
 	private static int counter=0;
-	
-	String accountRowLocator="//table[@cellspacing='0']/tbody/tr";
-	
+	final String containCheck ="already exists";
+	static String noteText="Please check!";
+	static String accountnumber="0003257700065";
+	String accountColHeader="Patient Name";
+	String accountRowLocator="//table[@cellspacing='0']/tbody/tr";	
 	String accountColLocator="//table[@cellspacing='0']//thead/tr/th";
-	
+	String accountRows = "//div[@id='Accounts']/table/tbody/tr";
+	String colNum = "//div[@id='Accounts']/table/tbody/tr[2]/td";
+
 	@FindBy(xpath = "//span[@id='Reminder']")
 	private WebElementFacade ReminderIcon;
 
-	String accountRows = "//div[@id='Accounts']/table/tbody/tr";
-
-	String colNum = "//div[@id='Accounts']/table/tbody/tr[2]/td";
-
 	@FindBy(xpath="//button[@id='NameSubmit']")
 	private WebElementFacade lastNameSearchclk; 
-	
+
 	@FindBy(xpath="//table[@cellspacing='0']/tbody/tr")
 	private List<WebElementFacade> accountTablerOW; 
-	
+
 	@FindBy(xpath="//input[@id='LastName']")
 	private WebElementFacade lastNametxt;
 
@@ -70,35 +68,23 @@ public class ReminderPage extends BasePage  {
 
 	@FindBy(xpath ="//input[@id='ReminderTime']")
 	private WebElementFacade TimeField;
-	
+
 	@FindBy(xpath ="//input[@id='ReminderDate']")
 	private WebElementFacade dateField;
-	
+
 	@FindBy(xpath ="//span[contains(text(),'time view')]")
 	private WebElementFacade timeIcon;
-	
+
 	@FindBy(xpath ="//img[@src='/Content/images/close.png']")
 	private WebElementFacade remindarclose;
-	
+
 	@FindBy(xpath="//img[@src='/Content/images/save.PNG']")
 	private WebElementFacade reminderSave;
-	
-	
-	final String containCheck ="already exists";
 
-	final String noteText="Please check!";
-
-	static String accountnumber="0003257700065";
-
-/*	String accountRowLocator="//table[@ng-table='tableParams']/thead/tr";
-
-	String accountColLocator="//table[@ng-table='tableParams']/thead/tr/th";*/
-	
 	public void selectAndClickAccount() {
 		contactCommon.getTableColValue(accountRows, colNum, accountnumber);
 
 	}
-
 
 	public void enterLastNameTxt(String txtValue)
 	{
@@ -141,7 +127,6 @@ public class ReminderPage extends BasePage  {
 
 	}
 
-
 	public static String tommorrowdate()
 	{
 		Calendar cal = Calendar.getInstance();
@@ -163,7 +148,7 @@ public class ReminderPage extends BasePage  {
 	{
 		reminderNote.clear();
 		reminderNote.sendKeys(note);
-		
+
 	}
 
 
@@ -171,15 +156,6 @@ public class ReminderPage extends BasePage  {
 	{
 		submitreminder.click();
 	}
-
-
-	public void verifyDuplicateReminder()
-	{
-		common.VerifyDuplicateReminderAlert();
-
-	}
-
-	// Fill Remindar form with required details
 
 	public void fillRemindarForm()
 	{
@@ -197,8 +173,7 @@ public class ReminderPage extends BasePage  {
 		String reminderAlert = getDriver().switchTo().alert().getText();
 		Assert.assertTrue("Expected Alert Message is not coming!", reminderAlert.contains(containCheck));
 		getDriver().switchTo().alert().dismiss();
-		
-		
+
 	}
 
 	public void VerifyDuplicateReminderAlert() {
@@ -214,31 +189,31 @@ public class ReminderPage extends BasePage  {
 		}
 	}
 
-   // List of patient matching with last name
-	
+	// List of patient matching with last name
+
 	@SuppressWarnings("deprecation")
 	public void verifyFirstCharForLastName(String firstCharLastName)
 	{
-	    	
-			ArrayList<String> patientList=contactCommon.getColValue(accountRowLocator, accountColLocator, accountColHeader);
-			
-			for(String patientName:patientList)
+
+		ArrayList<String> patientList=contactCommon.getColValue(accountRowLocator, accountColLocator, accountColHeader);
+
+		for(String patientName:patientList)
+		{
+			String[] patientNameSplit=patientName.split(" ");
+			String LastName=patientNameSplit[patientNameSplit.length-1];				
+
+			if(LastName.toUpperCase().startsWith(firstCharLastName.toUpperCase()))
 			{
-				String[] patientNameSplit=patientName.split(" ");
-				String LastName=patientNameSplit[patientNameSplit.length-1];				
-				
-				if(LastName.toUpperCase().startsWith(firstCharLastName.toUpperCase()))
-				{
-					counter++;
-					
-				}
-				
+				counter++;
+
 			}
-						
-			//Assert.assertEquals("Number of row not match for search element "+ firstCharLastName,accountTablerOW.size(), counter);
-			
+
+		}
+
+		//Assert.assertEquals("Number of row not match for search element "+ firstCharLastName,accountTablerOW.size(), counter);
+
 	} 
-	
+
 	public void verifyRemindarPopup()
 	{
 		if(dateField.isDisplayed()) {
@@ -249,7 +224,7 @@ public class ReminderPage extends BasePage  {
 		{
 			Assert.assertTrue(false);
 		}
-		
+
 		if(calenderPicker.isClickable())
 		{
 			calenderPicker.click();
@@ -280,10 +255,10 @@ public class ReminderPage extends BasePage  {
 			Assert.assertTrue(false);
 		}
 	}
-	
-	
-	
-	
+
+
+
+
 }
 
 

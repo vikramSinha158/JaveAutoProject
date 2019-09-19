@@ -18,9 +18,12 @@ public class HomePage extends BasePage {
 	static int counter ;
 	R1ContactCommonMethods r1ComMethod;
 	private int homeRiminderRowCount;
-	private String columnHeader="Date";
+	private String columnHeader="Account Number";
 	private String searchElement="16";
+	final int remindarSize=2;
 	private int searchEleRow;
+	int accountIndex;
+	private ArrayList<String>columnValue;
 
 	/***************************** HomeAndReminder***************************/
 
@@ -32,7 +35,6 @@ public class HomePage extends BasePage {
 
 	@FindBy(xpath ="//i[contains(@id,'DeleteReminder')]")
 	private List<WebElementFacade> delete;
-
 
 	@FindBy(xpath ="//table[@ng-table='tableParams']//tbody//tr[1]/td")
 	private List<WebElementFacade> reminderListColumn;
@@ -110,39 +112,78 @@ public class HomePage extends BasePage {
 	@FindBy(xpath="//input[@name='remBalance']")
 	private WebElementFacade txtSearchBalance;
 
-
-	@FindBy(xpath="//input[@class='form-control valid']")
+/*	@FindBy(xpath="//input[@class='form-control valid']")
 	private WebElementFacade txtToShowDate;
 
 	@FindBy(xpath="//button//div[@class='revert']")
-	private WebElementFacade buttonToShowDate;
+	private WebElementFacade buttonToShowDate;*/
 
 	@FindBy(xpath="//table[@ng-table='tableParams']//tbody//tr[@ng-repeat='row in $data']")
 	private List<WebElementFacade> homeReminderTableRow;
 
-	final int remindarSize=2;
-	
 	@FindBy(xpath="//th[@data-title-text='Date']")
 	private WebElementFacade dateReminderSearch;
-	
+
 	@FindBy(xpath="//th[@data-title-text='Time']")
 	private WebElementFacade timeReminderSearch;
-	
+
 	@FindBy(xpath="//th[@data-title-text='Facility']")
 	private WebElementFacade facilityReminderSearch;
-	
+
 	@FindBy(xpath="//th[@data-title-text='Account Number']")
 	private WebElementFacade accountNumReminderSearch;
-	
+
 	@FindBy(xpath="//th[@data-title-text='Notes']")
 	private WebElementFacade notesReminderSearch;
-	
+
 	@FindBy(xpath="//th[@data-title-text='Balance']")
 	private WebElementFacade balanceReminderSearch;
+
+	@FindBy(xpath="//table[@ng-table='tableParams']//tr[@class='ng-table-sort-header']//th//span[text()='Date']")
+	private WebElementFacade sortDateHeader;
+
+	@FindBy(xpath="//table[@ng-table='tableParams']//tr[@class='ng-table-sort-header']//th//span[text()='Account Number']")
+	private WebElementFacade sortAccNumHeader;
+
+	@FindBy(xpath="//table[@ng-table='tableParams']//tr[@class='ng-table-sort-header']//th//span[text()='Facility']")
+	private WebElementFacade sortFacilityHeader;
+
+	@FindBy(xpath="//table[@ng-table='tableParams']//tr[@class='ng-table-sort-header']//th//span[text()='Notes']")
+	private WebElementFacade sortNoteHeader;
+
+
+	@FindBy(xpath="//table[@ng-table='tableParams']//tr[@class='ng-table-sort-header']//th//span[text()='Balance']")
+	private WebElementFacade sortBalanceHeader;
+
+	@FindBy(xpath="//table[@ng-table='tableParams']//tr[@class='ng-table-sort-header']//th[@class='header  sortable sort-desc']")
+	private WebElementFacade sortDescElement;
+
+
+	@FindBy(xpath="//table[@ng-table='tableParams']//tr[@class='ng-table-sort-header']//th[@class='header  sortable sort-asc']")
+	private WebElementFacade sortAscElement;
+
+
+	@FindBy(xpath="//div[@class='modal-dialog']//div[@class='modal-content']")
+	private WebElementFacade deletePop;
+
+	@FindBy(xpath="//div[@class='modal-footer']//button[text()='Cancel']")
+	private WebElementFacade cancelBtnIndeletePop;
+
+	@FindBy(xpath="//div[@class='modal-footer']//button[text()='Delete Reminder']")
+	private WebElementFacade DeleteBtnIndeletePop;
+	@FindBy(xpath="//input[contains(@class,'form-control')][@id='Days']")
+	private WebElementFacade txtToShowDate;
 	
+	@FindBy(xpath="//button//div[@class='revert']")
+	private WebElementFacade buttonToShowDate;
+
+
+
+
 	String defaultTime="12:00 AM";
 	String homeReminderInfoRow = "//table[@ng-table='tableParams']//tbody//tr[@ng-repeat='row in $data']";
 	String homeReminderInfoCol="//table[@ng-table='tableParams']//thead//tr[@class='ng-table-sort-header']//th";
+	String deleteIcon1Path="]//td//i[@id='tooltip-popup-triggerDeleteReminder']";
 
 	/************************************************ Reminder Filter***********************************/
 	public int checkCountofTablerRow()
@@ -157,9 +198,9 @@ public class HomePage extends BasePage {
 		{
 			homeRiminderRowCount=homeReminderTableRow.size();
 		}
-		
+
 		return homeRiminderRowCount;
-		
+
 	}
 
 	int totalcount;
@@ -167,8 +208,6 @@ public class HomePage extends BasePage {
 	{
 
 		ArrayList<String> homeTablecolData =r1ComMethod.getColValue(homeReminderInfoRow, homeReminderInfoCol, "Account Number");
-
-		System.out.println(homeTablecolData);
 		totalcount= homeReminderTableRow.size();
 
 		if (columnHeader.equalsIgnoreCase("Account Number")) {
@@ -206,9 +245,6 @@ public class HomePage extends BasePage {
 
 		}
 
-
-		System.out.println("Total count " + totalcount + "  total row in table after enter text " + homeRiminderRowCount + "  After serach "  +searchEleRow);
-
 		Assert.assertEquals("Row for search element not match", homeRiminderRowCount, searchEleRow);
 	}
 
@@ -216,7 +252,6 @@ public class HomePage extends BasePage {
 	public void verifyAgentName() throws InterruptedException
 	{
 		String agentNameFromTable=agentPrintName.getText();
-		System.out.println(agentNameFromTable);
 		String agentNameFromHome=agentNameOnHomePage.getText();
 		String[]agentArr=agentNameFromHome.split("\\(");
 		String actualAgentName=agentArr[0];
@@ -264,8 +299,6 @@ public class HomePage extends BasePage {
 		clickOn(myTabs);
 	}
 
-
-
 	public void clickForSerachAccount()
 	{
 
@@ -290,54 +323,13 @@ public class HomePage extends BasePage {
 
 		if(reminderList.size()<2)
 		{
-			System.out.println("No reminders present!");
+			Assert.assertTrue("No reminders present", false);
 		}
 
 	}
 
 
-	// Check remindar on homepage
-
-	@SuppressWarnings("deprecation")
-	public boolean checkRemindar()
-	{
-		Boolean flag=true;
-		System.out.println(reminderList.size());
-		for(int i=1;i<=reminderList.size()-1;i++)
-		{
-			System.out.println("kundan");
-			String rowlocator2=reminderRow+ "[" + i + "]";
-
-			for(int j=1;j<reminderListColumn.size();j++)
-			{
-				String colLocator1=rowlocator2+"/td["+j+"]/a";
-				String accountNumber=element(By.xpath(colLocator1)).getText();
-				String date=element(rowlocator2+"/td[1]/a").getText();
-				if(accountNumber.equalsIgnoreCase(ReminderPage.accountnumber)&&date.equalsIgnoreCase(ReminderPage.tommorrowdate()))
-				{
-
-					String time= element(rowlocator2+"/td[1]/a").getText();
-					String[] spiltedTime=time.split(":");
-					String mintus=spiltedTime[1];
-					Assert.assertTrue("Default value is not. 00.00 EST", mintus.contains("00"));
-
-					flag=false;
-					counter++;
-
-					break;
-
-				}
-
-			}
-			if(flag==false)
-			{
-				break;
-			}
-		}
-
-		return flag;
-
-	}
+	/******************************************************Verify balance************************************************************************/
 
 	public void verifyBalance()
 	{
@@ -354,23 +346,23 @@ public class HomePage extends BasePage {
 		}
 
 	}
-	
+
 	/**************************************************************ReminderSearchField*********************************************/
-	
+
 	public void verifyReminderSearch()
 	{
-	CommonMethods.isDisplayedMethod(dateReminderSearch);
-	CommonMethods.isDisplayedMethod(timeReminderSearch);
-	CommonMethods.isDisplayedMethod(facilityReminderSearch);
-	CommonMethods.isDisplayedMethod(accountNumReminderSearch);
-	CommonMethods.isDisplayedMethod(notesReminderSearch);
-	CommonMethods.isDisplayedMethod(balanceReminderSearch);
-	
+		CommonMethods.isDisplayedMethod(dateReminderSearch);
+		CommonMethods.isDisplayedMethod(timeReminderSearch);
+		CommonMethods.isDisplayedMethod(facilityReminderSearch);
+		CommonMethods.isDisplayedMethod(accountNumReminderSearch);
+		CommonMethods.isDisplayedMethod(notesReminderSearch);
+		CommonMethods.isDisplayedMethod(balanceReminderSearch);
+
 	}
-	
+
 	/**********************************************************Verify default time **********************************************/
-	int accountIndex;
-	
+
+
 	public void verifyDefaultTime()
 	{
 		ArrayList<String> listOfAccount = r1ComMethod.getColValue(homeReminderInfoRow, homeReminderInfoCol, "Account Number");
@@ -385,14 +377,195 @@ public class HomePage extends BasePage {
 		}
 		String ActualTime =listOfTime.get(accountIndex);
 		Assert.assertEquals(ActualTime , defaultTime);
-		
-		
+
+
+	}
+
+
+
+	/*--------------------------------------Sorting In ascending-------------------------------------------------------*/	
+
+
+
+
+	private void checkAscShortingStatus() 
+	{
+		boolean chkShortStatus=true;
+		if(sortDescElement.isDisplayed())
+		{
+
+			clickOn(sortDescElement);
+			if(sortAscElement.isDisplayed())
+			{
+
+				r1ComMethod.verifySorting(homeReminderInfoRow, homeReminderInfoCol, columnHeader);
+			}
+			else
+			{
+				chkShortStatus=false;
+				Assert.assertTrue("Element for Assending is not visible" ,chkShortStatus);
+			}
 		}
-			
+	}
+
+
+	public void sortingAscColumnHead()
+	{
+
+		if (columnHeader.equalsIgnoreCase("Account Number")) {
+
+			clickOn(sortAccNumHeader);
+			checkAscShortingStatus();
+
+		} else if (columnHeader.equalsIgnoreCase("Facility")) {
+
+			clickOn(sortFacilityHeader);
+			checkAscShortingStatus();
+
+
+		}else if (columnHeader.equalsIgnoreCase("Notes")) {
+
+			clickOn(sortNoteHeader);
+			checkAscShortingStatus();
+
+		}else if (columnHeader.equalsIgnoreCase("Balance")) {
+
+			clickOn(sortBalanceHeader);
+			checkAscShortingStatus();
+		}
+
+
+	}
+
+
+
+	/*--------------------------------------Sorting In descending-------------------------------------------------------*/
+
+	private void checkDescShortingStatus() 
+	{
+		boolean chkDescStatus=true;
+		if(sortDescElement.isDisplayed())
+		{
+
+			r1ComMethod.verifyDescSorting(homeReminderInfoRow, homeReminderInfoCol, columnHeader);
+
+		}
+		else
+		{
+			chkDescStatus=false;
+			Assert.assertTrue("Element for Assending is not visible" ,chkDescStatus);
+		}
+	}
+
+
+	public void sortingDescColumnHeader()
+	{
+
+		if (columnHeader.equalsIgnoreCase("Account Number")) {
+
+			clickOn(sortAccNumHeader);
+			checkDescShortingStatus();
+
+		} else if (columnHeader.equalsIgnoreCase("Facility")) {
+
+			clickOn(sortFacilityHeader);
+			checkDescShortingStatus();
+
+
+		}else if (columnHeader.equalsIgnoreCase("Notes")) {
+
+			clickOn(sortNoteHeader);
+			checkDescShortingStatus();
+
+		}else if (columnHeader.equalsIgnoreCase("Balance")) {
+
+			clickOn(sortBalanceHeader);
+			checkDescShortingStatus();
+		}
+
+
+	}
+
+
+	/**********************************************************check reminder creation********************************************************************/
+
+
+	public void reminderCreatedOrNot()
+	{
+		ArrayList<String> listOfAccount = r1ComMethod.getColValue(homeReminderInfoRow, homeReminderInfoCol, "Account Number");
+		ArrayList<String> listOfTime = r1ComMethod.getColValue(homeReminderInfoRow, homeReminderInfoCol, "Time");
+		ArrayList<String> listOfNotes = r1ComMethod.getColValue(homeReminderInfoRow, homeReminderInfoCol, "Notes");
+		for(int i=0;i<listOfAccount.size();i++)
+		{
+			String accountNum =listOfAccount.get(i);
+			if(accountNum.contentEquals(ReminderPage.accountnumber))
+			{
+				boolean flag=listOfNotes.get(i).contentEquals(ReminderPage.noteText);
+				Assert.assertTrue(flag);
+			}
+
+		}
+
+
+
+	}
+
+
+	/*--------------------------------------Verify  Delete icon Populating-------------------------------------------------------*/
+
+	public void verifyDeletingIconPoulating() throws InterruptedException
+	{
+		int rowCnt=homeReminderTableRow.size();
+		boolean checkDelPop=true;
+
+		if(rowCnt>1)
+		{
+			for(int row=1;row<=rowCnt;row++)
+			{
+				String deleteIconPath=homeReminderInfoRow + "[" + row + deleteIcon1Path;
+
+				WebElementFacade deleteIcon=element(By.xpath(deleteIconPath));
+
+				if(deleteIcon.isDisplayed())
+				{
+
+					Thread.sleep(2000);
+
+					clickOn(deleteIcon);
+
+					if(deletePop.isDisplayed())
+					{
+						if(DeleteBtnIndeletePop.isDisplayed())
+						{
+							clickOn(cancelBtnIndeletePop);
+						}
+						else
+						{
+							checkDelPop=false;
+							Assert.assertTrue("deltion button in pop  not found", checkDelPop);
+						}
+
+					}
+					else
+					{
+						checkDelPop=false;
+						Assert.assertTrue("Deletion Pop not found", checkDelPop);
+					}
+
+				}
+
+			}
+		}
+	}
+/**************************************************** Set Reminders size**************************************************************/
 	
-	
-	
-	
+
+	public void changeVisibleDate()
+	{
+		txtToShowDate.clear();
+		txtToShowDate.sendKeys("7");
+		clickOn(buttonToShowDate);
+	}
 }
 
 

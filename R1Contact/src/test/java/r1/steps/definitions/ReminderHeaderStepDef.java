@@ -14,14 +14,13 @@ public class ReminderHeaderStepDef extends BasePage {
 	public void user_is_on_R_Contact_home_page() {
 		OpenBrowser();
 		home.switchHeaderFrame();
+		home.changeVisibleDate();
 	}
 
 	@Given("^Verify the header in 'Reminders' section$")
 	public void verify_the_header_in_Reminders_section() {
 	
 		home.reminderHeader();
-		home.checkRemindar();
-		
 		
 	}
 	

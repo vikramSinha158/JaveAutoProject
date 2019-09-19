@@ -13,7 +13,8 @@ import net.serenitybdd.core.pages.WebElementFacade;
 
 public class R1ContactCommonMethods extends BasePage {
 
-	public ArrayList<String> colValues;
+	private ArrayList<String> colValues;
+	private ArrayList<String> columnValue;
 	private int rowSize;
 	private int colSize; 
 	boolean flag;
@@ -28,8 +29,6 @@ public class R1ContactCommonMethods extends BasePage {
 	@SuppressWarnings("deprecation")
 	public void getTableColValue(String rowLocator, String colLocator, String accountName) 
 	{
-		
-		//colValues = new ArrayList();
 		int rowSize = findAll(By.xpath(rowLocator)).size();
 		int colSize = findAll(By.xpath(colLocator)).size();
 		for (int i = 1; i <= rowSize; i++)
@@ -72,75 +71,92 @@ public class R1ContactCommonMethods extends BasePage {
 			return false;
 		}
 	}
-	
-	/*****************************************find columns*******************************************/
-	
-	public ArrayList<String> getColumnValue(String rowLocator, String colLocator, String colName) {
-    	colValues = new ArrayList<String>();
-    	rowSize = findAll(By.xpath(rowLocator)).size();
+
+
+	/*................................... Get TABLE COLUMN VALUE  .........................................*/
+
+	public ArrayList<String> getColValue(String rowLocator, String colLocator, String colName) {
+		colValues = new ArrayList<String>();
+		rowSize = findAll(By.xpath(rowLocator)).size();
 		colSize = findAll(By.xpath(colLocator)).size();
 		for (int col = 1; col <= colSize; col++) {
 			String colLocator1 = colLocator + "[" + col + "]";
-			if (element(By.xpath(colLocator1)).getText().equalsIgnoreCase(colName)) {
-				for (int row = 1; row <= rowSize; row++) {
-					String rowLocator2 = rowLocator + "[" + row + "]/td[" + col + "]";
-					colValues.add(element(By.xpath(rowLocator2)).getText());
+			try {
+				if (element(By.xpath(colLocator1)).getText().equalsIgnoreCase(colName)) {
+					for (int row = 1; row <= rowSize-1; row++) {
+						String rowLocator2 = rowLocator + "[" + row + "]/td[" + col + "]";
+						colValues.add(element(By.xpath(rowLocator2)).getText());
+					}
+					break;
 				}
+			} catch (NoSuchElementException e) {
 				break;
 			}
 		}
 		return colValues;
 	} 
 
-	
-    /*................................... Get TABLE COLUMN VALUE  .........................................*/
-	
-    public ArrayList<String> getColValue(String rowLocator, String colLocator, String colName) {
-           colValues = new ArrayList<String>();
-           rowSize = findAll(By.xpath(rowLocator)).size();
-                  colSize = findAll(By.xpath(colLocator)).size();
-                  for (int col = 1; col <= colSize; col++) {
-                         String colLocator1 = colLocator + "[" + col + "]";
-                         try {
-                                             if (element(By.xpath(colLocator1)).getText().equalsIgnoreCase(colName)) {
-                                                    for (int row = 1; row <= rowSize-1; row++) {
-                                                           String rowLocator2 = rowLocator + "[" + row + "]/td[" + col + "]";
-                                                           colValues.add(element(By.xpath(rowLocator2)).getText());
-                                                    }
-                                                    break;
-                                             }
-                                      } catch (NoSuchElementException e) {
-                                             break;
-                                      }
-                  }
-                  return colValues;
-           } 
-    
-    /*------------------------------------------------------------------------------------------------*/
-    
-    public int checkElementcontain(String homeReminderInfoRow, String homeReminderInfoCol,String columnHeader,String searchElement)
-    {
-           
-           
-           ArrayList<String> homeTablecolData =getColValue(homeReminderInfoRow, homeReminderInfoCol, columnHeader);
-           try {
+	/*------------------------------------------------------------------------------------------------*/
+
+	public int checkElementcontain(String homeReminderInfoRow, String homeReminderInfoCol,String columnHeader,String searchElement)
+	{
+
+
+		ArrayList<String> homeTablecolData =getColValue(homeReminderInfoRow, homeReminderInfoCol, columnHeader);
+		try {
 			for (int i = 0; i < homeTablecolData.size(); i++) {
-			      if(homeTablecolData.get(i).contains(searchElement))
-			  {
-			                 searchEleCount++;
-			  }
-			   }
+				if(homeTablecolData.get(i).contains(searchElement))
+				{
+					searchEleCount++;
+				}
+			}
 		} catch (NoSuchElementException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-           return searchEleCount;
-           
-    }
+		return searchEleCount;
+
+	}
+
+	/* ................................... SORTING COLUMN descending ...............................................*/
+
+	@SuppressWarnings("deprecation")
+	public void verifyDescSorting(String tableRowXpath, String tableHeaderColXpath, String colName) {
+		columnValue = getColValue(tableRowXpath, tableHeaderColXpath, colName);
+		boolean flag = true;
+
+		for (int j = 0; j < columnValue.size() - 1; j++) {
+			String d1 = (String) columnValue.get(j);
+			String d2 = (String) columnValue.get(j + 1);
+			int val = d1.compareTo(d2);
+			if (val < 0) {
+				flag = false;
+				Assert.assertTrue("sorting failed", flag);
+			}
+		}
+	}
+
+	/*................................... SORTING COLUMN ascending ...............................................*/
+
+	public void verifySorting(String tableRowXpath, String tableHeaderColXpath, String colName) {
+		columnValue = getColValue(tableRowXpath, tableHeaderColXpath, colName);
+		boolean flag = true;
+
+		for (int j = 0; j < columnValue.size() - 1; j++) {
+			String d1 = (String) columnValue.get(j);
+			String d2 = (String) columnValue.get(j + 1);
+			int val = d1.compareTo(d2);
+			if (val > 0) {
+				flag = false;
+				Assert.assertTrue("sorting failed", flag);
+			}
+		}
+	}
+
 
 }
 
-	
-	
+
+
 
 
