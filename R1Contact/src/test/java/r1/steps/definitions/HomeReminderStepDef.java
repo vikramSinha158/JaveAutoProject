@@ -153,4 +153,13 @@ public class HomeReminderStepDef {
 		home.verifyDeletingIconPoulating();
 	}
 	
+/**************************************************************Test Case 419105:Home_Reminder_Verify background color for Today's Reminder******************************************/	
+	
+	@Given("^When verify today's remindertab color$")
+	public void when_verify_today_s_remindertab_color() {
+	    home.todayTabColor("rgba(11, 92, 207, 1)");
+	}
+
+	
+
 }

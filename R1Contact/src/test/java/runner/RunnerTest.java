@@ -8,9 +8,9 @@ import net.serenitybdd.cucumber.CucumberWithSerenity;
 
 @RunWith(CucumberWithSerenity.class)
 @CucumberOptions(features = { "src/test/resources/features/R1Contact/HomeAndReminder.feature" }, 
-//tags = { "@419108"}, 
+//tags = { "@419105"}, 
 glue = "r1.steps.definitions",
-dryRun = false,
+/*dryRun = true,*/
 monochrome=true)
 
 public class RunnerTest {

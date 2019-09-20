@@ -566,6 +566,24 @@ public class HomePage extends BasePage {
 		txtToShowDate.sendKeys("7");
 		clickOn(buttonToShowDate);
 	}
+	
+/*********************************************************Today's tab back ground-color***********************************************/
+	
+	public void todayTabColor(String expectedCssValue) {
+		String day="Today";
+		ArrayList<String> ListOfDate = r1ComMethod.getColValue(homeReminderInfoRow, homeReminderInfoCol, "Date");
+		for(int i=0;i<ListOfDate.size();i++)
+		{
+			if(ListOfDate.get(i).contains(day))
+			{
+				int rowIndex=i+1; 
+				String actualCssValue=element(By.xpath(homeReminderInfoRow+"["+rowIndex+"]")).getCssValue("background-color");
+				Assert.assertEquals(actualCssValue, expectedCssValue);
+				break;
+			}
+		}
+	}
+
 }
 
 
