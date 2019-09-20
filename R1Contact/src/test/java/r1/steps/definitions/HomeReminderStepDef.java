@@ -1,5 +1,8 @@
 package r1.steps.definitions;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -54,7 +57,7 @@ public class HomeReminderStepDef {
 	}
 
 	@When("^Pick one account from the list by click on Arrow$")
-	public void pick_one_account_from_the_list_by_click_on_Arrow() {
+	public void pick_one_account_from_the_list_by_click_on_Arrow() throws FileNotFoundException, IOException {
 		rem.selectAndClickAccount();
 
 	}
@@ -73,7 +76,7 @@ public class HomeReminderStepDef {
 	}
 
 	@Then("^A pop up window should be displayed and user would be able to submit Reminder by filling required details$")
-	public void a_pop_up_window_should_be_displayed_and_user_would_be_able_to_submit_Reminder_by_filling_required_details() {
+	public void a_pop_up_window_should_be_displayed_and_user_would_be_able_to_submit_Reminder_by_filling_required_details() throws FileNotFoundException, IOException {
 		rem.IsreminderContainerDisplayed();
 		rem.FillreminderDate();
 		
@@ -81,14 +84,14 @@ public class HomeReminderStepDef {
 
 	@Then("^Save reminder by hitting 'Save reminder' button$")
 	public void save_reminder_by_hitting_Save_reminder_button() {
-	    // Write code here that turns the phrase above into concrete actions
+	   
 		rem.setReminderNote("Hello");
 		rem.submitReminder();
 	}
 
 
 	@Then("^An alert should be displayed with the below alert message\\.Reminder on account already exists$")
-	public void an_alert_should_be_displayed_with_the_below_alert_message_Reminder_on_account_already_exists() {
+	public void an_alert_should_be_displayed_with_the_below_alert_message_Reminder_on_account_already_exists() throws FileNotFoundException, IOException {
 
 		rem.VerifyDuplicateReminderAlert();
 	}
@@ -109,7 +112,7 @@ public class HomeReminderStepDef {
 	}
 
 	@Then("^Verify the type of Search box$")
-	public void verify_the_type_of_Search_box() throws NoSuchFieldException {
+	public void verify_the_type_of_Search_box() throws NoSuchFieldException, FileNotFoundException, IOException {
 		home.checkContainHometable();
 	}
 
@@ -129,19 +132,23 @@ public class HomeReminderStepDef {
 	    home.sortingDescColumnHeader();
 	}
 	
-/***************************************************Test Case 419087:Reminder_Verify the Create Reminder while Set a Reminder time****************************************/
+/***************************************************Test Case 419087:Reminder_Verify the Create Reminder while Set a Reminder time
+ * @throws IOException 
+ * @throws FileNotFoundException ****************************************/
 	
 	@Then("^very reminder has been created or not$")
-	public void very_reminder_has_been_created_or_not() {
+	public void very_reminder_has_been_created_or_not() throws FileNotFoundException, IOException {
 	    rem.VerifyDuplicateReminderAlert();
 		home.clicOnHome();
 		home.switchHeaderFrame();
 		home.reminderCreatedOrNot();
 	}
-/*******************************************************Test Case 419108:Home_Reminder_Verify functionality of Delete icon on Home page **********************************/
+/*******************************************************Test Case 419108:Home_Reminder_Verify functionality of Delete icon on Home page 
+ * @throws IOException 
+ * @throws FileNotFoundException **********************************/
 
 	@Given("^user is on home page$")
-	public void user_is_on_home_page() {
+	public void user_is_on_home_page() throws FileNotFoundException, IOException {
 		rem.VerifyDuplicateReminderAlert();
 		home.clicOnHome();
 	    home.switchHeaderFrame();

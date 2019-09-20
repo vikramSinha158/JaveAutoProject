@@ -1,11 +1,9 @@
 package r1.pages;
-
-import static org.junit.Assert.assertTrue;
-
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import junit.framework.Assert;
+import org.junit.Assert;
 import net.serenitybdd.core.annotations.findby.By;
 import net.serenitybdd.core.annotations.findby.FindBy;
 import net.serenitybdd.core.pages.WebElementFacade;
@@ -19,11 +17,9 @@ public class HomePage extends BasePage {
 	R1ContactCommonMethods r1ComMethod;
 	private int homeRiminderRowCount;
 	private String columnHeader="Account Number";
-	private String searchElement="16";
-	final int remindarSize=2;
 	private int searchEleRow;
 	int accountIndex;
-	private ArrayList<String>columnValue;
+	int totalcount;
 
 	/***************************** HomeAndReminder***************************/
 
@@ -112,12 +108,6 @@ public class HomePage extends BasePage {
 	@FindBy(xpath="//input[@name='remBalance']")
 	private WebElementFacade txtSearchBalance;
 
-/*	@FindBy(xpath="//input[@class='form-control valid']")
-	private WebElementFacade txtToShowDate;
-
-	@FindBy(xpath="//button//div[@class='revert']")
-	private WebElementFacade buttonToShowDate;*/
-
 	@FindBy(xpath="//table[@ng-table='tableParams']//tbody//tr[@ng-repeat='row in $data']")
 	private List<WebElementFacade> homeReminderTableRow;
 
@@ -173,12 +163,9 @@ public class HomePage extends BasePage {
 	private WebElementFacade DeleteBtnIndeletePop;
 	@FindBy(xpath="//input[contains(@class,'form-control')][@id='Days']")
 	private WebElementFacade txtToShowDate;
-	
+
 	@FindBy(xpath="//button//div[@class='revert']")
 	private WebElementFacade buttonToShowDate;
-
-
-
 
 	String defaultTime="12:00 AM";
 	String homeReminderInfoRow = "//table[@ng-table='tableParams']//tbody//tr[@ng-repeat='row in $data']";
@@ -186,6 +173,7 @@ public class HomePage extends BasePage {
 	String deleteIcon1Path="]//td//i[@id='tooltip-popup-triggerDeleteReminder']";
 
 	/************************************************ Reminder Filter***********************************/
+
 	public int checkCountofTablerRow()
 	{
 		boolean check=true;
@@ -203,11 +191,11 @@ public class HomePage extends BasePage {
 
 	}
 
-	int totalcount;
-	public void checkContainHometable()
-	{
 
-		ArrayList<String> homeTablecolData =r1ComMethod.getColValue(homeReminderInfoRow, homeReminderInfoCol, "Account Number");
+	public void checkContainHometable() throws FileNotFoundException, IOException
+	{
+		String searchElement= CommonMethods.readProperties("FilterSearch");
+
 		totalcount= homeReminderTableRow.size();
 
 		if (columnHeader.equalsIgnoreCase("Account Number")) {
@@ -248,7 +236,6 @@ public class HomePage extends BasePage {
 		Assert.assertEquals("Row for search element not match", homeRiminderRowCount, searchEleRow);
 	}
 
-	@SuppressWarnings("deprecation")
 	public void verifyAgentName() throws InterruptedException
 	{
 		String agentNameFromTable=agentPrintName.getText();
@@ -258,10 +245,6 @@ public class HomePage extends BasePage {
 		Assert.assertTrue("Agent name is not matching", agentNameFromTable.contains(actualAgentName));
 
 	}
-
-
-	@SuppressWarnings("deprecation")
-
 
 	public void switchHeaderFrame()
 	{
@@ -293,7 +276,6 @@ public class HomePage extends BasePage {
 
 	}
 
-
 	public void clickOnMyTab()
 	{
 		clickOn(myTabs);
@@ -317,13 +299,12 @@ public class HomePage extends BasePage {
 
 	}
 
-	@SuppressWarnings("deprecation")
 	public void checkreminderList() {
 
 
-		if(reminderList.size()<2)
+		if(homeReminderTableRow.size()<1)
 		{
-			Assert.assertTrue("No reminders present", false);
+			Assert.assertFalse("No reminders present", true);
 		}
 
 	}
@@ -360,17 +341,19 @@ public class HomePage extends BasePage {
 
 	}
 
-	/**********************************************************Verify default time **********************************************/
+	/**********************************************************Verify default time 
+	 * @throws IOException 
+	 * @throws FileNotFoundException **********************************************/
 
 
-	public void verifyDefaultTime()
+	public void verifyDefaultTime() throws FileNotFoundException, IOException
 	{
 		ArrayList<String> listOfAccount = r1ComMethod.getColValue(homeReminderInfoRow, homeReminderInfoCol, "Account Number");
 		ArrayList<String> listOfTime = r1ComMethod.getColValue(homeReminderInfoRow, homeReminderInfoCol, "Time");
 		for(int i=0;i<listOfAccount.size();i++)
 		{
 			String accountNum=listOfAccount.get(i);
-			if(accountNum.contentEquals(ReminderPage.accountnumber))
+			if(accountNum.contentEquals(accountNumber()))
 			{
 				accountIndex=i;
 			}
@@ -381,12 +364,7 @@ public class HomePage extends BasePage {
 
 	}
 
-
-
 	/*--------------------------------------Sorting In ascending-------------------------------------------------------*/	
-
-
-
 
 	private void checkAscShortingStatus() 
 	{
@@ -487,10 +465,12 @@ public class HomePage extends BasePage {
 	}
 
 
-	/**********************************************************check reminder creation********************************************************************/
+	/**********************************************************check reminder creation
+	 * @throws IOException 
+	 * @throws FileNotFoundException ********************************************************************/
 
 
-	public void reminderCreatedOrNot()
+	public void reminderCreatedOrNot() throws FileNotFoundException, IOException
 	{
 		ArrayList<String> listOfAccount = r1ComMethod.getColValue(homeReminderInfoRow, homeReminderInfoCol, "Account Number");
 		ArrayList<String> listOfTime = r1ComMethod.getColValue(homeReminderInfoRow, homeReminderInfoCol, "Time");
@@ -498,7 +478,7 @@ public class HomePage extends BasePage {
 		for(int i=0;i<listOfAccount.size();i++)
 		{
 			String accountNum =listOfAccount.get(i);
-			if(accountNum.contentEquals(ReminderPage.accountnumber))
+			if(accountNum.contentEquals(accountNumber()))
 			{
 				boolean flag=listOfNotes.get(i).contentEquals(ReminderPage.noteText);
 				Assert.assertTrue(flag);
@@ -557,8 +537,8 @@ public class HomePage extends BasePage {
 			}
 		}
 	}
-/**************************************************** Set Reminders size**************************************************************/
-	
+	/**************************************************** Set Reminders size**************************************************************/
+
 
 	public void changeVisibleDate()
 	{
@@ -566,9 +546,9 @@ public class HomePage extends BasePage {
 		txtToShowDate.sendKeys("7");
 		clickOn(buttonToShowDate);
 	}
-	
-/*********************************************************Today's tab back ground-color***********************************************/
-	
+
+	/*********************************************************Today's tab back ground-color***********************************************/
+
 	public void todayTabColor(String expectedCssValue) {
 		String day="Today";
 		ArrayList<String> ListOfDate = r1ComMethod.getColValue(homeReminderInfoRow, homeReminderInfoCol, "Date");
@@ -584,6 +564,14 @@ public class HomePage extends BasePage {
 		}
 	}
 
+	/*********************************************************Get Account Number from property File
+	 * @throws IOException 
+	 * @throws FileNotFoundException ***********************************************/
+	public static String accountNumber() throws FileNotFoundException, IOException {
+		
+		return CommonMethods.readProperties("AccountNumber");
+		
+	}
 }
 
 

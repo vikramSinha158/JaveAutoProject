@@ -1,14 +1,14 @@
 package r1.pages;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import junit.framework.Assert;
-import net.serenitybdd.core.annotations.findby.By;
+import org.junit.Assert;
 import net.serenitybdd.core.annotations.findby.FindBy;
 import net.serenitybdd.core.pages.WebElementFacade;
 import r1.commons.BasePage;
@@ -21,12 +21,9 @@ public class ReminderPage extends BasePage  {
 	CommonMethods.common common;
 	HomePage Home;
 	Date date;
-
-	private static int DATE_REMINDER=4;
 	private static int counter=0;
 	final String containCheck ="already exists";
 	static String noteText="Please check!";
-	static String accountnumber="0003257700065";
 	String accountColHeader="Patient Name";
 	String accountRowLocator="//table[@cellspacing='0']/tbody/tr";	
 	String accountColLocator="//table[@cellspacing='0']//thead/tr/th";
@@ -81,8 +78,8 @@ public class ReminderPage extends BasePage  {
 	@FindBy(xpath="//img[@src='/Content/images/save.PNG']")
 	private WebElementFacade reminderSave;
 
-	public void selectAndClickAccount() {
-		contactCommon.getTableColValue(accountRows, colNum, accountnumber);
+	public void selectAndClickAccount() throws FileNotFoundException, IOException {
+		contactCommon.clickOnMatchingColValue(accountRows, colNum, CommonMethods.readProperties("AccountNumber"));
 
 	}
 
@@ -99,7 +96,7 @@ public class ReminderPage extends BasePage  {
 
 	}
 
-	@SuppressWarnings("deprecation")
+	
 	public void searchAccountlables()
 	{
 		for(int i=0;i<searchAccLabels.size();i++)
@@ -108,7 +105,7 @@ public class ReminderPage extends BasePage  {
 		}
 	}
 
-	@SuppressWarnings("deprecation")
+	
 	public void reminderIcon()
 	{
 		Assert.assertTrue("Reminder icon is not coming", reminderIcon.isVisible());
@@ -120,29 +117,32 @@ public class ReminderPage extends BasePage  {
 		reminderIcon.click();
 	}
 
-	@SuppressWarnings("deprecation")
+	
 	public void IsreminderContainerDisplayed()
 	{
 		Assert.assertTrue("Reminder container is not coming", ReminderContainer.isDisplayed());
 
 	}
 
-	public static String tommorrowdate()
-	{
+	public static String reminderDateToFill() throws FileNotFoundException, IOException
+	{ 
+		String DATE_REMINDER=CommonMethods.readProperties("DATE_REMINDER");
+		int integerDate=Integer.parseInt(DATE_REMINDER);  
 		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.DAY_OF_MONTH, DATE_REMINDER);
+		cal.add(Calendar.DAY_OF_MONTH, integerDate);
 		Date date = cal.getTime();
 		SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
 		String reminderDate = formatter.format(date);
 		return reminderDate;
 	}
 
-	public void FillreminderDate()
+	public void FillreminderDate() throws FileNotFoundException, IOException
 	{
 		dateField.clear();
-		String reminderDate = tommorrowdate();
+		String reminderDate = reminderDateToFill();
 		dateField.sendKeys(reminderDate);
 	}
+	
 
 	public void setReminderNote(String note )
 	{
@@ -157,17 +157,21 @@ public class ReminderPage extends BasePage  {
 		submitreminder.click();
 	}
 
-	public void fillRemindarForm()
+	public void fillRemindarForm() throws FileNotFoundException, IOException
 	{
 		ClickreminderIcon();
 		FillreminderDate();
 		setReminderNote(noteText);
 		submitReminder();
+		if(contactCommon.checkAlert()) {
+			getDriver().switchTo().alert();
+			reminderAlertAssertion();
+		}
 	}
 
 	// Duplicate reminder alert check assertion
 
-	@SuppressWarnings("deprecation")
+	
 	public void reminderAlertAssertion()
 	{
 		String reminderAlert = getDriver().switchTo().alert().getText();
@@ -176,7 +180,7 @@ public class ReminderPage extends BasePage  {
 
 	}
 
-	public void VerifyDuplicateReminderAlert() {
+	public void VerifyDuplicateReminderAlert() throws FileNotFoundException, IOException {
 		if(contactCommon.checkAlert()) {
 			getDriver().switchTo().alert();
 			reminderAlertAssertion();
@@ -184,14 +188,26 @@ public class ReminderPage extends BasePage  {
 		else
 		{	
 			fillRemindarForm();		
-			getDriver().switchTo().alert();
-			reminderAlertAssertion();
+			
 		}
 	}
 
 	// List of patient matching with last name
 
-	@SuppressWarnings("deprecation")
+
+			@FindBy(xpath="//table[@cellspacing='0']/tbody/tr")
+				private List<WebElementFacade> totalRowCount; 
+			 
+			 
+			public int getTotalRowCount()
+				{
+					System.out.println("Acutaul row size " + totalRowCount.size());
+					return totalRowCount.size();
+				}
+				 
+			 
+
+	
 	public void verifyFirstCharForLastName(String firstCharLastName)
 	{
 
@@ -201,7 +217,7 @@ public class ReminderPage extends BasePage  {
 		{
 			String[] patientNameSplit=patientName.split(" ");
 			String LastName=patientNameSplit[patientNameSplit.length-1];				
-
+	
 			if(LastName.toUpperCase().startsWith(firstCharLastName.toUpperCase()))
 			{
 				counter++;
@@ -209,16 +225,17 @@ public class ReminderPage extends BasePage  {
 			}
 
 		}
-
-		//Assert.assertEquals("Number of row not match for search element "+ firstCharLastName,accountTablerOW.size(), counter);
+		System.out.println(accountTablerOW.size());
+		System.out.println(counter);
+		Assert.assertEquals("Number of row not match for search element "+ firstCharLastName,getTotalRowCount(), counter);
 
 	} 
 
-	public void verifyRemindarPopup()
+	public void verifyRemindarPopup() throws FileNotFoundException, IOException
 	{
 		if(dateField.isDisplayed()) {
 			dateField.clear();
-			dateField.sendKeys(tommorrowdate());
+			dateField.sendKeys(reminderDateToFill());
 			dateField.clear();
 		} else
 		{

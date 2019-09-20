@@ -1,15 +1,11 @@
 package r1.commons;
-
-import static org.junit.Assert.assertFalse;
-
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.NoSuchElementException;
-
-import junit.framework.Assert;
+import org.junit.Assert;
 import net.serenitybdd.core.annotations.findby.By;
-import net.serenitybdd.core.annotations.findby.FindBy;
-import net.serenitybdd.core.pages.WebElementFacade;
+import r1.commons.utilities.CommonMethods;
 
 public class R1ContactCommonMethods extends BasePage {
 
@@ -20,26 +16,20 @@ public class R1ContactCommonMethods extends BasePage {
 	boolean flag;
 	private static int searchEleCount=0;
 
-
-
-
 	/*................................... Get TABLE COLUMN VALUE  .........................................*/
 
-
-	@SuppressWarnings("deprecation")
-	public void getTableColValue(String rowLocator, String colLocator, String accountName) 
+	public void clickOnMatchingColValue(String rowLocator, String colLocator, String accountName) throws FileNotFoundException, IOException 
 	{
 		int rowSize = findAll(By.xpath(rowLocator)).size();
 		int colSize = findAll(By.xpath(colLocator)).size();
 		for (int i = 1; i <= rowSize; i++)
 		{
 			String rowlocator1 = rowLocator + "[" + i + "]" ;
-
 			for(int j=1;j<colSize;j++)
 			{
 				String colLocator1=rowlocator1+"/td["+j+"]";
 				String accountNumber=element(By.xpath(colLocator1)).getText();
-				if(accountNumber.contentEquals(accountName))
+				if(accountNumber.contentEquals(CommonMethods.readProperties("AccountNumber")))
 				{
 					element(rowlocator1+"//a[1]//div").click();
 					flag=true;
@@ -55,12 +45,11 @@ public class R1ContactCommonMethods extends BasePage {
 			{
 				break;
 			}
-
 		}
-
 	}
 
-	/*******************************CheckAlertIsPresent**********************************************/
+
+	/*................................... CheckAlertIsPresent  .........................................*/	
 
 	public boolean checkAlert() {
 		try {
@@ -71,7 +60,6 @@ public class R1ContactCommonMethods extends BasePage {
 			return false;
 		}
 	}
-
 
 	/*................................... Get TABLE COLUMN VALUE  .........................................*/
 
@@ -111,7 +99,6 @@ public class R1ContactCommonMethods extends BasePage {
 				}
 			}
 		} catch (NoSuchElementException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return searchEleCount;
@@ -120,7 +107,7 @@ public class R1ContactCommonMethods extends BasePage {
 
 	/* ................................... SORTING COLUMN descending ...............................................*/
 
-	@SuppressWarnings("deprecation")
+
 	public void verifyDescSorting(String tableRowXpath, String tableHeaderColXpath, String colName) {
 		columnValue = getColValue(tableRowXpath, tableHeaderColXpath, colName);
 		boolean flag = true;
