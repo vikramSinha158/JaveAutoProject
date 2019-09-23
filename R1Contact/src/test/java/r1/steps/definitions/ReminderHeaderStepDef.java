@@ -23,7 +23,5 @@ public class ReminderHeaderStepDef extends BasePage {
 	
 		home.reminderHeader();
 		
-	}
-	
-
+	}	
 }

@@ -103,7 +103,6 @@ public class R1ContactCommonMethods extends BasePage {
 			e.printStackTrace();
 		}
 		return searchEleCount;
-
 	}
 
 	/* ................................... SORTING COLUMN descending ...............................................*/

@@ -175,6 +175,4 @@ public class HomeReminderStepDef {
 		home.todayTabColor("rgba(11, 92, 207, 1)");
 	}
 
-	
-
 }

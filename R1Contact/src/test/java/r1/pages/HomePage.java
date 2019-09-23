@@ -555,6 +555,7 @@ public class HomePage extends BasePage {
 	/*********************************************************Get Account Number from property File
 	 * @throws IOException 
 	 * @throws FileNotFoundException ***********************************************/
+	
 	public static String accountNumber() throws FileNotFoundException, IOException {
 		
 		return CommonMethods.readProperties("AccountNumber");

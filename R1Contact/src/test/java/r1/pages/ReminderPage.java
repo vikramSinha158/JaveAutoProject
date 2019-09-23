@@ -79,6 +79,7 @@ public class ReminderPage extends BasePage  {
 	private WebElementFacade reminderSave;
 
 	public void selectAndClickAccount() throws FileNotFoundException, IOException {
+		
 		contactCommon.clickOnMatchingColValue(accountRows, colNum, CommonMethods.readProperties("AccountNumber"));
 
 	}
