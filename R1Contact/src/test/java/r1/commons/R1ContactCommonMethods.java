@@ -15,6 +15,7 @@ public class R1ContactCommonMethods extends BasePage {
 	private int colSize; 
 	boolean flag;
 	private static int searchEleCount=0;
+	private String viewAccountLink ="//a[1]//div";
 
 	/*................................... Get TABLE COLUMN VALUE  .........................................*/
 
@@ -31,7 +32,7 @@ public class R1ContactCommonMethods extends BasePage {
 				String accountNumber=element(By.xpath(colLocator1)).getText();
 				if(accountNumber.contentEquals(CommonMethods.readProperties("AccountNumber")))
 				{
-					element(rowlocator1+"//a[1]//div").click();
+					element(rowlocator1+viewAccountLink).click();
 					flag=true;
 					break;
 
@@ -71,7 +72,7 @@ public class R1ContactCommonMethods extends BasePage {
 			String colLocator1 = colLocator + "[" + col + "]";
 			try {
 				if (element(By.xpath(colLocator1)).getText().equalsIgnoreCase(colName)) {
-					for (int row = 1; row <= rowSize-1; row++) {
+					for (int row = 1; row <= rowSize; row++) {
 						String rowLocator2 = rowLocator + "[" + row + "]/td[" + col + "]";
 						colValues.add(element(By.xpath(rowLocator2)).getText());
 					}
@@ -84,7 +85,7 @@ public class R1ContactCommonMethods extends BasePage {
 		return colValues;
 	} 
 
-	/*------------------------------------------------------------------------------------------------*/
+	/*---------------------------------------check Filter in homepage---------------------------------------------------------*/
 
 	public int checkElementcontain(String homeReminderInfoRow, String homeReminderInfoCol,String columnHeader,String searchElement)
 	{

@@ -21,7 +21,7 @@ public class ReminderPage extends BasePage  {
 	CommonMethods.common common;
 	HomePage Home;
 	Date date;
-	private static int counter=0;
+	private int counter=0;
 	final String containCheck ="already exists";
 	static String noteText="Please check!";
 	String accountColHeader="Patient Name";
@@ -96,7 +96,7 @@ public class ReminderPage extends BasePage  {
 
 	}
 
-	
+
 	public void searchAccountlables()
 	{
 		for(int i=0;i<searchAccLabels.size();i++)
@@ -105,7 +105,7 @@ public class ReminderPage extends BasePage  {
 		}
 	}
 
-	
+
 	public void reminderIcon()
 	{
 		Assert.assertTrue("Reminder icon is not coming", reminderIcon.isVisible());
@@ -117,7 +117,7 @@ public class ReminderPage extends BasePage  {
 		reminderIcon.click();
 	}
 
-	
+
 	public void IsreminderContainerDisplayed()
 	{
 		Assert.assertTrue("Reminder container is not coming", ReminderContainer.isDisplayed());
@@ -142,7 +142,7 @@ public class ReminderPage extends BasePage  {
 		String reminderDate = reminderDateToFill();
 		dateField.sendKeys(reminderDate);
 	}
-	
+
 
 	public void setReminderNote(String note )
 	{
@@ -171,7 +171,7 @@ public class ReminderPage extends BasePage  {
 
 	// Duplicate reminder alert check assertion
 
-	
+
 	public void reminderAlertAssertion()
 	{
 		String reminderAlert = getDriver().switchTo().alert().getText();
@@ -188,26 +188,23 @@ public class ReminderPage extends BasePage  {
 		else
 		{	
 			fillRemindarForm();		
-			
+
 		}
 	}
 
 	// List of patient matching with last name
 
 
-			@FindBy(xpath="//table[@cellspacing='0']/tbody/tr")
-				private List<WebElementFacade> totalRowCount; 
-			 
-			 
-			public int getTotalRowCount()
-				{
-					System.out.println("Acutaul row size " + totalRowCount.size());
-					return totalRowCount.size();
-				}
-				 
-			 
+	@FindBy(xpath="//table[@cellspacing='0']/tbody/tr")
+	private List<WebElementFacade> totalRowCount; 
 
-	
+
+	public int getTotalRowCount()
+	{
+		return totalRowCount.size();
+	}
+
+
 	public void verifyFirstCharForLastName(String firstCharLastName)
 	{
 
@@ -217,7 +214,7 @@ public class ReminderPage extends BasePage  {
 		{
 			String[] patientNameSplit=patientName.split(" ");
 			String LastName=patientNameSplit[patientNameSplit.length-1];				
-	
+
 			if(LastName.toUpperCase().startsWith(firstCharLastName.toUpperCase()))
 			{
 				counter++;
@@ -225,8 +222,7 @@ public class ReminderPage extends BasePage  {
 			}
 
 		}
-		System.out.println(accountTablerOW.size());
-		System.out.println(counter);
+
 		Assert.assertEquals("Number of row not match for search element "+ firstCharLastName,getTotalRowCount(), counter);
 
 	} 
@@ -272,9 +268,6 @@ public class ReminderPage extends BasePage  {
 			Assert.assertTrue(false);
 		}
 	}
-
-
-
 
 }
 

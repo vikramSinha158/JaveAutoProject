@@ -13,13 +13,18 @@ import r1.commons.utilities.CommonMethods;
 
 public class HomePage extends BasePage {
 
-	static int counter ;
 	R1ContactCommonMethods r1ComMethod;
 	private int homeRiminderRowCount;
 	private String columnHeader="Account Number";
 	private int searchEleRow;
 	int accountIndex;
 	int totalcount;
+	
+	String reminderRow="//table[@ng-table='tableParams']//tbody//tr";
+	String defaultTime="12:00 AM"; // It will remain constant
+	String homeReminderInfoRow = "//table[@ng-table='tableParams']//tbody//tr[@ng-repeat='row in $data']";
+	String homeReminderInfoCol="//table[@ng-table='tableParams']//thead//tr[@class='ng-table-sort-header']//th";
+	String deleteIcon1Path="]//td//i[@id='tooltip-popup-triggerDeleteReminder']";
 
 	/***************************** HomeAndReminder***************************/
 
@@ -34,8 +39,6 @@ public class HomePage extends BasePage {
 
 	@FindBy(xpath ="//table[@ng-table='tableParams']//tbody//tr[1]/td")
 	private List<WebElementFacade> reminderListColumn;
-
-	String reminderRow="//table[@ng-table='tableParams']//tbody//tr";
 
 	@FindBy(xpath="//iframe[@src='/Home/SiteEntry']")
 	private WebElementFacade headerframeName;
@@ -85,10 +88,8 @@ public class HomePage extends BasePage {
 	@FindBy(xpath="//p[@class='pull-right']/strong")
 	private WebElementFacade agentPrintName;
 
-
 	@FindBy(xpath="//p[@class='pull-right']/strong")
 	private WebElementFacade agentNameOnHomePage;
-
 
 	@FindBy(xpath="//table[@ng-table='tableParams']/tbody/tr")
 	private WebElementFacade reminderTableRowsCnt;
@@ -167,10 +168,6 @@ public class HomePage extends BasePage {
 	@FindBy(xpath="//button//div[@class='revert']")
 	private WebElementFacade buttonToShowDate;
 
-	String defaultTime="12:00 AM";
-	String homeReminderInfoRow = "//table[@ng-table='tableParams']//tbody//tr[@ng-repeat='row in $data']";
-	String homeReminderInfoCol="//table[@ng-table='tableParams']//thead//tr[@class='ng-table-sort-header']//th";
-	String deleteIcon1Path="]//td//i[@id='tooltip-popup-triggerDeleteReminder']";
 
 	/************************************************ Reminder Filter***********************************/
 
@@ -202,7 +199,7 @@ public class HomePage extends BasePage {
 
 
 			txtSearchAccountNum.sendKeys(searchElement);
-			homeRiminderRowCount=homeReminderTableRow.size()-1;
+			homeRiminderRowCount=homeReminderTableRow.size();
 			searchEleRow=r1ComMethod.checkElementcontain(homeReminderInfoRow, homeReminderInfoCol, columnHeader, searchElement);
 
 		} else if (columnHeader.equalsIgnoreCase("Date")) {
@@ -323,7 +320,6 @@ public class HomePage extends BasePage {
 			String amount=amountAtHompage.getText();
 			Assert.assertEquals(TopBalance, amount);
 
-
 		}
 
 	}
@@ -360,7 +356,6 @@ public class HomePage extends BasePage {
 		}
 		String ActualTime =listOfTime.get(accountIndex);
 		Assert.assertEquals(ActualTime , defaultTime);
-
 
 	}
 
@@ -415,8 +410,6 @@ public class HomePage extends BasePage {
 
 	}
 
-
-
 	/*--------------------------------------Sorting In descending-------------------------------------------------------*/
 
 	private void checkDescShortingStatus() 
@@ -464,7 +457,6 @@ public class HomePage extends BasePage {
 
 	}
 
-
 	/**********************************************************check reminder creation
 	 * @throws IOException 
 	 * @throws FileNotFoundException ********************************************************************/
@@ -473,7 +465,6 @@ public class HomePage extends BasePage {
 	public void reminderCreatedOrNot() throws FileNotFoundException, IOException
 	{
 		ArrayList<String> listOfAccount = r1ComMethod.getColValue(homeReminderInfoRow, homeReminderInfoCol, "Account Number");
-		ArrayList<String> listOfTime = r1ComMethod.getColValue(homeReminderInfoRow, homeReminderInfoCol, "Time");
 		ArrayList<String> listOfNotes = r1ComMethod.getColValue(homeReminderInfoRow, homeReminderInfoCol, "Notes");
 		for(int i=0;i<listOfAccount.size();i++)
 		{
@@ -485,10 +476,7 @@ public class HomePage extends BasePage {
 			}
 
 		}
-
-
-
-	}
+}
 
 
 	/*--------------------------------------Verify  Delete icon Populating-------------------------------------------------------*/
@@ -543,7 +531,7 @@ public class HomePage extends BasePage {
 	public void changeVisibleDate()
 	{
 		txtToShowDate.clear();
-		txtToShowDate.sendKeys("7");
+		txtToShowDate.sendKeys(CommonMethods.readProperties("txtToShowDate"));
 		clickOn(buttonToShowDate);
 	}
 

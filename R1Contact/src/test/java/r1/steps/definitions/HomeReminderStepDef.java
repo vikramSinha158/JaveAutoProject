@@ -31,6 +31,7 @@ public class HomeReminderStepDef {
 
 	@Then("^Home, My Tabs and other Tabs$")
 	public void home_My_Tabs_and_other_Tabs() {
+		
 		home.verifyHeaderTab();
 
 	}
@@ -43,13 +44,13 @@ public class HomeReminderStepDef {
 
 	@Then("^Search account page should be displayed with searching criterias like\\.\\.Account Number, First Name, Last Name etc$")
 	public void search_account_page_should_be_displayed_with_searching_criterias_like_Account_Number_First_Name_Last_Name_etc() {
+		
 		rem.searchAccountlables();
-
-
 	}
 
 	@When("^Enter last name as \"([^\"]*)\" and press ENTER and List of Accounts should be displayed$")
 	public void enter_last_name_as_and_press_ENTER_and_List_of_Accounts_should_be_displayed(String arg1) {
+
 		rem.enterLastNameTxt(arg1);
 		rem.lastNameSearchclk();
 		rem.verifyFirstCharForLastName(arg1);
@@ -58,6 +59,7 @@ public class HomeReminderStepDef {
 
 	@When("^Pick one account from the list by click on Arrow$")
 	public void pick_one_account_from_the_list_by_click_on_Arrow() throws FileNotFoundException, IOException {
+		
 		rem.selectAndClickAccount();
 
 	}
@@ -77,6 +79,7 @@ public class HomeReminderStepDef {
 
 	@Then("^A pop up window should be displayed and user would be able to submit Reminder by filling required details$")
 	public void a_pop_up_window_should_be_displayed_and_user_would_be_able_to_submit_Reminder_by_filling_required_details() throws FileNotFoundException, IOException {
+		
 		rem.IsreminderContainerDisplayed();
 		rem.FillreminderDate();
 		
@@ -100,7 +103,8 @@ public class HomeReminderStepDef {
 
 	@Then("^Compare Balance in Reminders at Home page and Balance on the account page corresponding to one account$")
 	public void compare_Balance_in_Reminders_at_Home_page_and_Balance_on_the_account_page_corresponding_to_one_account() {
-	    home.verifyBalance();
+	    
+		home.verifyBalance();
 	}
 
 /***************************Test Case 408190:Reminder_Verify the filter option in 'Reminder' home screen*************************************/
@@ -113,6 +117,7 @@ public class HomeReminderStepDef {
 
 	@Then("^Verify the type of Search box$")
 	public void verify_the_type_of_Search_box() throws NoSuchFieldException, FileNotFoundException, IOException {
+		
 		home.checkContainHometable();
 	}
 
@@ -138,7 +143,8 @@ public class HomeReminderStepDef {
 	
 	@Then("^very reminder has been created or not$")
 	public void very_reminder_has_been_created_or_not() throws FileNotFoundException, IOException {
-	    rem.VerifyDuplicateReminderAlert();
+	    
+		rem.VerifyDuplicateReminderAlert();
 		home.clicOnHome();
 		home.switchHeaderFrame();
 		home.reminderCreatedOrNot();
@@ -149,6 +155,7 @@ public class HomeReminderStepDef {
 
 	@Given("^user is on home page$")
 	public void user_is_on_home_page() throws FileNotFoundException, IOException {
+		
 		rem.VerifyDuplicateReminderAlert();
 		home.clicOnHome();
 	    home.switchHeaderFrame();
@@ -164,7 +171,8 @@ public class HomeReminderStepDef {
 	
 	@Given("^When verify today's remindertab color$")
 	public void when_verify_today_s_remindertab_color() {
-	    home.todayTabColor("rgba(11, 92, 207, 1)");
+	    
+		home.todayTabColor("rgba(11, 92, 207, 1)");
 	}
 
 	

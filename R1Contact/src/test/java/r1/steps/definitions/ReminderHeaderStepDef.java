@@ -12,6 +12,7 @@ public class ReminderHeaderStepDef extends BasePage {
 	
 	@Given("^user is on R1Contact home page$")
 	public void user_is_on_R_Contact_home_page() {
+		
 		OpenBrowser();
 		home.switchHeaderFrame();
 		home.changeVisibleDate();
