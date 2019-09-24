@@ -19,7 +19,7 @@ import r1.commons.utilities.CommonMethods;
 public class ReminderPage extends BasePage {
 
 	R1ContactCommonMethods contactCommon;
-	CommonMethods.common common;
+	CommonMethods common;
 	HomePage Home;
 	Date date;
 	private int counter = 0;
@@ -205,34 +205,40 @@ public class ReminderPage extends BasePage {
 	}
 
 	public void verifyRemindarPopup() throws FileNotFoundException, IOException {
+
 		if (dateField.isDisplayed()) {
+			common.highLightSteps(dateField);
 			dateField.clear();
 			dateField.sendKeys(reminderDateToFill());
 			dateField.clear();
 		} else {
-			Assert.assertTrue(false);
+			Assert.assertTrue("Date Field is not displayed!",false);
 		}
 
 		if (calenderPicker.isClickable()) {
+			common.highLightSteps(calenderPicker);
 			calenderPicker.click();
 		} else {
-			Assert.assertTrue(false);
+			Assert.assertTrue("Calendar is not displayed!",false);
 		}
 		if (TimeField.isDisplayed()) {
+			common.highLightSteps(TimeField);
 			timeIcon.click();
 		} else {
-			Assert.assertTrue(false);
+			Assert.assertTrue("Time field is not displayed!",false);
 		}
 		if (reminderNote.isEnabled()) {
+			common.highLightSteps(reminderNote);
 			reminderNote.clear();
 			reminderNote.sendKeys(noteText);
 		} else {
-			Assert.assertTrue(false);
+			Assert.assertTrue("ReminderNote Field is not displaed!",false);
 		}
 		if (remindarclose.isDisplayed()) {
+			common.highLightSteps(remindarclose);
 			remindarclose.click();
 		} else {
-			Assert.assertTrue(false);
+			Assert.assertTrue("Reminder close icon is not displayed!",false);
 		}
 	}
 
