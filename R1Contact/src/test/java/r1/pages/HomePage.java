@@ -12,7 +12,7 @@ import net.serenitybdd.core.annotations.findby.FindBy;
 import net.serenitybdd.core.pages.WebElementFacade;
 import r1.commons.BasePage;
 import r1.commons.R1ContactCommonMethods;
-import r1.commons.utilities.CommonMethods;
+import r1.commons.utilities.CommonMethod;
 
 public class HomePage extends BasePage {
 
@@ -137,7 +137,7 @@ public class HomePage extends BasePage {
 	}
 
 	public void checkContainHometable() throws FileNotFoundException, IOException {
-		String searchElement = CommonMethods.readProperties("FilterSearch");
+		String searchElement = CommonMethod.readProperties("FilterSearch");
 		totalcount = homeReminderTableRow.size();
 		if (columnHeader.equalsIgnoreCase("Account Number")) {
 			txtSearchAccountNum.sendKeys(searchElement);
@@ -189,10 +189,10 @@ public class HomePage extends BasePage {
 	}
 
 	public void verifyHeaderTab() {
-		CommonMethods.isDisplayedMethod(homeTab);
-		CommonMethods.isDisplayedMethod(myTabs);
-		CommonMethods.isDisplayedMethod(Initiatives);
-		CommonMethods.isDisplayedMethod(help);
+		CommonMethod.isDisplayedMethod(homeTab);
+		CommonMethod.isDisplayedMethod(myTabs);
+		CommonMethod.isDisplayedMethod(Initiatives);
+		CommonMethod.isDisplayedMethod(help);
 
 	}
 
@@ -206,12 +206,12 @@ public class HomePage extends BasePage {
 	}
 
 	public void reminderHeader() {
-		CommonMethods.isDisplayedMethod(date);
-		CommonMethods.isDisplayedMethod(time);
-		CommonMethods.isDisplayedMethod(Facility);
-		CommonMethods.isDisplayedMethod(accountnum);
-		CommonMethods.isDisplayedMethod(notes);
-		CommonMethods.isDisplayedMethod(Balance);
+		CommonMethod.isDisplayedMethod(date);
+		CommonMethod.isDisplayedMethod(time);
+		CommonMethod.isDisplayedMethod(Facility);
+		CommonMethod.isDisplayedMethod(accountnum);
+		CommonMethod.isDisplayedMethod(notes);
+		CommonMethod.isDisplayedMethod(Balance);
 	}
 
 	public void checkreminderList() {
@@ -240,12 +240,12 @@ public class HomePage extends BasePage {
 	 *********************************************/
 
 	public void verifyReminderSearch() {
-		CommonMethods.isDisplayedMethod(dateReminderSearch);
-		CommonMethods.isDisplayedMethod(timeReminderSearch);
-		CommonMethods.isDisplayedMethod(facilityReminderSearch);
-		CommonMethods.isDisplayedMethod(accountNumReminderSearch);
-		CommonMethods.isDisplayedMethod(notesReminderSearch);
-		CommonMethods.isDisplayedMethod(balanceReminderSearch);
+		CommonMethod.isDisplayedMethod(dateReminderSearch);
+		CommonMethod.isDisplayedMethod(timeReminderSearch);
+		CommonMethod.isDisplayedMethod(facilityReminderSearch);
+		CommonMethod.isDisplayedMethod(accountNumReminderSearch);
+		CommonMethod.isDisplayedMethod(notesReminderSearch);
+		CommonMethod.isDisplayedMethod(balanceReminderSearch);
 
 	}
 
@@ -412,7 +412,7 @@ public class HomePage extends BasePage {
 
 	public void changeVisibleDate() {
 		txtToShowDate.clear();
-		txtToShowDate.sendKeys(CommonMethods.readProperties("txtToShowDate"));
+		txtToShowDate.sendKeys(CommonMethod.readProperties("txtToShowDate"));
 		clickOn(buttonToShowDate);
 	}
 
@@ -443,7 +443,7 @@ public class HomePage extends BasePage {
 
 	public static String accountNumber() throws FileNotFoundException, IOException {
 
-		return CommonMethods.readProperties("AccountNumber");
+		return CommonMethod.readProperties("AccountNumber");
 
 	}
 }

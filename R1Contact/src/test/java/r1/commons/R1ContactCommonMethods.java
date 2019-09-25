@@ -8,7 +8,7 @@ import java.util.NoSuchElementException;
 import org.junit.Assert;
 
 import net.serenitybdd.core.annotations.findby.By;
-import r1.commons.utilities.CommonMethods;
+import r1.commons.utilities.CommonMethod;
 
 public class R1ContactCommonMethods extends BasePage {
 
@@ -34,7 +34,7 @@ public class R1ContactCommonMethods extends BasePage {
 			for (int j = 1; j < colSize; j++) {
 				String colLocator1 = rowlocator1 + "/td[" + j + "]";
 				String accountNumber = element(By.xpath(colLocator1)).getText();
-				if (accountNumber.contentEquals(CommonMethods.readProperties("AccountNumber"))) {
+				if (accountNumber.contentEquals(CommonMethod.readProperties("AccountNumber"))) {
 					element(rowlocator1 + viewAccountLink).click();
 					flag = true;
 					break;

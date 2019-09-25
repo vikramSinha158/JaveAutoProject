@@ -14,12 +14,12 @@ import net.serenitybdd.core.annotations.findby.FindBy;
 import net.serenitybdd.core.pages.WebElementFacade;
 import r1.commons.BasePage;
 import r1.commons.R1ContactCommonMethods;
-import r1.commons.utilities.CommonMethods;
+import r1.commons.utilities.CommonMethod;
 
 public class ReminderPage extends BasePage {
 
 	R1ContactCommonMethods contactCommon;
-	CommonMethods common;
+	CommonMethod common;
 	HomePage Home;
 	Date date;
 	private int counter = 0;
@@ -81,7 +81,7 @@ public class ReminderPage extends BasePage {
 
 	public void selectAndClickAccount() throws FileNotFoundException, IOException {
 
-		contactCommon.clickOnMatchingColValue(accountRows, colNum, CommonMethods.readProperties("AccountNumber"));
+		contactCommon.clickOnMatchingColValue(accountRows, colNum, CommonMethod.readProperties("AccountNumber"));
 
 	}
 
@@ -118,7 +118,7 @@ public class ReminderPage extends BasePage {
 	}
 
 	public static String reminderDateToFill() throws FileNotFoundException, IOException {
-		String DATE_REMINDER = CommonMethods.readProperties("DATE_REMINDER");
+		String DATE_REMINDER = CommonMethod.readProperties("DATE_REMINDER");
 		int integerDate = Integer.parseInt(DATE_REMINDER);
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.DAY_OF_MONTH, integerDate);
