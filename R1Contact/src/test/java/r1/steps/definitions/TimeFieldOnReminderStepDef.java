@@ -15,7 +15,8 @@ public class TimeFieldOnReminderStepDef extends BasePage {
 	HomePage home;
 
 	@Then("^Verify Date box along with calendar icon,Time box,Note box and X-Cancel on remindar pop up window$")
-	public void verify_Date_box_along_with_calendar_icon_Time_box_Note_box_and_X_Cancel_on_remindar_pop_up_window() throws FileNotFoundException, IOException {
+	public void verify_Date_box_along_with_calendar_icon_Time_box_Note_box_and_X_Cancel_on_remindar_pop_up_window()
+			throws FileNotFoundException, IOException {
 
 		rem.verifyRemindarPopup();
 
