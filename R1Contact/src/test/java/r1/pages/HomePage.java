@@ -19,6 +19,7 @@ public class HomePage extends BasePage {
 	R1ContactCommonMethods r1ComMethod;
 	private int homeRiminderRowCount;
 	private String columnHeader = "Account Number";
+	private String expectedTitle="R1Contact";
 	private int searchEleRow;
 	int accountIndex;
 	int totalcount;
@@ -29,6 +30,10 @@ public class HomePage extends BasePage {
 	String deleteIcon1Path = "]//td//i[@id='tooltip-popup-triggerDeleteReminder']";
 
 	/***************************** HomeAndReminder ***************************/
+	@FindBy(xpath="//strong[contains(text(),'Reminders')]/following-sibling::span")
+	private WebElementFacade Reminders;
+	@FindBy(xpath="//div[@id='logo']//a[@href='/']")
+	private WebElementFacade logo;
 	@FindBy(xpath = "//div[@id='Accounts']/table/tbody/tr")
 	private List<WebElementFacade> accountRows;
 	@FindBy(xpath = "//table[@ng-table='tableParams']//tbody//tr")
@@ -65,6 +70,12 @@ public class HomePage extends BasePage {
 	private WebElementFacade hoverOnSerch;
 	@FindBy(xpath = "//span[text()='Initiatives']")
 	private WebElementFacade Initiatives;
+	@FindBy(xpath = "//span[text()='Search']")
+	private WebElementFacade Search;
+	@FindBy(xpath = "//span[text()='Office']")
+	private WebElementFacade Office;
+	@FindBy(xpath = "//span[text()='Administration']")
+	private WebElementFacade Administration;
 	@FindBy(xpath = "//a[text()='Accounts']")
 	private WebElementFacade AccountElemnet;
 	@FindBy(xpath = "//p[@class='pull-right']/strong")
@@ -122,9 +133,47 @@ public class HomePage extends BasePage {
 	@FindBy(xpath = "//button//div[@class='revert']")
 	private WebElementFacade buttonToShowDate;
 
-	/************************************************
+	/*page title
+	 * 
+	 */
+	public void verifyPageTitle() {
+		String pageActualTitle=getDriver().getTitle();
+		Assert.assertEquals("Page Title is not matching, Actual page title is:"+pageActualTitle,pageActualTitle, expectedTitle);
+	}
+	 /* homePage tab and validate
+	  * 
+	  */
+	public void chechHomePageTab() {
+		boolean clicked;
+		try{
+			homeTab.click();
+		    clicked = true;
+		}catch(Exception e){
+		    clicked = false;
+		    Assert.assertTrue("HomeTab is not working!", clicked);
+		}
+	}
+	
+	/*Number of reminders printed on header
+	 * 
+	 */
+	public int printedReminderOnHeader() {
+		String headerReminderMessage =Reminders.getText();
+		String[] message = headerReminderMessage.split(" ");
+		int Printedreminders = Integer.parseInt(message[message.length-2]); // Taking 2nd last array objet & changing their type
+		return Printedreminders;
+
+	}
+
+	/*	Logo verify*/
+	public void logoVerification() {
+		boolean flag = logo.isDisplayed();
+		Assert.assertTrue("Logo is not being displayed!", flag);
+	}
+
+	/*
 	 * Reminder Filter
-	 ***********************************/
+	 */
 	public int checkCountofTablerRow() {
 		boolean check = true;
 		if (homeReminderTableRow.size() < 1) {
@@ -136,6 +185,8 @@ public class HomePage extends BasePage {
 		return homeRiminderRowCount;
 	}
 
+	/*	verify filter search is not working
+	 */	
 	public void checkContainHometable() throws FileNotFoundException, IOException {
 		String searchElement = CommonMethod.readProperties("FilterSearch");
 		totalcount = homeReminderTableRow.size();
@@ -168,6 +219,7 @@ public class HomePage extends BasePage {
 		Assert.assertEquals("Row for search element not match", homeRiminderRowCount, searchEleRow);
 	}
 
+	/*	Agent name verification*/
 	public void verifyAgentName() throws InterruptedException {
 		String agentNameFromTable = agentPrintName.getText();
 		String agentNameFromHome = agentNameOnHomePage.getText();
@@ -188,11 +240,15 @@ public class HomePage extends BasePage {
 		clickOn(homeTab);
 	}
 
+	/*Verify header menu*/
 	public void verifyHeaderTab() {
 		CommonMethod.isDisplayedMethod(homeTab);
 		CommonMethod.isDisplayedMethod(myTabs);
 		CommonMethod.isDisplayedMethod(Initiatives);
 		CommonMethod.isDisplayedMethod(help);
+		CommonMethod.isDisplayedMethod(Search);
+		CommonMethod.isDisplayedMethod(Office);
+		CommonMethod.isDisplayedMethod(Administration);
 
 	}
 
@@ -214,9 +270,17 @@ public class HomePage extends BasePage {
 		CommonMethod.isDisplayedMethod(Balance);
 	}
 
+	/*	verify reminder list size
+	 * 
+	 */	
 	public void checkreminderList() {
-		if (homeReminderTableRow.size() < 1) {
-			Assert.assertFalse("No reminders present", true);
+		int actualReminders =homeReminderTableRow.size();
+		if (actualReminders > 1) {
+			int expectedReminders=printedReminderOnHeader();
+			Assert.assertEquals("Number of reminders are not matching", actualReminders,expectedReminders);
+		}else
+		{
+			Assert.assertTrue("No reminders present", actualReminders==0);
 		}
 	}
 
