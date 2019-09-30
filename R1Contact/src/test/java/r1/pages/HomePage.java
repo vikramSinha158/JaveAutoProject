@@ -3,6 +3,7 @@ package r1.pages;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.Assert;
@@ -17,6 +18,7 @@ import r1.commons.utilities.CommonMethod;
 public class HomePage extends BasePage {
 
 	R1ContactCommonMethods r1ComMethod;
+	CommonMethod com;
 	private int homeRiminderRowCount;
 	private String columnHeader = "Account Number";
 	private String expectedTitle="R1Contact";
@@ -28,6 +30,16 @@ public class HomePage extends BasePage {
 	String homeReminderInfoRow = "//table[@ng-table='tableParams']//tbody//tr[@ng-repeat='row in $data']";
 	String homeReminderInfoCol = "//table[@ng-table='tableParams']//thead//tr[@class='ng-table-sort-header']//th";
 	String deleteIcon1Path = "]//td//i[@id='tooltip-popup-triggerDeleteReminder']";
+	String officeXpath="//span[text()='Office']";
+	String officeSubmenu = "//span[text()='Office']//following-sibling::div/ul/li/a";
+	String initiativesSubmenu="//span[text()='Initiatives']//following-sibling::div/ul/li/span";
+	String initiativesXpath="//span[text()='Initiatives']";
+	String helpSubmenu="//span[text()='Help']//following-sibling::div/ul/li/a";
+	String helpXpath="//span[text()='Help']";
+	String adminSubmenu="//span[text()='Administration']//following-sibling::div/ul/li/a";
+	String adminXpath="//span[text()='Administration']";
+	
+	
 
 	/***************************** HomeAndReminder ***************************/
 	@FindBy(xpath="//strong[contains(text(),'Reminders')]/following-sibling::span")
@@ -68,6 +80,8 @@ public class HomePage extends BasePage {
 	private WebElementFacade myTabs;
 	@FindBy(xpath = "//span[text()='Search']")
 	private WebElementFacade hoverOnSerch;
+	@FindBy(xpath="span[text()='Office']")
+	private WebElementFacade office;
 	@FindBy(xpath = "//span[text()='Initiatives']")
 	private WebElementFacade Initiatives;
 	@FindBy(xpath = "//span[text()='Search']")
@@ -133,15 +147,15 @@ public class HomePage extends BasePage {
 	@FindBy(xpath = "//button//div[@class='revert']")
 	private WebElementFacade buttonToShowDate;
 
-	/*page title
-	 * 
+	/*
+	 * page title 
 	 */
 	public void verifyPageTitle() {
 		String pageActualTitle=getDriver().getTitle();
 		Assert.assertEquals("Page Title is not matching, Actual page title is:"+pageActualTitle,pageActualTitle, expectedTitle);
 	}
-	 /* homePage tab and validate
-	  * 
+	 /* 
+	  * homePage tab and validate
 	  */
 	public void chechHomePageTab() {
 		boolean clicked;
@@ -154,8 +168,8 @@ public class HomePage extends BasePage {
 		}
 	}
 	
-	/*Number of reminders printed on header
-	 * 
+	/*
+	 * Number of reminders printed on header
 	 */
 	public int printedReminderOnHeader() {
 		String headerReminderMessage =Reminders.getText();
@@ -171,6 +185,8 @@ public class HomePage extends BasePage {
 		Assert.assertTrue("Logo is not being displayed!", flag);
 	}
 
+	
+	
 	/*
 	 * Reminder Filter
 	 */
@@ -185,7 +201,8 @@ public class HomePage extends BasePage {
 		return homeRiminderRowCount;
 	}
 
-	/*	verify filter search is not working
+	/*	
+	 * verify filter search is not working
 	 */	
 	public void checkContainHometable() throws FileNotFoundException, IOException {
 		String searchElement = CommonMethod.readProperties("FilterSearch");
@@ -261,6 +278,34 @@ public class HomePage extends BasePage {
 		clickOn(AccountElemnet);
 	}
 
+	public void verifyDropdown(String menus, String elment,String propKey)  {
+		List<String> listOfmenu = new ArrayList<String>();
+		List<String> actualSubmenu = com.handleBootStrapDropdown(menus, elment);
+		String propSubmenu = CommonMethod.readProperties(propKey);
+		String[] splittedSubmenu = propSubmenu.split("\\|");
+		for(String submenu:splittedSubmenu ) {
+			listOfmenu.add(submenu);
+		}
+		Collections.sort(listOfmenu);
+		Collections.sort(actualSubmenu);
+		Assert.assertTrue("Office submenu list are not matching!", actualSubmenu.retainAll(listOfmenu));
+		
+	}
+	
+	public void verifyOfficeDropdown() {
+		verifyDropdown(officeSubmenu, officeXpath,"OfficeDropdowns");
+	}
+	
+	public void verifyInitiativesDropdown() {
+		verifyDropdown(initiativesSubmenu, initiativesXpath,"InitiativesDropdowns");
+	}
+	public void verifyHelpDropdown() {
+		verifyDropdown(helpSubmenu, helpXpath,"HelpDropdowns");
+	}
+	
+	public void verifyadminDropdown() {
+		verifyDropdown(adminSubmenu, adminXpath,"AdminDropdowns");
+	}
 	public void reminderHeader() {
 		CommonMethod.isDisplayedMethod(date);
 		CommonMethod.isDisplayedMethod(time);

@@ -3,6 +3,7 @@ package r1.commons.utilities;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.Random;
@@ -12,6 +13,7 @@ import org.junit.Assert;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchFrameException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 
 import net.serenitybdd.core.annotations.findby.By;
@@ -198,5 +200,39 @@ public class CommonMethod extends BasePage {
 		 js.executeScript("arguments[0].setAttribute('style', 'background: yellow; border: 2px solid red;');", element);
 
 	 }
+	 
+/*	 
+ * Bootstrap dropDownHandling
+*/
+	 public List<String> handleBootStrapDropdown(String options,String element)  {
+		 List<String> optionsList = new ArrayList<String>();
+		 element(By.xpath(element)).click();
+		 List<WebElementFacade> list = findAll(By.xpath(options));
+		 for(int i=0;i<list.size();i++) {
+			 optionsList.add(list.get(i).getText());
+			 
+		 }
 
+		return optionsList;
+ 
+	 }
+	 
+/*	 
+ * Bootstrap innerdropDownHandling
+*/
+	 public List<String> handleInnerBootStrapDropdown(String options,String element, String clickMenuName)  {
+		 List<String> optionsList = new ArrayList<String>();
+		 element(By.xpath(element)).click();
+		 List<WebElementFacade> list = findAll(By.xpath(options));
+		 for(int i=0;i<list.size();i++) {
+			 if(list.get(i).getText().equalsIgnoreCase(clickMenuName)){
+				list.get(i).click();
+				
+			 }
+			 
+		 }
+
+		return optionsList;
+ 
+	 }
 }

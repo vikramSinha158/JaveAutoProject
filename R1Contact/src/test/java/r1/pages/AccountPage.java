@@ -15,6 +15,7 @@ public class AccountPage extends BasePage {
 
 	private int counter = 0;
 	R1ContactCommonMethods contactCommon;
+	CommonMethod common;
 	String accountColHeader = "Patient Name";
 	String accountRowLocator = "//table[@cellspacing='0']/tbody/tr";
 	String accountColLocator = "//table[@cellspacing='0']//thead/tr/th";
@@ -27,7 +28,7 @@ public class AccountPage extends BasePage {
 	@FindBy(xpath = "//table[@cellspacing='0']/tbody/tr")
 	private List<WebElementFacade> accountTablerOW;
 
-	@FindBy(xpath = "//input[@id='LastName']")
+	@FindBy(id = "LastName")
 	private WebElementFacade lastNametxt;
 
 	@FindBy(xpath = "//div[@class='flt-lft label-item']/p")
@@ -35,6 +36,12 @@ public class AccountPage extends BasePage {
 
 	@FindBy(xpath = "//table[@cellspacing='0']/tbody/tr")
 	private List<WebElementFacade> totalRowCount;
+
+	@FindBy(xpath = "//div[@class='flt-lft label-item']/p//following::div[@class='flt-lft']/input")
+	private List<WebElementFacade> searchAccountTextFields;
+
+	@FindBy(id = "Zip")
+	private WebElementFacade zipSearchField;
 
 	/*
 	 * Clicks the the account passed by property file
@@ -70,6 +77,22 @@ public class AccountPage extends BasePage {
 			Assert.assertTrue("Search criteria label name is:" + searchAccLabels.get(i).getText(),
 					searchAccLabels.get(i).isDisplayed());
 		}
+	}
+
+	/*
+	 * Search accounts text fields is displayed or editable or not
+	 */
+	public void searchAccountTextField() {
+		for (int i = 0; i < searchAccountTextFields.size(); i++) {
+			Assert.assertTrue("Search criteria label name is:" + searchAccountTextFields.get(i).getText(),
+					searchAccountTextFields.get(i).isDisplayed());
+			String readonly = searchAccountTextFields.get(i).getAttribute("readonly");
+			Assert.assertNull(readonly);
+		}
+		Assert.assertTrue("Last name Search field is not being displayed!", lastNametxt.isDisplayed());
+		Assert.assertNull(lastNametxt.getAttribute("readonly"));
+		Assert.assertTrue("Zip Search field is not being displayed!", zipSearchField.isDisplayed());
+		Assert.assertNull(zipSearchField.getAttribute("readonly"));
 	}
 
 	/*
