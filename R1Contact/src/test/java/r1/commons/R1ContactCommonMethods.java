@@ -18,14 +18,16 @@ public class R1ContactCommonMethods extends BasePage {
 	private int colSize;
 	boolean flag;
 	private static int searchEleCount = 0;
-	private String viewAccountLink = "//a[1]//div";
+	CommonMethod comMethod;
+	//private String viewAccountLink = "//a[1]//div";
+
 
 	/*
 	 * ................................... Get TABLE COLUMN VALUE
 	 * .........................................
 	 */
 
-	public void clickOnMatchingColValue(String rowLocator, String colLocator, String accountName)
+	public void clickOnMatchingColValue(String rowLocator, String colLocator, String accountName,String clickEvt)
 			throws FileNotFoundException, IOException {
 		int rowSize = findAll(By.xpath(rowLocator)).size();
 		int colSize = findAll(By.xpath(colLocator)).size();
@@ -35,7 +37,7 @@ public class R1ContactCommonMethods extends BasePage {
 				String colLocator1 = rowlocator1 + "/td[" + j + "]";
 				String accountNumber = element(By.xpath(colLocator1)).getText();
 				if (accountNumber.contentEquals(CommonMethod.readProperties("AccountNumber"))) {
-					element(rowlocator1 + viewAccountLink).click();
+					element(rowlocator1 + clickEvt).click();
 					flag = true;
 					break;
 
@@ -146,6 +148,23 @@ public class R1ContactCommonMethods extends BasePage {
 				flag = false;
 				Assert.assertTrue("sorting failed", flag);
 			}
+		}
+	}
+	
+	/*----Verify account number in page ----*/
+	public void verifyAccountNumber(String accXpath,String expectAccNum)
+	{
+		boolean accFlag=false;
+		String actAccNumber=element(By.xpath(accXpath)).getText();
+		System.out.println(actAccNumber);
+		if(actAccNumber.contains(expectAccNum))
+		{
+			accFlag=true;
+			comMethod.highLightSteps(element(By.xpath(accXpath)));
+		}
+		else
+		{
+			Assert.assertTrue("Account Number "+CommonMethod.readProperties("AccountNumber")+" Not found in "  + actAccNumber , accFlag);
 		}
 	}
 

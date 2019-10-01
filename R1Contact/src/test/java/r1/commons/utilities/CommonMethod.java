@@ -179,7 +179,7 @@ public class CommonMethod extends BasePage {
 	 }
 
 	 public static void isDisplayedMethod(WebElement element) {
-		 Assert.assertTrue("Home tab is not found,actaul name is  " + element.getText(), element.isDisplayed());
+		 Assert.assertTrue("Value not found,actaul name is  " + element.getText(), element.isDisplayed());
 
 	 }
 

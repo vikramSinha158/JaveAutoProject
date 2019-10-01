@@ -62,7 +62,7 @@ public class HomeReminderStepDef {
 	@When("^Pick one account from the list by click on Arrow$")
 	public void pick_one_account_from_the_list_by_click_on_Arrow() throws FileNotFoundException, IOException {
 
-		accountPage.selectAndClickAccount();
+		//accountPage.selectAndClickAccount();
 
 	}
 

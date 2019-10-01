@@ -35,13 +35,63 @@ public class AccountPage extends BasePage {
 
 	@FindBy(xpath = "//table[@cellspacing='0']/tbody/tr")
 	private List<WebElementFacade> totalRowCount;
+	
+    /*-------- Added below fields------	*/
+	
+	/*@FindBy(xpath="//span[contains(text(),'Right party contact (RPC)')]")
+	WebElementFacade rpc;*/
+	
+	@FindBy(xpath="//div[@class='account-number']")
+	WebElementFacade accNumber;
+	
+	//button[@type='button'][text()='Yes']
+	
+	CommonMethod comMethod;
+/*	@FindBy(xpath="//button[@type='button'][text()='Yes']")
+	WebElementFacade rpcYes;
+	
+	@FindBy(xpath="//button[@type='submit'][text()='Yes']")
+	WebElementFacade addressYes;*/
+	
+		
+	
+	
+	/*@FindBy(xpath="//table[@cellspacing]//thead[@class='t-grid-header']")
+	WebElementFacade headerBalabceTbl;*/
+	
+	
+	
+	
+	
+	
+	private String arrowLink = "//a[1]//div";
+	
+	private String inboundLink = "//a//img[@alt='Example inbound']";
+	private String outboundLink = "//a//img[@alt='Example outbound']";
+	
+	
 
-	/*
+
+
+	/* Updated the code for click on arrow, inbound and outbound
 	 * Clicks the the account passed by property file
 	 */
-	public void selectAndClickAccount() throws FileNotFoundException, IOException {
-
-		contactCommon.clickOnMatchingColValue(accountRows, colNum, CommonMethod.readProperties("AccountNumber"));
+	public void selectAndClickAccount(String clickItem) throws FileNotFoundException, IOException {
+		
+		if(clickItem.equalsIgnoreCase("inbound"))
+		{
+		contactCommon.clickOnMatchingColValue(accountRows, colNum, CommonMethod.readProperties("AccountNumber"),inboundLink);
+		
+		}
+		
+		else if(clickItem.equalsIgnoreCase("outbound"))
+		{
+		contactCommon.clickOnMatchingColValue(accountRows, colNum, CommonMethod.readProperties("AccountNumber"),outboundLink);
+		}
+		else if(clickItem.equalsIgnoreCase("arrow"))
+		{
+		contactCommon.clickOnMatchingColValue(accountRows, colNum, CommonMethod.readProperties("AccountNumber"),arrowLink);
+		}
 
 	}
 
@@ -95,5 +145,41 @@ public class AccountPage extends BasePage {
 				counter);
 
 	}
+	
+	/*----New Method----*/
+	/*----Check for last Name field ----*/
+	
+	public void lastNameCheck()
+	{
+		CommonMethod.isDisplayedMethod(lastNametxt);
+	}
+	
+	
+	
+
+	
+	/*----Verify account number in page ----*/
+	/*public void verifyAccountNumber()
+	{
+		boolean accFlag=false;
+		String actAccNumber=accNumber.getText();
+		System.out.println(actAccNumber);
+		if(actAccNumber.contains(CommonMethod.readProperties("AccountNumber")))
+		{
+			accFlag=true;
+			comMethod.highLightSteps(accNumber);
+		}
+		else
+		{
+			Assert.assertTrue("Account Number "+CommonMethod.readProperties("AccountNumber")+" Not found in "  + actAccNumber , accFlag);
+		}
+	}*/
+	
+	
+	
+	
+	
+	
+	
 
 }
