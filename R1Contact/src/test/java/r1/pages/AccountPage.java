@@ -15,6 +15,8 @@ public class AccountPage extends BasePage {
 
 	private int counter = 0;
 	R1ContactCommonMethods contactCommon;
+	
+	CommonMethod comMethod;
 	String accountColHeader = "Patient Name";
 	String accountRowLocator = "//table[@cellspacing='0']/tbody/tr";
 	String accountColLocator = "//table[@cellspacing='0']//thead/tr/th";
@@ -35,34 +37,12 @@ public class AccountPage extends BasePage {
 
 	@FindBy(xpath = "//table[@cellspacing='0']/tbody/tr")
 	private List<WebElementFacade> totalRowCount;
-	
-    /*-------- Added below fields------	*/
-	
-	/*@FindBy(xpath="//span[contains(text(),'Right party contact (RPC)')]")
-	WebElementFacade rpc;*/
+	  
 	
 	@FindBy(xpath="//div[@class='account-number']")
 	WebElementFacade accNumber;
 	
-	//button[@type='button'][text()='Yes']
-	
-	CommonMethod comMethod;
-/*	@FindBy(xpath="//button[@type='button'][text()='Yes']")
-	WebElementFacade rpcYes;
-	
-	@FindBy(xpath="//button[@type='submit'][text()='Yes']")
-	WebElementFacade addressYes;*/
-	
-		
-	
-	
-	/*@FindBy(xpath="//table[@cellspacing]//thead[@class='t-grid-header']")
-	WebElementFacade headerBalabceTbl;*/
-	
-	
-	
-	
-	
+
 	
 	private String arrowLink = "//a[1]//div";
 	
@@ -153,30 +133,6 @@ public class AccountPage extends BasePage {
 	{
 		CommonMethod.isDisplayedMethod(lastNametxt);
 	}
-	
-	
-	
-
-	
-	/*----Verify account number in page ----*/
-	/*public void verifyAccountNumber()
-	{
-		boolean accFlag=false;
-		String actAccNumber=accNumber.getText();
-		System.out.println(actAccNumber);
-		if(actAccNumber.contains(CommonMethod.readProperties("AccountNumber")))
-		{
-			accFlag=true;
-			comMethod.highLightSteps(accNumber);
-		}
-		else
-		{
-			Assert.assertTrue("Account Number "+CommonMethod.readProperties("AccountNumber")+" Not found in "  + actAccNumber , accFlag);
-		}
-	}*/
-	
-	
-	
 	
 	
 	

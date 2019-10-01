@@ -22,6 +22,9 @@ import net.thucydides.core.util.SystemEnvironmentVariables;
 import r1.commons.BasePage;
 
 public class CommonMethod extends BasePage {
+	
+	
+	 
 
 	public static void DrpVisibleTxt(WebElementFacade we, String s) {
 		Select drp = new Select(we);
@@ -194,8 +197,21 @@ public class CommonMethod extends BasePage {
 	  * Highlights the control
 	  */
 	 public void highLightSteps(WebElementFacade element) {
+		 
 		 JavascriptExecutor js = (JavascriptExecutor) getDriver();
+	
 		 js.executeScript("arguments[0].setAttribute('style', 'background: yellow; border: 2px solid red;');", element);
+
+	 }
+	 
+	
+	 
+	 /*
+	  * Highlights the control
+	  */
+	 public void scrollInView(WebElementFacade element) {
+		 JavascriptExecutor je = (JavascriptExecutor) getDriver();
+		 je.executeScript("arguments[0].scrollIntoView(true);",element);
 
 	 }
 

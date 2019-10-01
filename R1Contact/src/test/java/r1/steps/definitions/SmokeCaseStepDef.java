@@ -101,4 +101,24 @@ public class SmokeCaseStepDef {
 	public void patient_info_should_be_updated_successfully() {
 		patientInfo.verifySuceesUpdate();
 	}
+	
+	@When("^user clicks on the \"([^\"]*)\" tab$")
+	public void user_clicks_on_the_tab(String EncounterInformation) {
+		accPatientDtl.clickPatientDtlTabs(EncounterInformation);
+	}
+	
+	@Then("^Encounter Information tab should be expand$")
+	public void encounter_Information_tab_should_be_expand() {
+		accPatientDtl.verifyEncounterTabExpand();
+	}
+
+	@When("^user clicks on the Click to View link$")
+	public void user_clicks_on_the_Click_to_View_link() {
+		accPatientDtl.clkInView();
+	}
+
+	@Then("^Patient Diagnosis details pop window should get appeared$")
+	public void patient_Diagnosis_details_pop_window_should_get_appeared() {
+		accPatientDtl.verifyPopUpInEncInfo();
+	}
 }
