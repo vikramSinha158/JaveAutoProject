@@ -11,13 +11,13 @@ import r1.commons.utilities.CommonMethod;
 import r1.pages.AccountDetailsPage;
 import r1.pages.AccountPage;
 import r1.pages.HomePage;
-import r1.pages.MyTabs;
+import r1.pages.MyTabsPage;
 import r1.pages.ReminderPage;
 
 public class SmokeCasesStepDef extends BasePage {
 
 	HomePage home;
-	MyTabs tab;
+	MyTabsPage tab;
 	ReminderPage rem;
 	AccountPage account;
 	CommonMethod comm;
