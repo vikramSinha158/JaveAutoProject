@@ -36,10 +36,14 @@ public class HomePage extends BasePage {
 	String initiativesXpath="//span[text()='Initiatives']";
 	String helpSubmenu="//span[text()='Help']//following-sibling::div/ul/li/a";
 	String helpXpath="//span[text()='Help']";
-	String adminSubmenu="//span[text()='Administration']//following-sibling::div/ul/li/a";
+	String adminSubmenu="//span[text()='Administration']//following-sibling::div/ul/li";
 	String adminXpath="//span[text()='Administration']";
-	
-	
+	String customerPulsSubmenu="//span[text()='Customer Pulse']//following-sibling::div/ul/li/a";
+	String icePulsSubmenu="//span[text()='ICE']//following-sibling::div/ul/li/a";
+	String settingSubmenu="//span[text()='Settings']//following-sibling::div/ul/li/a";
+
+
+
 
 	/***************************** HomeAndReminder ***************************/
 	@FindBy(xpath="//strong[contains(text(),'Reminders')]/following-sibling::span")
@@ -92,7 +96,7 @@ public class HomePage extends BasePage {
 	private WebElementFacade Administration;
 	@FindBy(xpath = "//a[text()='Accounts']")
 	private WebElementFacade AccountElemnet;
-	@FindBy(xpath = "//p[@class='pull-right']/strong")
+	@FindBy(xpath = "//div[contains(text(),'Print Name')]//following-sibling::div ")
 	private WebElementFacade agentPrintName;
 	@FindBy(xpath = "//p[@class='pull-right']/strong")
 	private WebElementFacade agentNameOnHomePage;
@@ -154,20 +158,20 @@ public class HomePage extends BasePage {
 		String pageActualTitle=getDriver().getTitle();
 		Assert.assertEquals("Page Title is not matching, Actual page title is:"+pageActualTitle,pageActualTitle, expectedTitle);
 	}
-	 /* 
-	  * homePage tab and validate
-	  */
+	/* 
+	 * homePage tab and validate
+	 */
 	public void chechHomePageTab() {
 		boolean clicked;
 		try{
 			homeTab.click();
-		    clicked = true;
+			clicked = true;
 		}catch(Exception e){
-		    clicked = false;
-		    Assert.assertTrue("HomeTab is not working!", clicked);
+			clicked = false;
+			Assert.assertTrue("HomeTab is not working!", clicked);
 		}
 	}
-	
+
 	/*
 	 * Number of reminders printed on header
 	 */
@@ -185,8 +189,8 @@ public class HomePage extends BasePage {
 		Assert.assertTrue("Logo is not being displayed!", flag);
 	}
 
-	
-	
+
+
 	/*
 	 * Reminder Filter
 	 */
@@ -289,270 +293,309 @@ public class HomePage extends BasePage {
 		Collections.sort(listOfmenu);
 		Collections.sort(actualSubmenu);
 		Assert.assertTrue("Office submenu list are not matching!", actualSubmenu.retainAll(listOfmenu));
-		
+
 	}
+
+	public void verifyInnerDropdown(String options,String element, String clickMenuName, String innerOptions, String propKey ) throws InterruptedException {
+		List<String> listOfmenu = new ArrayList<String>();
+		List<String> actualSubmenu = com.handleInnerBootStrapDropdown(options, element, clickMenuName, innerOptions);
+		String propSubmenu = CommonMethod.readProperties(propKey);
+		String[] splittedSubmenu = propSubmenu.split("\\|");
+		for(String submenu:splittedSubmenu ) {
+			listOfmenu.add(submenu);
+		}
+		Collections.sort(listOfmenu);
+		Collections.sort(actualSubmenu);
+		Assert.assertTrue("submenu list are not matching!", actualSubmenu.equals(listOfmenu));
+	}
+	/*	
+	 * header menu dropdowns
+	 */
 	
+	public void verifyHeaderdropdownLinks() throws InterruptedException {
+		verifyOfficeDropdown();
+		verifyInitiativesDropdown();
+		verifyCustomerPulse();
+		verifyICE();
+		verifyHelpDropdown();
+		verifyadminDropdown();
+		verifySettingDropdown();
+	}
 	public void verifyOfficeDropdown() {
-		verifyDropdown(officeSubmenu, officeXpath,"OfficeDropdowns");
-	}
-	
-	public void verifyInitiativesDropdown() {
-		verifyDropdown(initiativesSubmenu, initiativesXpath,"InitiativesDropdowns");
-	}
-	public void verifyHelpDropdown() {
-		verifyDropdown(helpSubmenu, helpXpath,"HelpDropdowns");
-	}
-	
-	public void verifyadminDropdown() {
-		verifyDropdown(adminSubmenu, adminXpath,"AdminDropdowns");
-	}
-	public void reminderHeader() {
-		CommonMethod.isDisplayedMethod(date);
-		CommonMethod.isDisplayedMethod(time);
-		CommonMethod.isDisplayedMethod(Facility);
-		CommonMethod.isDisplayedMethod(accountnum);
-		CommonMethod.isDisplayedMethod(notes);
-		CommonMethod.isDisplayedMethod(Balance);
-	}
+		 verifyDropdown(officeSubmenu, officeXpath,"OfficeDropdowns");
+	 }
 
-	/*	verify reminder list size
-	 * 
-	 */	
-	public void checkreminderList() {
-		int actualReminders =homeReminderTableRow.size();
-		if (actualReminders > 1) {
-			int expectedReminders=printedReminderOnHeader();
-			Assert.assertEquals("Number of reminders are not matching", actualReminders,expectedReminders);
-		}else
-		{
-			Assert.assertTrue("No reminders present", actualReminders==0);
-		}
-	}
+	 public void verifyInitiativesDropdown() {
+		 verifyDropdown(initiativesSubmenu, initiativesXpath,"InitiativesDropdowns");
+	 }
+	 public void verifyHelpDropdown() {
+		 verifyDropdown(helpSubmenu, helpXpath,"HelpDropdowns");
+	 }
 
-	/******************************************************
-	 * Verify balance
-	 ************************************************************************/
+	 public void verifyadminDropdown() {
+		 verifyDropdown(adminSubmenu, adminXpath,"AdminDropdowns");
+	 }
 
-	public void verifyBalance() {
-		ArrayList<String> ListOfBalance = r1ComMethod.getColValue(homeReminderInfoRow, homeReminderInfoCol, "Balance");
-		if (ListOfBalance.size() > 1) {
-			String TopBalance = ListOfBalance.get(0).substring(1);
-			topReminder.click();
-			String amount = amountAtHompage.getText();
-			Assert.assertEquals(TopBalance, amount);
-		}
+	 public void verifyCustomerPulse() throws InterruptedException {
+		 verifyInnerDropdown(initiativesSubmenu, initiativesXpath, "Customer Pulse", customerPulsSubmenu, "CustomerPulseDropdowns");
+	 }
+	 
+	 public void verifyICE() throws InterruptedException {
+		 verifyInnerDropdown(initiativesSubmenu, initiativesXpath, "ICE", icePulsSubmenu, "ICEDropdowns");
+	 }
 
-	}
+	 public void verifySettingDropdown() throws InterruptedException {
+		 verifyInnerDropdown(adminSubmenu, adminXpath, "Settings", settingSubmenu, "SettingsDropdowns");
+	 }
+	 
+	 
+	 public void reminderHeader() {
+		 CommonMethod.isDisplayedMethod(date);
+		 CommonMethod.isDisplayedMethod(time);
+		 CommonMethod.isDisplayedMethod(Facility);
+		 CommonMethod.isDisplayedMethod(accountnum);
+		 CommonMethod.isDisplayedMethod(notes);
+		 CommonMethod.isDisplayedMethod(Balance);
+	 }
 
-	/**************************************************************
-	 * ReminderSearchField
-	 *********************************************/
+	 /*	verify reminder list size
+	  * 
+	  */	
+	 public void checkreminderList() {
+		 int actualReminders =homeReminderTableRow.size();
+		 if (actualReminders > 1) {
+			 int expectedReminders=printedReminderOnHeader();
+			 Assert.assertEquals("Number of reminders are not matching", actualReminders,expectedReminders);
+		 }else
+		 {
+			 Assert.assertTrue("No reminders present", actualReminders==0);
+		 }
+	 }
 
-	public void verifyReminderSearch() {
-		CommonMethod.isDisplayedMethod(dateReminderSearch);
-		CommonMethod.isDisplayedMethod(timeReminderSearch);
-		CommonMethod.isDisplayedMethod(facilityReminderSearch);
-		CommonMethod.isDisplayedMethod(accountNumReminderSearch);
-		CommonMethod.isDisplayedMethod(notesReminderSearch);
-		CommonMethod.isDisplayedMethod(balanceReminderSearch);
+	 /******************************************************
+	  * Verify balance
+	  ************************************************************************/
 
-	}
+	 public void verifyBalance() {
+		 ArrayList<String> ListOfBalance = r1ComMethod.getColValue(homeReminderInfoRow, homeReminderInfoCol, "Balance");
+		 if (ListOfBalance.size() > 1) {
+			 String TopBalance = ListOfBalance.get(0).substring(1);
+			 topReminder.click();
+			 String amount = amountAtHompage.getText();
+			 Assert.assertEquals(TopBalance, amount);
+		 }
 
-	/**********************************************************
-	 * Verify default time
-	 *
-	 * @throws IOException
-	 * @throws FileNotFoundException
-	 **********************************************/
+	 }
 
-	public void verifyDefaultTime() throws FileNotFoundException, IOException {
-		ArrayList<String> listOfAccount = r1ComMethod.getColValue(homeReminderInfoRow, homeReminderInfoCol,
-				"Account Number");
-		ArrayList<String> listOfTime = r1ComMethod.getColValue(homeReminderInfoRow, homeReminderInfoCol, "Time");
-		for (int i = 0; i < listOfAccount.size(); i++) {
-			String accountNum = listOfAccount.get(i);
-			if (accountNum.contentEquals(accountNumber())) {
-				accountIndex = i;
-			}
-		}
-		String ActualTime = listOfTime.get(accountIndex);
-		Assert.assertEquals(ActualTime, defaultTime);
-	}
+	 /**************************************************************
+	  * ReminderSearchField
+	  *********************************************/
 
-	/*--------------------------------------Sorting In ascending-------------------------------------------------------*/
+	 public void verifyReminderSearch() {
+		 CommonMethod.isDisplayedMethod(dateReminderSearch);
+		 CommonMethod.isDisplayedMethod(timeReminderSearch);
+		 CommonMethod.isDisplayedMethod(facilityReminderSearch);
+		 CommonMethod.isDisplayedMethod(accountNumReminderSearch);
+		 CommonMethod.isDisplayedMethod(notesReminderSearch);
+		 CommonMethod.isDisplayedMethod(balanceReminderSearch);
 
-	private void checkAscShortingStatus() {
-		boolean chkShortStatus = true;
-		if (sortDescElement.isDisplayed()) {
-			clickOn(sortDescElement);
-			if (sortAscElement.isDisplayed()) {
-				r1ComMethod.verifySorting(homeReminderInfoRow, homeReminderInfoCol, columnHeader);
-			} else {
-				chkShortStatus = false;
-				Assert.assertTrue("Element for Assending is not visible", chkShortStatus);
-			}
-		}
-	}
+	 }
 
-	public void sortingAscColumnHead() {
+	 /**********************************************************
+	  * Verify default time
+	  *
+	  * @throws IOException
+	  * @throws FileNotFoundException
+	  **********************************************/
 
-		if (columnHeader.equalsIgnoreCase("Account Number")) {
+	 public void verifyDefaultTime() throws FileNotFoundException, IOException {
+		 ArrayList<String> listOfAccount = r1ComMethod.getColValue(homeReminderInfoRow, homeReminderInfoCol,
+				 "Account Number");
+		 ArrayList<String> listOfTime = r1ComMethod.getColValue(homeReminderInfoRow, homeReminderInfoCol, "Time");
+		 for (int i = 0; i < listOfAccount.size(); i++) {
+			 String accountNum = listOfAccount.get(i);
+			 if (accountNum.contentEquals(accountNumber())) {
+				 accountIndex = i;
+			 }
+		 }
+		 String ActualTime = listOfTime.get(accountIndex);
+		 Assert.assertEquals(ActualTime, defaultTime);
+	 }
 
-			clickOn(sortAccNumHeader);
-			checkAscShortingStatus();
+	 /*--------------------------------------Sorting In ascending-------------------------------------------------------*/
 
-		} else if (columnHeader.equalsIgnoreCase("Facility")) {
+	 private void checkAscShortingStatus() {
+		 boolean chkShortStatus = true;
+		 if (sortDescElement.isDisplayed()) {
+			 clickOn(sortDescElement);
+			 if (sortAscElement.isDisplayed()) {
+				 r1ComMethod.verifySorting(homeReminderInfoRow, homeReminderInfoCol, columnHeader);
+			 } else {
+				 chkShortStatus = false;
+				 Assert.assertTrue("Element for Assending is not visible", chkShortStatus);
+			 }
+		 }
+	 }
 
-			clickOn(sortFacilityHeader);
-			checkAscShortingStatus();
+	 public void sortingAscColumnHead() {
 
-		} else if (columnHeader.equalsIgnoreCase("Notes")) {
+		 if (columnHeader.equalsIgnoreCase("Account Number")) {
 
-			clickOn(sortNoteHeader);
-			checkAscShortingStatus();
+			 clickOn(sortAccNumHeader);
+			 checkAscShortingStatus();
 
-		} else if (columnHeader.equalsIgnoreCase("Balance")) {
+		 } else if (columnHeader.equalsIgnoreCase("Facility")) {
 
-			clickOn(sortBalanceHeader);
-			checkAscShortingStatus();
-		}
+			 clickOn(sortFacilityHeader);
+			 checkAscShortingStatus();
 
-	}
+		 } else if (columnHeader.equalsIgnoreCase("Notes")) {
 
-	/*--------------------------------------Sorting In descending-------------------------------------------------------*/
+			 clickOn(sortNoteHeader);
+			 checkAscShortingStatus();
 
-	private void checkDescShortingStatus() {
-		boolean chkDescStatus = true;
-		if (sortDescElement.isDisplayed()) {
+		 } else if (columnHeader.equalsIgnoreCase("Balance")) {
 
-			r1ComMethod.verifyDescSorting(homeReminderInfoRow, homeReminderInfoCol, columnHeader);
+			 clickOn(sortBalanceHeader);
+			 checkAscShortingStatus();
+		 }
 
-		} else {
-			chkDescStatus = false;
-			Assert.assertTrue("Element for Assending is not visible", chkDescStatus);
-		}
-	}
+	 }
 
-	public void sortingDescColumnHeader() {
+	 /*--------------------------------------Sorting In descending-------------------------------------------------------*/
 
-		if (columnHeader.equalsIgnoreCase("Account Number")) {
+	 private void checkDescShortingStatus() {
+		 boolean chkDescStatus = true;
+		 if (sortDescElement.isDisplayed()) {
 
-			clickOn(sortAccNumHeader);
-			checkDescShortingStatus();
+			 r1ComMethod.verifyDescSorting(homeReminderInfoRow, homeReminderInfoCol, columnHeader);
 
-		} else if (columnHeader.equalsIgnoreCase("Facility")) {
+		 } else {
+			 chkDescStatus = false;
+			 Assert.assertTrue("Element for Assending is not visible", chkDescStatus);
+		 }
+	 }
 
-			clickOn(sortFacilityHeader);
-			checkDescShortingStatus();
+	 public void sortingDescColumnHeader() {
 
-		} else if (columnHeader.equalsIgnoreCase("Notes")) {
+		 if (columnHeader.equalsIgnoreCase("Account Number")) {
 
-			clickOn(sortNoteHeader);
-			checkDescShortingStatus();
+			 clickOn(sortAccNumHeader);
+			 checkDescShortingStatus();
 
-		} else if (columnHeader.equalsIgnoreCase("Balance")) {
+		 } else if (columnHeader.equalsIgnoreCase("Facility")) {
 
-			clickOn(sortBalanceHeader);
-			checkDescShortingStatus();
-		}
+			 clickOn(sortFacilityHeader);
+			 checkDescShortingStatus();
 
-	}
+		 } else if (columnHeader.equalsIgnoreCase("Notes")) {
 
-	/**********************************************************
-	 * check reminder creation
-	 *
-	 * @throws IOException
-	 * @throws FileNotFoundException
-	 ********************************************************************/
+			 clickOn(sortNoteHeader);
+			 checkDescShortingStatus();
 
-	public void reminderCreatedOrNot() throws FileNotFoundException, IOException {
-		ArrayList<String> listOfAccount = r1ComMethod.getColValue(homeReminderInfoRow, homeReminderInfoCol,
-				"Account Number");
-		ArrayList<String> listOfNotes = r1ComMethod.getColValue(homeReminderInfoRow, homeReminderInfoCol, "Notes");
-		for (int i = 0; i < listOfAccount.size(); i++) {
-			String accountNum = listOfAccount.get(i);
-			if (accountNum.contentEquals(accountNumber())) {
-				boolean flag = listOfNotes.get(i).contentEquals(ReminderPage.noteText);
-				Assert.assertTrue(flag);
-			}
+		 } else if (columnHeader.equalsIgnoreCase("Balance")) {
 
-		}
-	}
+			 clickOn(sortBalanceHeader);
+			 checkDescShortingStatus();
+		 }
 
-	/*--------------------------------------Verify  Delete icon Populating-------------------------------------------------------*/
+	 }
 
-	public void verifyDeletingIconPoulating() throws InterruptedException {
-		int rowCnt = homeReminderTableRow.size();
-		boolean checkDelPop = true;
-		if (rowCnt > 1) {
-			for (int row = 1; row <= rowCnt; row++) {
-				String deleteIconPath = homeReminderInfoRow + "[" + row + deleteIcon1Path;
+	 /**********************************************************
+	  * check reminder creation
+	  *
+	  * @throws IOException
+	  * @throws FileNotFoundException
+	  ********************************************************************/
 
-				WebElementFacade deleteIcon = element(By.xpath(deleteIconPath));
+	 public void reminderCreatedOrNot() throws FileNotFoundException, IOException {
+		 ArrayList<String> listOfAccount = r1ComMethod.getColValue(homeReminderInfoRow, homeReminderInfoCol,
+				 "Account Number");
+		 ArrayList<String> listOfNotes = r1ComMethod.getColValue(homeReminderInfoRow, homeReminderInfoCol, "Notes");
+		 for (int i = 0; i < listOfAccount.size(); i++) {
+			 String accountNum = listOfAccount.get(i);
+			 if (accountNum.contentEquals(accountNumber())) {
+				 boolean flag = listOfNotes.get(i).contentEquals(ReminderPage.noteText);
+				 Assert.assertTrue(flag);
+			 }
 
-				if (deleteIcon.isDisplayed()) {
+		 }
+	 }
 
-					Thread.sleep(2000);
+	 /*--------------------------------------Verify  Delete icon Populating-------------------------------------------------------*/
 
-					clickOn(deleteIcon);
+	 public void verifyDeletingIconPoulating() throws InterruptedException {
+		 int rowCnt = homeReminderTableRow.size();
+		 boolean checkDelPop = true;
+		 if (rowCnt > 1) {
+			 for (int row = 1; row <= rowCnt; row++) {
+				 String deleteIconPath = homeReminderInfoRow + "[" + row + deleteIcon1Path;
 
-					if (deletePop.isDisplayed()) {
-						if (DeleteBtnIndeletePop.isDisplayed()) {
-							clickOn(cancelBtnIndeletePop);
-						} else {
-							checkDelPop = false;
-							Assert.assertTrue("deltion button in pop  not found", checkDelPop);
-						}
+				 WebElementFacade deleteIcon = element(By.xpath(deleteIconPath));
 
-					} else {
-						checkDelPop = false;
-						Assert.assertTrue("Deletion Pop not found", checkDelPop);
-					}
+				 if (deleteIcon.isDisplayed()) {
 
-				}
+					 Thread.sleep(2000);
 
-			}
-		}
-	}
+					 clickOn(deleteIcon);
 
-	/****************************************************
-	 * Set Reminders size
-	 **************************************************************/
+					 if (deletePop.isDisplayed()) {
+						 if (DeleteBtnIndeletePop.isDisplayed()) {
+							 clickOn(cancelBtnIndeletePop);
+						 } else {
+							 checkDelPop = false;
+							 Assert.assertTrue("deltion button in pop  not found", checkDelPop);
+						 }
 
-	public void changeVisibleDate() {
-		txtToShowDate.clear();
-		txtToShowDate.sendKeys(CommonMethod.readProperties("txtToShowDate"));
-		clickOn(buttonToShowDate);
-	}
+					 } else {
+						 checkDelPop = false;
+						 Assert.assertTrue("Deletion Pop not found", checkDelPop);
+					 }
 
-	/*********************************************************
-	 * Today's tab back ground-color
-	 ***********************************************/
+				 }
 
-	public void todayTabColor(String expectedCssValue) {
-		String day = "Today";
-		ArrayList<String> ListOfDate = r1ComMethod.getColValue(homeReminderInfoRow, homeReminderInfoCol, "Date");
-		for (int i = 0; i < ListOfDate.size(); i++) {
-			if (ListOfDate.get(i).contains(day)) {
-				int rowIndex = i + 1;
-				String actualCssValue = element(By.xpath(homeReminderInfoRow + "[" + rowIndex + "]"))
-						.getCssValue("background-color");
-				Assert.assertEquals(actualCssValue, expectedCssValue);
-				break;
-			}
-		}
-	}
+			 }
+		 }
+	 }
 
-	/*********************************************************
-	 * Get Account Number from property File
-	 *
-	 * @throws IOException
-	 * @throws FileNotFoundException
-	 ***********************************************/
+	 /****************************************************
+	  * Set Reminders size
+	  **************************************************************/
 
-	public static String accountNumber() throws FileNotFoundException, IOException {
+	 public void changeVisibleDate() {
+		 txtToShowDate.clear();
+		 txtToShowDate.sendKeys(CommonMethod.readProperties("txtToShowDate"));
+		 clickOn(buttonToShowDate);
+	 }
 
-		return CommonMethod.readProperties("AccountNumber");
+	 /*********************************************************
+	  * Today's tab back ground-color
+	  ***********************************************/
 
-	}
+	 public void todayTabColor(String expectedCssValue) {
+		 String day = "Today";
+		 ArrayList<String> ListOfDate = r1ComMethod.getColValue(homeReminderInfoRow, homeReminderInfoCol, "Date");
+		 for (int i = 0; i < ListOfDate.size(); i++) {
+			 if (ListOfDate.get(i).contains(day)) {
+				 int rowIndex = i + 1;
+				 String actualCssValue = element(By.xpath(homeReminderInfoRow + "[" + rowIndex + "]"))
+						 .getCssValue("background-color");
+				 Assert.assertEquals(actualCssValue, expectedCssValue);
+				 break;
+			 }
+		 }
+	 }
+
+	 /*********************************************************
+	  * Get Account Number from property File
+	  *
+	  * @throws IOException
+	  * @throws FileNotFoundException
+	  ***********************************************/
+
+	 public static String accountNumber() throws FileNotFoundException, IOException {
+
+		 return CommonMethod.readProperties("AccountNumber");
+
+	 }
 }

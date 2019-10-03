@@ -30,7 +30,7 @@ public class ReminderPage extends BasePage {
 
 	@FindBy(xpath = "//input[@id='ReminderTime']//following::span[@class='t-icon t-icon-clock']")
 	private WebElementFacade daterPicker;
-
+	
 	@FindBy(id = "ReminderNote")
 	private WebElementFacade reminderNote;
 
@@ -87,6 +87,9 @@ public class ReminderPage extends BasePage {
 		dateField.clear();
 		String reminderDate = reminderDateToFill();
 		dateField.sendKeys(reminderDate);
+		TimeField.clear();
+		TimeField.sendKeys(CommonMethod.readProperties("ReminderTime"));
+		
 	}
 
 	public void setReminderNote(String note) {

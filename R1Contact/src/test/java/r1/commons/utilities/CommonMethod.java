@@ -165,74 +165,89 @@ public class CommonMethod extends BasePage {
 	/*
 	 * Read property file
 	 */ public static String readProperties(String input) {
-		 Properties prop = new Properties();
-		 try {
-			 prop.load(new FileInputStream("src/test/resources/TestData/Config.properties"));
-		 } catch (IOException e) {
-			 // TODO Auto-generated catch block
-			 e.printStackTrace();
-		 }
-		 return prop.getProperty(input);
-	 }
+		Properties prop = new Properties();
+		try {
+			prop.load(new FileInputStream("src/test/resources/TestData/Config.properties"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return prop.getProperty(input);
+	}
 
-	 public static int GetRandom(int all) {
-		 Random rnd = new Random();
-		 return rnd.nextInt(all);
-	 }
+	public static int GetRandom(int all) {
+		Random rnd = new Random();
+		return rnd.nextInt(all);
+	}
 
-	 public static void isDisplayedMethod(WebElement element) {
-		 Assert.assertTrue("Home tab is not found,actaul name is  " + element.getText(), element.isDisplayed());
+	public static void isDisplayedMethod(WebElement element) {
+		Assert.assertTrue("Home tab is not found,actaul name is  " + element.getText(), element.isDisplayed());
 
-	 }
+	}
 
-	 public static String queryProperties(String input, String moduleName) throws FileNotFoundException, IOException {
-		 Properties prop = new Properties();
-		 String path = "src/test/resources/TestData/Query" + moduleName + ".properties";
-		 prop.load(new FileInputStream(path));
-		 return prop.getProperty(input);
-	 }
+	public static String queryProperties(String input, String moduleName) throws FileNotFoundException, IOException {
+		Properties prop = new Properties();
+		String path = "src/test/resources/TestData/Query" + moduleName + ".properties";
+		prop.load(new FileInputStream(path));
+		return prop.getProperty(input);
+	}
 
-	 /*
-	  * Highlights the control
-	  */
-	 public void highLightSteps(WebElementFacade element) {
-		 JavascriptExecutor js = (JavascriptExecutor) getDriver();
-		 js.executeScript("arguments[0].setAttribute('style', 'background: yellow; border: 2px solid red;');", element);
+	/*
+	 * Highlights the control
+	 */
+	public void highLightSteps(WebElementFacade element) {
+		JavascriptExecutor js = (JavascriptExecutor) getDriver();
+		js.executeScript("arguments[0].setAttribute('style', 'background: yellow; border: 2px solid red;');", element);
 
-	 }
-	 
-/*	 
- * Bootstrap dropDownHandling
-*/
-	 public List<String> handleBootStrapDropdown(String options,String element)  {
-		 List<String> optionsList = new ArrayList<String>();
-		 element(By.xpath(element)).click();
-		 List<WebElementFacade> list = findAll(By.xpath(options));
-		 for(int i=0;i<list.size();i++) {
-			 optionsList.add(list.get(i).getText());
-			 
-		 }
+	}
+
+	/*
+	 * Bootstrap dropDownHandling
+	 */
+	public List<String> handleBootStrapDropdown(String options, String element) {
+		List<String> optionsList = new ArrayList<String>();
+		element(By.xpath(element)).click();
+		List<WebElementFacade> list = findAll(By.xpath(options));
+		for (int i = 0; i < list.size(); i++) {
+			optionsList.add(list.get(i).getText());
+
+		}
 
 		return optionsList;
- 
-	 }
-	 
-/*	 
- * Bootstrap innerdropDownHandling
-*/
-	 public List<String> handleInnerBootStrapDropdown(String options,String element, String clickMenuName)  {
-		 List<String> optionsList = new ArrayList<String>();
-		 element(By.xpath(element)).click();
-		 List<WebElementFacade> list = findAll(By.xpath(options));
-		 for(int i=0;i<list.size();i++) {
-			 if(list.get(i).getText().equalsIgnoreCase(clickMenuName)){
+
+	}
+
+	/*
+	 * Bootstrap innerdropDownHandling
+	 */
+	public List<String> handleInnerBootStrapDropdown(String options, String element, String clickMenuName,
+			String innerOptions) throws InterruptedException {
+		List<String> optionsList = new ArrayList<String>();
+		element(By.xpath(element)).click();
+		List<WebElementFacade> list = findAll(By.xpath(options));
+		for (int i = 0; i < list.size(); i++) {
+			if (list.get(i).getText().equalsIgnoreCase(clickMenuName)) {
 				list.get(i).click();
-				
-			 }
-			 
-		 }
+				Thread.sleep(1000);
+				List<WebElementFacade> innerlist = findAll(By.xpath(innerOptions));
+				for (int j = 0; j < innerlist.size(); j++) {
+					optionsList.add(innerlist.get(j).getText());
+				}
+
+			}
+
+		}
 
 		return optionsList;
- 
-	 }
+
+	}
+
+	/*
+	 * Scroll in view
+	 */
+	public void scrollInView(WebElementFacade element) {
+		JavascriptExecutor je = (JavascriptExecutor) getDriver();
+		je.executeScript("arguments[0].scrollIntoView(true);", element);
+
+	}
 }

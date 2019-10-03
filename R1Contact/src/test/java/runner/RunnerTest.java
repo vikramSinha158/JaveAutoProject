@@ -6,13 +6,14 @@ import cucumber.api.CucumberOptions;
 import net.serenitybdd.cucumber.CucumberWithSerenity;
 
 @RunWith(CucumberWithSerenity.class)
-@CucumberOptions(features = { "src/test/resources/features/R1Contact/SmokeCases.feature" },
+@CucumberOptions(features = { "src/test/resources/features/R1Contact/HomeAndReminder.feature" },
 
 glue = "r1.steps.definitions",
 
 monochrome = true,
-tags= {"@428405"},
+tags= {"@408188"},
 dryRun= false
+
 
 		)
 

@@ -21,6 +21,9 @@ public class AccountPage extends BasePage {
 	String accountColLocator = "//table[@cellspacing='0']//thead/tr/th";
 	String accountRows = "//div[@id='Accounts']/table/tbody/tr";
 	String colNum = "//div[@id='Accounts']/table/tbody/tr[2]/td";
+	private String arrowLink = "//a//div";
+	private String inboundLink = "//a//img[@alt='Example inbound']";
+	private String outboundLink = "//a//img[@alt='Example outbound']"; 
 
 	@FindBy(xpath = "//button[@id='NameSubmit']")
 	private WebElementFacade lastNameSearchclk;
@@ -46,9 +49,22 @@ public class AccountPage extends BasePage {
 	/*
 	 * Clicks the the account passed by property file
 	 */
-	public void selectAndClickAccount() throws FileNotFoundException, IOException {
+	public void selectAndClickAccount(String clickItem) throws FileNotFoundException, IOException {
 
-		contactCommon.clickOnMatchingColValue(accountRows, colNum, CommonMethod.readProperties("AccountNumber"));
+		if(clickItem.equalsIgnoreCase("inbound"))
+		{
+			contactCommon.clickOnMatchingColValue(accountRows, colNum, CommonMethod.readProperties("AccountNumber"),inboundLink);				
+		}
+		
+		else if(clickItem.equalsIgnoreCase("outbound"))
+		{
+		contactCommon.clickOnMatchingColValue(accountRows, colNum, CommonMethod.readProperties("AccountNumber"),outboundLink);
+		}
+		else if(clickItem.equalsIgnoreCase("arrow"))
+		{
+		contactCommon.clickOnMatchingColValue(accountRows, colNum, CommonMethod.readProperties("AccountNumber"),arrowLink);
+		}
+
 
 	}
 
@@ -118,5 +134,8 @@ public class AccountPage extends BasePage {
 				counter);
 
 	}
+	
+
+
 
 }
