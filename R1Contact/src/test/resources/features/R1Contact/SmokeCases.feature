@@ -58,5 +58,72 @@ When Click on the 'Set a reminder' icon
 Then A pop up window should be displayed and user would be able to submit Reminder by filling required details
 And Save reminder by hitting 'Save reminder' button
 Then user should be navigate back to the account page
-  
+
+@428409
+Scenario: To Verify 'Right Party Contact (RPC) verified' in INBOUND CALLS page successfully
+When user Click on 'Search' account link
+Then Search account page should be displayed with searching criterias like..Account Number, First Name, Last Name etc 
+When user selects the last name search criteria on account search page
+And user enters "K" alphabets in the last name search box
+When Enter last name as "K" and press ENTER and List of Accounts should be displayed
+When user clicks on the "inbound" enter arrow 
+Then user should be navigate to right party verification page
+When user clicks on the both Yes button
+Then user should be land on the account info page
+
+@428415
+Scenario: To Verify 'Link Balance' Page opens successfully
+When user Click on 'Search' account link
+Then Search account page should be displayed with searching criterias like..Account Number, First Name, Last Name etc 
+When user selects the last name search criteria on account search page
+And user enters "K" alphabets in the last name search box
+When Enter last name as "K" and press ENTER and List of Accounts should be displayed
+When user clicks on the "arrow" enter arrow 
+Then user should be land on the account info page
+When user clicks on the link balance link 
+Then user should be navigate to the link balance page
+
+@428414
+Scenario: To Verify that updated 'Patient Account Information'
+When user Click on 'Search' account link
+Then Search account page should be displayed with searching criterias like..Account Number, First Name, Last Name etc 
+When user selects the last name search criteria on account search page
+And user enters "K" alphabets in the last name search box
+When Enter last name as "K" and press ENTER and List of Accounts should be displayed
+When user clicks on the "arrow" enter arrow 
+Then user should be land on the account info page
+When user clicks on the Patient name link 
+Then user should be avail to navigate on the patient info page
+When user changes the patient info 
+And user clicks on the save button
+Then patient info should be updated successfully
+
+@428416
+Scenario: To Verify the "Encounter History Information"
+When user Click on 'Search' account link
+Then Search account page should be displayed with searching criterias like..Account Number, First Name, Last Name etc 
+When user selects the last name search criteria on account search page
+And Enter last name as "K" and press ENTER and List of Accounts should be displayed
+When user clicks on the "arrow" enter arrow 
+Then user should be land on the account info page
+When user clicks on the "Encounter Information" tab
+Then Encounter Information tab should be expand
+When user clicks on the Click to View link
+Then Patient Diagnosis details pop window should get appeared
+
+@428410
+Scenario Outline: To check that Take ownership of an account working as expected.
+Given user check the agent EmailID
+When user Click on 'Search' account link
+Then Search account page should be displayed with searching criterias like..Account Number, First Name, Last Name etc 
+And user fetch the "<QueryForJHouseAuccountNum>" get AccountNum having Jhouse owner
+When user clicks on the arrow with Jhouse acccount number
+When user clicks on the check arrow next to jhouse text in account information
+Then account owner should be updated
+And user is able to see their email prefix in place of jhous
+
+
+Examples:
+   |QueryForJHouseAuccountNum|
+   |queryAccountJHouse|
 

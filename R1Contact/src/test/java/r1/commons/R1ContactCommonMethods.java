@@ -18,7 +18,7 @@ public class R1ContactCommonMethods extends BasePage {
 	private int colSize;
 	boolean flag;
 	private static int searchEleCount = 0;
-
+	CommonMethod comMethod;
 	/*
 	 * ................................... Get TABLE COLUMN VALUE
 	 * .........................................
@@ -33,7 +33,8 @@ public class R1ContactCommonMethods extends BasePage {
 			for (int j = 1; j < colSize; j++) {
 				String colLocator1 = rowlocator1 + "/td[" + j + "]";
 				String accountNumber = element(By.xpath(colLocator1)).getText();
-				if (accountNumber.contentEquals(CommonMethod.readProperties("AccountNumber"))) {
+				if (accountNumber.contentEquals(accountName)) {
+					comMethod.scrollInView(element(By.xpath(colLocator1)));
 					element(rowlocator1 + clickEvt).click();
 					flag = true;
 					break;
@@ -154,7 +155,7 @@ public class R1ContactCommonMethods extends BasePage {
 		String actAccNumber = element(By.xpath(accXpath)).getText();
 		if (actAccNumber.contains(expectAccNum)) {
 			accFlag = true;
-			com.highLightSteps(element(By.xpath(accXpath)));
+			comMethod.highLightSteps(element(By.xpath(accXpath)));
 		} else {
 			Assert.assertTrue(
 					"Account Number " + CommonMethod.readProperties("AccountNumber") + " Not found in " + actAccNumber,
