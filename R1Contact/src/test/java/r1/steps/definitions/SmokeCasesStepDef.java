@@ -153,8 +153,10 @@ public class SmokeCasesStepDef extends BasePage {
 		accoundel.verifyAccInfoAccNum();
 	}
 
-	/* Vikram steps */
-
+	/*
+	 * Test case: 428409 To Verify 'Right Party Contact (RPC) verified' in INBOUND
+	 * CALLS page successfully
+	 */
 	@When("^user selects the last name search criteria on account search page$")
 	public void user_selects_the_last_name_search_criteria_on_account_search_page() {
 
@@ -173,6 +175,9 @@ public class SmokeCasesStepDef extends BasePage {
 		account.verifyFirstCharForLastName(lastnameStart);
 	}
 
+	/*
+	 * Test case: 428415 To Verify 'Link Balance' Page opens successfully
+	 */
 	@When("^user clicks on the \"([^\"]*)\" enter arrow$")
 	public void user_clicks_on_the_enter_arrow(String inboundArrow) throws FileNotFoundException, IOException {
 
@@ -208,6 +213,9 @@ public class SmokeCasesStepDef extends BasePage {
 		balancePage.verifyBalanceLinkPage();
 	}
 
+	/*
+	 * Test case: 428414 To Verify that updated 'Patient Account Information'
+	 */
 	@When("^user clicks on the Patient name link$")
 	public void user_clicks_on_the_Patient_name_link() {
 		accoundel.clickOnPatientLink();
@@ -236,6 +244,9 @@ public class SmokeCasesStepDef extends BasePage {
 		patientInfo.verifySuceesUpdate();
 	}
 
+	/*
+	 * Test case: 428416 To Verify the "Encounter History Information"
+	 */
 	@When("^user clicks on the \"([^\"]*)\" tab$")
 	public void user_clicks_on_the_tab(String EncounterInformation) {
 		accoundel.clickPatientDtlTabs(EncounterInformation);
@@ -256,6 +267,10 @@ public class SmokeCasesStepDef extends BasePage {
 		accoundel.verifyPopUpInEncInfo();
 	}
 
+	/*
+	 * Test case: 428410 To check that Take ownership of an account working as
+	 * expected.
+	 */
 	@Then("^user fetch the \"([^\"]*)\" get AccountNum having Jhouse owner$")
 	public void user_fetch_the_get_AccountNum_having_Jhouse_owner(String queryName)
 			throws ClassNotFoundException, FileNotFoundException, SQLException, IOException {
@@ -263,7 +278,6 @@ public class SmokeCasesStepDef extends BasePage {
 		account.runQueryTranServer(queryName);
 		DatabaseConn.resultSet.next();
 		JHouseAccount = DatabaseConn.resultSet.getString("accountNum");
-		System.out.println(JHouseAccount);
 
 	}
 
