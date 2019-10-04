@@ -23,7 +23,7 @@ public class AccountPage extends BasePage {
 	String colNum = "//div[@id='Accounts']/table/tbody/tr[2]/td";
 	private String arrowLink = "//a//div";
 	private String inboundLink = "//a//img[@alt='Example inbound']";
-	private String outboundLink = "//a//img[@alt='Example outbound']"; 
+	private String outboundLink = "//a//img[@alt='Example outbound']";
 
 	@FindBy(xpath = "//button[@id='NameSubmit']")
 	private WebElementFacade lastNameSearchclk;
@@ -51,20 +51,18 @@ public class AccountPage extends BasePage {
 	 */
 	public void selectAndClickAccount(String clickItem) throws FileNotFoundException, IOException {
 
-		if(clickItem.equalsIgnoreCase("inbound"))
-		{
-			contactCommon.clickOnMatchingColValue(accountRows, colNum, CommonMethod.readProperties("AccountNumber"),inboundLink);				
-		}
-		
-		else if(clickItem.equalsIgnoreCase("outbound"))
-		{
-		contactCommon.clickOnMatchingColValue(accountRows, colNum, CommonMethod.readProperties("AccountNumber"),outboundLink);
-		}
-		else if(clickItem.equalsIgnoreCase("arrow"))
-		{
-		contactCommon.clickOnMatchingColValue(accountRows, colNum, CommonMethod.readProperties("AccountNumber"),arrowLink);
+		if (clickItem.equalsIgnoreCase("inbound")) {
+			contactCommon.clickOnMatchingColValue(accountRows, colNum, CommonMethod.readProperties("AccountNumber"),
+					inboundLink);
 		}
 
+		else if (clickItem.equalsIgnoreCase("outbound")) {
+			contactCommon.clickOnMatchingColValue(accountRows, colNum, CommonMethod.readProperties("AccountNumber"),
+					outboundLink);
+		} else if (clickItem.equalsIgnoreCase("arrow")) {
+			contactCommon.clickOnMatchingColValue(accountRows, colNum, CommonMethod.readProperties("AccountNumber"),
+					arrowLink);
+		}
 
 	}
 
@@ -134,8 +132,5 @@ public class AccountPage extends BasePage {
 				counter);
 
 	}
-	
-
-
 
 }

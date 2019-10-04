@@ -39,12 +39,11 @@ public class AccountDetailsPage extends PageObject {
 
 	@FindBy(xpath = "//img[@alt='Patient agreed'][@src='/Content/images/checkmark.png']")
 	WebElementFacade patientAgreepopUplEncInfo;
-	
+
 	@FindBy(xpath = "//div[@class='has-icon head-box']")
 	private List<WebElementFacade> accountInfoSection;
-	
+
 	int PatientDtlTabs = Integer.parseInt(CommonMethod.readProperties("patientDetailtabs"));
-	
 
 	public void patientAndGuarntName() {
 		for (int i = 0; i < patientAndGuarntName.size(); i++)
@@ -62,7 +61,7 @@ public class AccountDetailsPage extends PageObject {
 
 	public void verifyAccInfoAccNum() {
 		contactCommon.verifyAccountNumber(accNumberxpath, CommonMethod.readProperties("AccountNumber"));
-	
+
 	}
 
 	/*-------HOME--  Click on patient detail tabs  ------*/
@@ -109,29 +108,29 @@ public class AccountDetailsPage extends PageObject {
 		}
 
 	}
-	
-	/*verify account information section displayed or not*/
+
+	/* verify account information section displayed or not */
 	public void verifyAccountInfoSection() {
 		int size = accountInfoSection.size();
-		for(int i=0;i<size;i++) {
+		for (int i = 0; i < size; i++) {
 			accountInfoSection.get(i).isDisplayed();
-			
+
 		}
 	}
-	
+
 	/*-------HOME--  Click on patient detail tabs  ------*/
 
 	public void displayPatientDtlTabs() {
-		
-		int counter=0;
+
+		int counter = 0;
 		for (int i = 0; i < patientDetailTabs.size(); i++) {
 
 			patientDetailTabs.get(i).isDisplayed();
-				comMethod.scrollInView(patientDetailTabs.get(i));
-				counter++;
-				
-			}
-		
+			comMethod.scrollInView(patientDetailTabs.get(i));
+			counter++;
+
+		}
+
 		Assert.assertEquals("Account info page has not all expected tabs", PatientDtlTabs, counter);
 
 	}

@@ -18,7 +18,6 @@ public class R1ContactCommonMethods extends BasePage {
 	private int colSize;
 	boolean flag;
 	private static int searchEleCount = 0;
-	private String viewAccountLink = "//a//div";
 
 	/*
 	 * ................................... Get TABLE COLUMN VALUE
@@ -148,21 +147,19 @@ public class R1ContactCommonMethods extends BasePage {
 			}
 		}
 	}
-	
+
 	/*----Verify account number in page ----*/
-	public void verifyAccountNumber(String accXpath,String expectAccNum)
-	{
-		boolean accFlag=false;
-		String actAccNumber=element(By.xpath(accXpath)).getText();
-		if(actAccNumber.contains(expectAccNum))
-		{
-			accFlag=true;
+	public void verifyAccountNumber(String accXpath, String expectAccNum) {
+		boolean accFlag = false;
+		String actAccNumber = element(By.xpath(accXpath)).getText();
+		if (actAccNumber.contains(expectAccNum)) {
+			accFlag = true;
 			com.highLightSteps(element(By.xpath(accXpath)));
+		} else {
+			Assert.assertTrue(
+					"Account Number " + CommonMethod.readProperties("AccountNumber") + " Not found in " + actAccNumber,
+					accFlag);
 		}
-		else
-		{
-			Assert.assertTrue("Account Number "+CommonMethod.readProperties("AccountNumber")+" Not found in "  + actAccNumber , accFlag);
-		}
-	} 
+	}
 
 }
