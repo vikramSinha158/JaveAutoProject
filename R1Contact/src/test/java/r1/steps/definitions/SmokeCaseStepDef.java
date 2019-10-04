@@ -2,24 +2,29 @@ package r1.steps.definitions;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.SQLException;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import r1.commons.databaseconnection.DatabaseConn;
 import r1.pages.AccountDetailsPage;
 import r1.pages.AccountPage;
 import r1.pages.BalanceLinkPage;
+import r1.pages.HomePage;
 import r1.pages.PatientInfoPage;
 import r1.pages.RightPartyConPage;
 
 public class SmokeCaseStepDef {
 
 
+	HomePage home;
 	AccountPage accountPage;
 	AccountDetailsPage accPatientDtl;
 	PatientInfoPage patientInfo;
 	RightPartyConPage rpcPage;
 	BalanceLinkPage balancePage;
+	String JHouseAccount;
 	
 	
 	@When("^user selects the last name search criteria on account search page$")
@@ -121,4 +126,46 @@ public class SmokeCaseStepDef {
 	public void patient_Diagnosis_details_pop_window_should_get_appeared() {
 		accPatientDtl.verifyPopUpInEncInfo();
 	}
+	
+	@Then("^user fetch the \"([^\"]*)\" get AccountNum having Jhouse owner$")
+	public void user_fetch_the_get_AccountNum_having_Jhouse_owner(String queryName) 
+		throws ClassNotFoundException, FileNotFoundException, SQLException, IOException {
+		
+		accountPage.runQueryTranServer(queryName);
+		DatabaseConn.resultSet.next();
+		JHouseAccount =  DatabaseConn.resultSet.getString("accountNum");
+		System.out.println(JHouseAccount);
+	    
+	}
+	
+	@When("^user clicks on the arrow with Jhouse acccount number$")
+	public void user_clicks_on_the_arrow_with_Jhouse_acccount_number() throws FileNotFoundException, IOException {
+		accountPage.clickOnArrowWithDbAccNum(JHouseAccount);
+		
+	}
+	
+	@Given("^user check the agent EmailID$")
+	public void user_check_the_agent_EmailID() {
+	 
+		home.agentEmailId();
+	}
+
+	@When("^user clicks on the check arrow next to jhouse text in account information$")
+	public void user_clicks_on_the_check_arrow_next_to_jhouse_text_in_account_information() {
+	   
+		accPatientDtl.clkOnJHouseChckMark();
+	}
+
+	@Then("^account owner should be updated$")
+	public void account_owner_should_be_updated() {
+	
+		accPatientDtl.ownerEmail();
+	}
+
+	@Then("^user is able to see their email prefix in place of jhous$")
+	public void user_is_able_to_see_their_email_prefix_in_place_of_jhous() {
+		accPatientDtl.verifyOwnerJHouseWithAgentName();
+	  
+	}
+
 }

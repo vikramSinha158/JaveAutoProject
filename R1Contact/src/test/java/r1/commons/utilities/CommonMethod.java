@@ -188,7 +188,7 @@ public class CommonMethod extends BasePage {
 
 	 public static String queryProperties(String input, String moduleName) throws FileNotFoundException, IOException {
 		 Properties prop = new Properties();
-		 String path = "src/test/resources/TestData/Query" + moduleName + ".properties";
+		 String path = "src/test/resources/TestData/" + moduleName + ".properties";
 		 prop.load(new FileInputStream(path));
 		 return prop.getProperty(input);
 	 }

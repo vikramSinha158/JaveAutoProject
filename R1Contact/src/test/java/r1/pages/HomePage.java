@@ -22,6 +22,7 @@ public class HomePage extends BasePage {
 	private int searchEleRow;
 	int accountIndex;
 	int totalcount;
+	public static String agentEmailID;
 	String reminderRow = "//table[@ng-table='tableParams']//tbody//tr";
 	String defaultTime = "12:00 AM"; // It will remain constant
 	String homeReminderInfoRow = "//table[@ng-table='tableParams']//tbody//tr[@ng-repeat='row in $data']";
@@ -121,6 +122,10 @@ public class HomePage extends BasePage {
 	private WebElementFacade txtToShowDate;
 	@FindBy(xpath = "//button//div[@class='revert']")
 	private WebElementFacade buttonToShowDate;
+	
+	
+	@FindBy(xpath = "//div[contains(text(),'Email')]//following-sibling::div")
+	private WebElementFacade agentEmail;
 
 	/************************************************
 	 * Reminder Filter
@@ -446,4 +451,13 @@ public class HomePage extends BasePage {
 		return CommonMethod.readProperties("AccountNumber");
 
 	}
+	
+	/*--------------------------------------Return Agent Email Id------------------------------------------------------*/
+	
+	public String agentEmailId()
+	{
+		agentEmailID=agentEmail.getText();
+		return agentEmailID;
+	}
 }
+

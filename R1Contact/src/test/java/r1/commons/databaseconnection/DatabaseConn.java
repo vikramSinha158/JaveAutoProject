@@ -12,81 +12,78 @@ public class DatabaseConn {
 	public static ResultSet resultSet;
 	public static String serverName;
 	public static String databaseName;
+	public static Connection conn;
 
 	public static void getServerDBName(String url, String facility) {
 
 		try {
-			String query = "SELECT Replace(Replace(serverpath, '[', ''), ']', '')  AS servername,databasename from locations where code='"+facility+"'";
+			/*String query = "SELECT Replace(Replace(serverpath, '[', ''), ']', '')  AS servername,databasename from locations where code='"
+					+ facility + "'";*/
 			
-			/**********************UAT***************************/
+			String query="SELECT hostName, dbName "
+					+ "from facility f (nolock) "
+					+ "join db d (nolock) on fcDbId = dbId join host h (nolock) on dbHostId = hostId  "
+					+ "where f.flag = 'A'and fcCode = '"+facility+"'";
 			
-			if (url.contains("uathub")){
-				serverConn("UATRHUBWBND03", "Accretive", query);
+			/***********************Staging Care Server***************************************************/
+			
+			if (url.contains("uatccc")) {
+				serverConn("UATCONTWCOR01\\CCCCOR", "Stingray", query);
 				while (resultSet.next()) {
-					serverName = resultSet.getString("servername");
-					databaseName = resultSet.getString("databasename");
+					serverName = resultSet.getString("hostName");
+					databaseName = resultSet.getString("dbName");
 				}
-			}
-			else if (url.contains("uatrcohub")){
-				serverConn("UATRHUBIWBND03.EXTAPP.LOCAL", "Accretive", query);
-				while (resultSet.next()) {
-					serverName = resultSet.getString("servername");
-					databaseName = resultSet.getString("databasename");
-				}
-			}
+			} 
 			
-			/*************************Staging*****************************/
+			/***********************Staging IMH Server***************************************************/
 			
-			if (url.contains("stghub")){
-				serverConn("STGRHUBWBND03", "Accretive", query);
+			if (url.contains("stgrcohub")) {
+				serverConn("STGRHUBWCORE01", "Accretive", query);
 				while (resultSet.next()) {
-					serverName = resultSet.getString("servername");
-					databaseName = resultSet.getString("databasename");
-				}
-			}
-			else if (url.contains("stgrcohub")){
-				serverConn("STGRHUBIWBND03.EXTAPP.LOCAL", "Accretive", query);
-				while (resultSet.next()) {
-					serverName = resultSet.getString("servername");
+					serverName = resultSet.getString("servername") + ".EXTAPP.LOCAL";
 					databaseName = resultSet.getString("databasename");
 				}
 			}
 			
-			/*****************DEV******************************************/
 			
-			if (url.contains("dev1hub")){
+			/***********************UAT Care Server***************************************************/
+			
+			
+			else if (url.contains("uathub")) {
+				serverConn("UATRHUBWCORE01", "Accretive", query);
+				while (resultSet.next()) {
+					serverName = resultSet.getString("servername");
+					databaseName = resultSet.getString("databasename");
+				}
+			} 
+			
+			/***********************UAT IMH Server***************************************************/
+			
+			else if (url.contains("uatrcohub")) {
+				serverConn("UATRHUBWCORE01", "Accretive", query);
+				while (resultSet.next()) {
+					serverName = resultSet.getString("servername") + ".EXTAPP.LOCAL";
+					databaseName = resultSet.getString("databasename");
+				}
+			}
+
+			/***********************DEV Care Server***************************************************/
+			
+			else if (url.contains("dev1hub")) {
 				serverConn("DEVRHUBWBND03", "Accretive", query);
 				while (resultSet.next()) {
 					serverName = resultSet.getString("servername");
 					databaseName = resultSet.getString("databasename");
 				}
 			}
-			else if (url.contains("dev1rcohub")){
-				serverConn("DEVRHUBIWBND03", "Accretive", query);
+			
+			else if (url.contains("dev1rcohub")) {
+				serverConn("DEVRHUBIWBND03 ", "Accretive", query);
 				while (resultSet.next()) {
 					serverName = resultSet.getString("servername");
 					databaseName = resultSet.getString("databasename");
 				}
 			}
-			
-			/*****************PREP******************************************/
-			
-			if (url.contains("prephub")){
-				serverConn("UATRHUBWTRN08", "Accretive", query);
-				while (resultSet.next()) {
-					serverName = resultSet.getString("servername");
-					databaseName = resultSet.getString("databasename");
-				}
-			}
-			else if (url.contains("preprcohub")){
-				serverConn("UATRHUBIWTRN02.EXTAPP.LOCAL", "Accretive", query);
-				while (resultSet.next()) {
-					serverName = resultSet.getString("servername");
-					databaseName = resultSet.getString("databasename");
-				}
-			}
-			
-			
 
 		} catch (Exception e) {
 			System.out.println(e);
@@ -111,14 +108,12 @@ public class DatabaseConn {
 			String dbUrl = "jdbc:sqlserver://" + serverHost + ";databaseName=" + dbName + ";integratedSecurity=true";
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 
-			Connection conn = DriverManager.getConnection(dbUrl);
+		    Connection conn = DriverManager.getConnection(dbUrl);
 			Statement stmt = conn.createStatement();
-			Thread.sleep(10000);
 			resultSet = stmt.executeQuery(query);
 
 		} catch (Exception e) {
 			System.out.println(e);
 		}
 	}
-
 }

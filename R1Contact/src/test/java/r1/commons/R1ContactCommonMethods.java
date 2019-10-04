@@ -36,7 +36,8 @@ public class R1ContactCommonMethods extends BasePage {
 			for (int j = 1; j < colSize; j++) {
 				String colLocator1 = rowlocator1 + "/td[" + j + "]";
 				String accountNumber = element(By.xpath(colLocator1)).getText();
-				if (accountNumber.contentEquals(CommonMethod.readProperties("AccountNumber"))) {
+				if (accountNumber.contentEquals(accountName)) {
+					comMethod.scrollInView(element(By.xpath(colLocator1)));
 					element(rowlocator1 + clickEvt).click();
 					flag = true;
 					break;

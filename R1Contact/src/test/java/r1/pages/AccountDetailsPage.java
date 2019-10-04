@@ -1,5 +1,8 @@
 package r1.pages;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 import org.junit.Assert;
@@ -8,12 +11,15 @@ import net.serenitybdd.core.annotations.findby.FindBy;
 import net.serenitybdd.core.pages.PageObject;
 import net.serenitybdd.core.pages.WebElementFacade;
 import r1.commons.R1ContactCommonMethods;
+import r1.commons.databaseconnection.QueryExecutor;
 import r1.commons.utilities.CommonMethod;
 
 public class AccountDetailsPage extends PageObject {
 	
 	CommonMethod comMethod;
 	R1ContactCommonMethods contactCommon;
+	HomePage home;
+	String agentPatientPageEmail;
 	private String accNumberxpath="//div[@class='account-number']";
 
 	@FindBy(xpath = "//div[@class='pull-left right-item']/a")
@@ -44,13 +50,28 @@ public class AccountDetailsPage extends PageObject {
 	WebElementFacade popUplEncInfo;
 	
 	
+	@FindBy(xpath="//img[@alt='Take account ownership'][@src='/Content/images/checkmark.png']")
+	WebElementFacade chkMarkJHouse;
+	
 	
 	@FindBy(xpath="//img[@alt='Patient agreed'][@src='/Content/images/checkmark.png']")
 	WebElementFacade patientAgreepopUplEncInfo;
+	
+	
+	//div[contains(text(),'Owner')]//following-sibling::div//div[@class='flt-lft']
+	
+	@FindBy(xpath="//div[contains(text(),'Owner')]//following-sibling::div//div[@class='flt-lft']")
+	WebElementFacade ownerEmail;
 
 	public void patientAndGuarntName() {
 		for (int i = 0; i < patientAndGuarntName.size(); i++)
 			Assert.assertTrue("Patient And GuarntName is not coming", patientAndGuarntName.get(i).isDisplayed());
+	}
+	
+	
+	public void runQueryTranServer(String queryName)
+			throws ClassNotFoundException, FileNotFoundException, SQLException, IOException {
+		QueryExecutor.runQueryTran(this.getClass().getSimpleName().replace("Page", ""),queryName);
 	}
 	
 	public void clickOnPatientLink()
@@ -123,5 +144,38 @@ public class AccountDetailsPage extends PageObject {
 		}
 	
 	}
+	
+	/*------------Click on Jhouse check mark ------*/
+	
+	public void clkOnJHouseChckMark()
+	{
+		clickOn(chkMarkJHouse);
+	}
+	
+	public void ownerEmail()
+	{
+		
+		agentPatientPageEmail=ownerEmail.getText();
+		System.out.println(agentPatientPageEmail);
+		
+	}
+	
+	public void verifyOwnerJHouseWithAgentName()
+	{
+		boolean ownerchk=false;
+		System.out.println(home.agentEmailID.toLowerCase());
+		
+		if(home.agentEmailID.toLowerCase().contains(agentPatientPageEmail.toLowerCase()))
+		{
+			ownerchk=true;
+		}
+		else
+		{
+			Assert.assertTrue("Agent name does not matched", ownerchk);
+		}
+	}
+	
+	
+	 
 	
 }

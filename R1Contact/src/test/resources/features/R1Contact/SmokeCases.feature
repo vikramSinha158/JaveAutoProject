@@ -56,3 +56,4 @@ When user clicks on the "Encounter Information" tab
 Then Encounter Information tab should be expand
 When user clicks on the Click to View link
 Then Patient Diagnosis details pop window should get appeared
+
