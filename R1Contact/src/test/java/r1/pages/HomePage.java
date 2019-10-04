@@ -25,6 +25,7 @@ public class HomePage extends BasePage {
 	private int searchEleRow;
 	int accountIndex;
 	int totalcount;
+	public static String agentEmailID;
 	String reminderRow = "//table[@ng-table='tableParams']//tbody//tr";
 	String defaultTime = "12:00 AM"; // It will remain constant
 	String homeReminderInfoRow = "//table[@ng-table='tableParams']//tbody//tr[@ng-repeat='row in $data']";
@@ -85,12 +86,6 @@ public class HomePage extends BasePage {
 	private WebElementFacade office;
 	@FindBy(xpath = "//span[text()='Initiatives']")
 	private WebElementFacade Initiatives;
-	@FindBy(xpath = "//span[text()='Search']")
-	private WebElementFacade Search;
-	@FindBy(xpath = "//span[text()='Office']")
-	private WebElementFacade Office;
-	@FindBy(xpath = "//span[text()='Administration']")
-	private WebElementFacade Administration;
 	@FindBy(xpath = "//a[text()='Accounts']")
 	private WebElementFacade AccountElemnet;
 	@FindBy(xpath = "//div[contains(text(),'Print Name')]//following-sibling::div ")
@@ -147,6 +142,8 @@ public class HomePage extends BasePage {
 	private WebElementFacade txtToShowDate;
 	@FindBy(xpath = "//button//div[@class='revert']")
 	private WebElementFacade buttonToShowDate;
+	@FindBy(xpath = "//div[contains(text(),'Email')]//following-sibling::div")
+	private WebElementFacade agentEmail;
 
 	/*
 	 * page title
@@ -180,7 +177,6 @@ public class HomePage extends BasePage {
 		int Printedreminders = Integer.parseInt(message[message.length - 2]); // Taking 2nd last array objet & changing
 		// their type
 		return Printedreminders;
-
 	}
 
 	/* Logo verify */
@@ -188,10 +184,10 @@ public class HomePage extends BasePage {
 		boolean flag = logo.isDisplayed();
 		Assert.assertTrue("Logo is not being displayed!", flag);
 	}
+	/************************************************
 
-	/*
 	 * Reminder Filter
-	 */
+	 ***********************************/
 	public int checkCountofTablerRow() {
 		boolean check = true;
 		if (homeReminderTableRow.size() < 1) {
@@ -206,6 +202,7 @@ public class HomePage extends BasePage {
 	/*
 	 * verify filter search is not working
 	 */
+
 	public void checkContainHometable() throws FileNotFoundException, IOException {
 		String searchElement = CommonMethod.readProperties("FilterSearch");
 		totalcount = homeReminderTableRow.size();
@@ -239,6 +236,7 @@ public class HomePage extends BasePage {
 	}
 
 	/* Agent name verification */
+
 	public void verifyAgentName() throws InterruptedException {
 		String agentNameFromTable = agentPrintName.getText();
 		String agentNameFromHome = agentNameOnHomePage.getText();
@@ -259,15 +257,14 @@ public class HomePage extends BasePage {
 		clickOn(homeTab);
 	}
 
+
 	/* Verify header menu */
+
 	public void verifyHeaderTab() {
 		CommonMethod.isDisplayedMethod(homeTab);
 		CommonMethod.isDisplayedMethod(myTabs);
 		CommonMethod.isDisplayedMethod(Initiatives);
 		CommonMethod.isDisplayedMethod(help);
-		CommonMethod.isDisplayedMethod(Search);
-		CommonMethod.isDisplayedMethod(Office);
-		CommonMethod.isDisplayedMethod(Administration);
 
 	}
 
@@ -359,20 +356,27 @@ public class HomePage extends BasePage {
 		CommonMethod.isDisplayedMethod(Balance);
 	}
 
+
 	/*
 	 * verify reminder list size
 	 * 
 	 */
+
 	public void checkreminderList() {
+
 		int actualReminders = homeReminderTableRow.size();
 		if (actualReminders > 1) {
 			int expectedReminders = printedReminderOnHeader();
 			Assert.assertEquals("Number of reminders are not matching", actualReminders, expectedReminders);
 		} else {
 			Assert.assertTrue("No reminders present", actualReminders == 0);
+
+		if (homeReminderTableRow.size() < 1) {
+			Assert.assertFalse("No reminders present", true);
+
 		}
 	}
-
+	}
 	/******************************************************
 	 * Verify balance
 	 ************************************************************************/
@@ -599,4 +603,13 @@ public class HomePage extends BasePage {
 		return CommonMethod.readProperties("AccountNumber");
 
 	}
+	
+	/*--------------------------------------Return Agent Email Id------------------------------------------------------*/
+	
+	public String agentEmailId()
+	{
+		agentEmailID=agentEmail.getText();
+		return agentEmailID;
+	}
 }
+

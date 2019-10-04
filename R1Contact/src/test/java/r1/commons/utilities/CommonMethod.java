@@ -13,7 +13,6 @@ import org.junit.Assert;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchFrameException;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 
 import net.serenitybdd.core.annotations.findby.By;
@@ -24,7 +23,6 @@ import net.thucydides.core.util.SystemEnvironmentVariables;
 import r1.commons.BasePage;
 
 public class CommonMethod extends BasePage {
-
 	public static void DrpVisibleTxt(WebElementFacade we, String s) {
 		Select drp = new Select(we);
 		drp.selectByVisibleText(s);
@@ -181,13 +179,13 @@ public class CommonMethod extends BasePage {
 	}
 
 	public static void isDisplayedMethod(WebElement element) {
-		Assert.assertTrue("Home tab is not found,actaul name is  " + element.getText(), element.isDisplayed());
+		Assert.assertTrue("Value not found,actaul name is  " + element.getText(), element.isDisplayed());
 
 	}
 
 	public static String queryProperties(String input, String moduleName) throws FileNotFoundException, IOException {
 		Properties prop = new Properties();
-		String path = "src/test/resources/TestData/Query" + moduleName + ".properties";
+		String path = "src/test/resources/TestData/" + moduleName + ".properties";
 		prop.load(new FileInputStream(path));
 		return prop.getProperty(input);
 	}
@@ -196,7 +194,9 @@ public class CommonMethod extends BasePage {
 	 * Highlights the control
 	 */
 	public void highLightSteps(WebElementFacade element) {
+
 		JavascriptExecutor js = (JavascriptExecutor) getDriver();
+
 		js.executeScript("arguments[0].setAttribute('style', 'background: yellow; border: 2px solid red;');", element);
 
 	}
@@ -243,11 +243,12 @@ public class CommonMethod extends BasePage {
 	}
 
 	/*
-	 * Scroll in view
+	 * Highlights the control
 	 */
 	public void scrollInView(WebElementFacade element) {
 		JavascriptExecutor je = (JavascriptExecutor) getDriver();
 		je.executeScript("arguments[0].scrollIntoView(true);", element);
 
 	}
+
 }
