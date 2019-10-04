@@ -178,7 +178,7 @@ public class HomePage extends BasePage {
 		String headerReminderMessage = Reminders.getText();
 		String[] message = headerReminderMessage.split(" ");
 		int Printedreminders = Integer.parseInt(message[message.length - 2]); // Taking 2nd last array objet & changing
-																				// their type
+		// their type
 		return Printedreminders;
 
 	}
