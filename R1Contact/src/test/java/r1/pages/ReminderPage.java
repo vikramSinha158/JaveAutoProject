@@ -87,6 +87,9 @@ public class ReminderPage extends BasePage {
 		dateField.clear();
 		String reminderDate = reminderDateToFill();
 		dateField.sendKeys(reminderDate);
+		TimeField.clear();
+		TimeField.sendKeys(CommonMethod.readProperties("ReminderTime"));
+
 	}
 
 	public void setReminderNote(String note) {

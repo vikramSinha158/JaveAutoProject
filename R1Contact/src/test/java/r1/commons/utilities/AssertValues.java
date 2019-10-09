@@ -5,7 +5,8 @@ import org.junit.Assert;
 
 public class AssertValues {
 
-	private static final org.apache.logging.log4j.Logger LOGGER = (org.apache.logging.log4j.Logger) Logger.getLogger(AssertValues.class.getName());
+	private static final org.apache.logging.log4j.Logger LOGGER = (org.apache.logging.log4j.Logger) Logger
+			.getLogger(AssertValues.class.getName());
 
 	private AssertValues() {
 

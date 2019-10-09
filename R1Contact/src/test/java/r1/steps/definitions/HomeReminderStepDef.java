@@ -62,7 +62,7 @@ public class HomeReminderStepDef {
 	@When("^Pick one account from the list by click on Arrow$")
 	public void pick_one_account_from_the_list_by_click_on_Arrow() throws FileNotFoundException, IOException {
 
-		accountPage.selectAndClickAccount();
+		accountPage.selectAndClickAccount("arrow");
 
 	}
 
@@ -81,7 +81,6 @@ public class HomeReminderStepDef {
 	@Then("^A pop up window should be displayed and user would be able to submit Reminder by filling required details$")
 	public void a_pop_up_window_should_be_displayed_and_user_would_be_able_to_submit_Reminder_by_filling_required_details()
 			throws FileNotFoundException, IOException {
-
 		rem.IsreminderContainerDisplayed();
 		rem.FillreminderDate();
 

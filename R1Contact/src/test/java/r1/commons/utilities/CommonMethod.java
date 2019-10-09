@@ -1,13 +1,18 @@
 package r1.commons.utilities;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.Random;
 import java.util.Set;
 
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.encryption.InvalidPasswordException;
+import org.apache.pdfbox.text.PDFTextStripper;
 import org.junit.Assert;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchFrameException;
@@ -22,7 +27,6 @@ import net.thucydides.core.util.SystemEnvironmentVariables;
 import r1.commons.BasePage;
 
 public class CommonMethod extends BasePage {
-
 	public static void DrpVisibleTxt(WebElementFacade we, String s) {
 		Select drp = new Select(we);
 		drp.selectByVisibleText(s);
@@ -163,40 +167,113 @@ public class CommonMethod extends BasePage {
 	/*
 	 * Read property file
 	 */ public static String readProperties(String input) {
-		 Properties prop = new Properties();
-		 try {
-			 prop.load(new FileInputStream("src/test/resources/TestData/Config.properties"));
-		 } catch (IOException e) {
-			 // TODO Auto-generated catch block
-			 e.printStackTrace();
-		 }
-		 return prop.getProperty(input);
-	 }
+		Properties prop = new Properties();
+		try {
+			prop.load(new FileInputStream("src/test/resources/TestData/Config.properties"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return prop.getProperty(input);
+	}
 
-	 public static int GetRandom(int all) {
-		 Random rnd = new Random();
-		 return rnd.nextInt(all);
-	 }
+	public static int GetRandom(int all) {
+		Random rnd = new Random();
+		return rnd.nextInt(all);
+	}
 
-	 public static void isDisplayedMethod(WebElement element) {
-		 Assert.assertTrue("Home tab is not found,actaul name is  " + element.getText(), element.isDisplayed());
+	public static void isDisplayedMethod(WebElement element) {
+		Assert.assertTrue("Value not found,actaul name is  " + element.getText(), element.isDisplayed());
 
-	 }
+	}
 
-	 public static String queryProperties(String input, String moduleName) throws FileNotFoundException, IOException {
-		 Properties prop = new Properties();
-		 String path = "src/test/resources/TestData/Query" + moduleName + ".properties";
-		 prop.load(new FileInputStream(path));
-		 return prop.getProperty(input);
-	 }
+	public static String queryProperties(String input, String moduleName) throws FileNotFoundException, IOException {
+		Properties prop = new Properties();
+		String path = "src/test/resources/TestData/" + moduleName + ".properties";
+		prop.load(new FileInputStream(path));
+		return prop.getProperty(input);
+	}
 
-	 /*
-	  * Highlights the control
-	  */
-	 public void highLightSteps(WebElementFacade element) {
-		 JavascriptExecutor js = (JavascriptExecutor) getDriver();
-		 js.executeScript("arguments[0].setAttribute('style', 'background: yellow; border: 2px solid red;');", element);
+	/*
+	 * Highlights the control
+	 */
+	public void highLightSteps(WebElementFacade element) {
 
-	 }
+		JavascriptExecutor js = (JavascriptExecutor) getDriver();
 
+		js.executeScript("arguments[0].setAttribute('style', 'background: yellow; border: 2px solid red;');", element);
+
+	}
+
+	/*
+	 * Bootstrap dropDownHandling
+	 */
+	public List<String> handleBootStrapDropdown(String options, String element) {
+		List<String> optionsList = new ArrayList<String>();
+		element(By.xpath(element)).click();
+		List<WebElementFacade> list = findAll(By.xpath(options));
+		for (int i = 0; i < list.size(); i++) {
+			optionsList.add(list.get(i).getText());
+
+		}
+
+		return optionsList;
+
+	}
+
+	/*
+	 * Bootstrap innerdropDownHandling
+	 */
+	public List<String> handleInnerBootStrapDropdown(String options, String element, String clickMenuName,
+			String innerOptions) throws InterruptedException {
+		List<String> optionsList = new ArrayList<String>();
+		element(By.xpath(element)).click();
+		List<WebElementFacade> list = findAll(By.xpath(options));
+		for (int i = 0; i < list.size(); i++) {
+			if (list.get(i).getText().equalsIgnoreCase(clickMenuName)) {
+				list.get(i).click();
+				Thread.sleep(1000);
+				List<WebElementFacade> innerlist = findAll(By.xpath(innerOptions));
+				for (int j = 0; j < innerlist.size(); j++) {
+					optionsList.add(innerlist.get(j).getText());
+				}
+
+			}
+
+		}
+
+		return optionsList;
+
+	}
+
+	/*
+	 * Highlights the control
+	 */
+	public void scrollInView(WebElementFacade element) {
+		JavascriptExecutor je = (JavascriptExecutor) getDriver();
+		je.executeScript("arguments[0].scrollIntoView(true);", element);
+
+	}
+	/*Random number*/
+	public static int random() {
+		int randomNumber=0;
+	Random objGenerator = new Random();
+    for (int iCount = 0; iCount< 10; iCount++){
+    	randomNumber  = objGenerator.nextInt(30)+1;
+    	
+    }
+	return randomNumber;
+    }
+/*	
+ * Extracting text from pdf and read it
+*/
+	public void readPdf(String pdfpath) throws InvalidPasswordException, IOException {
+		//load existing pdf document
+		File file = new File(pdfpath);
+		PDDocument doc =PDDocument.load(file);
+		
+		//Instantiating PDFTextStripper class
+		PDFTextStripper pdfStripper = new PDFTextStripper();
+		pdfStripper.getText(doc);
+	}
 }
