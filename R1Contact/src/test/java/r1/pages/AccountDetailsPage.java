@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.junit.Assert;
 
+import net.serenitybdd.core.annotations.findby.By;
 import net.serenitybdd.core.annotations.findby.FindBy;
 import net.serenitybdd.core.pages.PageObject;
 import net.serenitybdd.core.pages.WebElementFacade;
@@ -20,9 +21,15 @@ public class AccountDetailsPage extends PageObject {
 	HomePage home;
 	String agentPatientPageEmail;
 	private String accNumberxpath = "//div[@class='account-number']";
+	private String codeRowBeforeXpath="//div[@id='RequestConfigs']//tbody/tr[";
+	private String codeRowAfterXpath="]/td/a";
+	
 	@FindBy(xpath = "//div[@class='pull-left right-item']/a")
 	private List<WebElementFacade> patientAndGuarntName;
 
+	@FindBy(xpath = "//div[@id='RequestConfigs']//tbody/tr")
+	private List<WebElementFacade> codeAndDesRows;
+	
 	@FindBy(xpath = "//div[@class='pull-left patient stretch account-box']//div[@class='pull-left right-item']//a")
 	WebElementFacade patientInfoLink;
 
@@ -52,7 +59,11 @@ public class AccountDetailsPage extends PageObject {
 
 	@FindBy(xpath = "//div[@class='has-icon head-box']")
 	private List<WebElementFacade> accountInfoSection;
-
+	
+	@FindBy(id="DoRequest") private WebElementFacade requestIcon;
+	
+	@FindBy(xpath="//div[@id='RequestConfigs']//thead") private WebElementFacade codeTableHeader;
+	
 	int PatientDtlTabs = Integer.parseInt(CommonMethod.readProperties("patientDetailtabs"));
 
 	public void patientAndGuarntName() {
@@ -168,4 +179,24 @@ public class AccountDetailsPage extends PageObject {
 		}
 	}
 
+	public void clickRequest() {
+		requestIcon.click();
+	}
+	
+	// Verify create user request page
+	public void verifyRequestPage() {
+		Assert.assertTrue("User is not on create Request Page!!!", codeTableHeader.isDisplayed());
+	}
+	
+	// Create request
+	public void createReq() {
+		element(By.xpath(codeRowBeforeXpath+CommonMethod.random()+codeRowAfterXpath)).click();
+	}
+	
+	public void codeAndDes() {
+		Assert.assertTrue("No code and description rows are coming", codeAndDesRows.size()>0);
+		
+	}
+	
+	
 }

@@ -59,6 +59,27 @@ Then A pop up window should be displayed and user would be able to submit Remind
 And Save reminder by hitting 'Save reminder' button
 Then user should be navigate back to the account page
 
+@428412
+Scenario: Submit a request from Account page
+Given user is on R1Contact home page
+Then user should be able to see Agent Information
+And Reminders list(If any reminder set by the agent)
+And Home, My Tabs and other Tabs
+When user Click on 'Search' account link
+Then Search account page should be displayed with searching criterias like..Account Number, First Name, Last Name etc
+When Enter last name as "K" and press ENTER and List of Accounts should be displayed
+When Pick one account from the list by click on Arrow
+Then Then user should be land on the account info page
+And user should be able to see the below tabs InsuranceNotes Transactions Payment History Letter Sent Encounter Information Account Activity
+When user clicks on the New request icon
+Then user should be navigate to create request page
+And user is able to see the request code and its description
+When user selects one code and user clicks on the Create button
+Then user should be able to see the Request form.
+When user enter all details
+And user clicks on the Save button
+Then user should be able to save the request successfully 
+
 @428409
 Scenario: To Verify 'Right Party Contact (RPC) verified' in INBOUND CALLS page successfully
 When user Click on 'Search' account link
@@ -122,8 +143,39 @@ When user clicks on the check arrow next to jhouse text in account information
 Then account owner should be updated
 And user is able to see their email prefix in place of jhous
 
-
 Examples:
    |QueryForJHouseAuccountNum|
    |queryAccountJHouse|
+
+@428417
+Scenario: Verify Bill Statement
+When user Click on 'Search' account link
+Then Search account page should be displayed with searching criterias like..Account Number, First Name, Last Name etc 
+When user selects the last name search criteria on account search page
+And Enter last name as "K" and press ENTER and List of Accounts should be displayed
+When user clicks on the "arrow" enter arrow 
+Then user should be land on the account info page
+When user clicks on the Bill statement link
+Then an overlay window should be appeared 
+When user clicks on the Pdf link
+Then a pdf file should be open 
+
+@428494
+Scenario: Verify the payment posting using secure payment
+When user Click on 'Search' account link
+And select accounts option for WHEATON PHYSICIAN SERVICES
+And Enter last name as "K" and press ENTER and List of Accounts should be displayed
+When user clicks on the "arrow" enter arrow  
+Then user should be land on the account info page
+When user Click on "Payment history" tab and pick one option from the drop down secure payment  arrangement
+Then User should be land on the payment initial page.
+When user enter amount,checks check box then and user clicks on Summary button
+Then User land on the Summary tab 
+When user Click on Enter payment button
+Then User land on the payment Information tab And user is able to see secure payment radio button enabled 
+And user is able to see guarantor info
+When user clicks on the submit button
+Then Payment should be submitted successfully   
+
+
 

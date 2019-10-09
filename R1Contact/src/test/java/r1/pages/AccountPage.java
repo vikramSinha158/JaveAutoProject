@@ -57,6 +57,10 @@ public class AccountPage extends BasePage {
 
 	@FindBy(xpath = "//button[@id='AccountNumberSubmit']")
 	private WebElementFacade clkaccNumSearch;
+	
+	@FindBy(id="Facility") private WebElementFacade facilityDrpDown;
+	
+	@FindBy(xpath="//span[text()=' Payment History ']") private WebElementFacade paymentHistory ;
 
 	public void runQueryTranServer(String queryName)
 			throws ClassNotFoundException, FileNotFoundException, SQLException, IOException {
@@ -177,4 +181,17 @@ public class AccountPage extends BasePage {
 	public void clickForAccSearch() {
 		clkaccNumSearch.click();
 	}
+	
+/*	Select facility from dropdown*/
+	
+	public void selectFacility(String facilityName) {
+		CommonMethod.DrpVisibleTxt(facilityDrpDown, facilityName);
+	}
+	
+	/*Click payment History  */
+	public void clickPaymentHistory() {
+		
+	}
+	
+	
 }

@@ -313,4 +313,137 @@ public class SmokeCasesStepDef extends BasePage {
 
 	}
 
+	/*	 
+	 * Test case: 428412 Submit a request from Account page
+	 */
+	@When("^user clicks on the New request icon$")
+	public void user_clicks_on_the_New_request_icon() {
+		accoundel.clickRequest();
+	}
+
+
+	@Then("^user should be navigate to create request page$")
+	public void user_should_be_navigate_to_create_request_page() {
+		accoundel.verifyRequestPage();
+	}
+
+	@Then("^user is able to see the request code and its description$")
+	public void user_is_able_to_see_the_request_code_and_its_description() {
+		accoundel.codeAndDes();
+	}
+
+	@When("^user selects one code and user clicks on the Create button$")
+	public void user_selects_one_code_and_user_clicks_on_the_Create_button() {
+		accoundel.createReq();	
+	}
+
+	@Then("^user should be able to see the Request form\\.$")
+	public void user_should_be_able_to_see_the_Request_form() {
+
+	}
+
+	@When("^user enter all details$")
+	public void user_enter_all_details() {
+
+	}
+
+	@When("^user clicks on the Save button$")
+	public void user_clicks_on_the_Save_button() {
+
+	}
+
+	@Then("^user should be able to save the request successfully$")
+	public void user_should_be_able_to_save_the_request_successfully() {
+
+
+	}
+
+	/*	
+	 * Test Case 428417:Verify Bill Statement
+	 */
+
+	@When("^user clicks on the Bill statement link$")
+	public void user_clicks_on_the_Bill_statement_link() {
+
+	}
+
+	@Then("^an overlay window should be appeared$")
+	public void an_overlay_window_should_be_appeared() {
+
+	}
+
+	@When("^user clicks on the Pdf link$")
+	public void user_clicks_on_the_Pdf_link() {
+
+	}
+
+	@Then("^a pdf file should be open$")
+	public void a_pdf_file_should_be_open() {
+
+	}
+
+	/*	
+	 * Test case: 428494  Verify the payment posting using secure payment
+	 */
+	
+	@When("^select accounts option for WHEATON PHYSICIAN SERVICES$")
+	public void select_accounts_option_for_WHEATON_PHYSICIAN_SERVICES() {
+		account.selectFacility("Wheaton Franciscan Healthcare (Wisconsin)");
+		
+	}
+
+
+	@When("^user Click on \"([^\"]*)\" tab and pick one option from the drop down secure payment  arrangement$")
+	public void user_Click_on_tab_and_pick_one_option_from_the_drop_down_secure_payment_arrangement(String arg1) {
+	    
+	   
+	}
+
+	@Then("^User should be land on the payment initial page\\.$")
+	public void user_should_be_land_on_the_payment_initial_page() {
+	    
+	   
+	}
+
+	@When("^user enter amount,checks check box then and user clicks on Summary button$")
+	public void user_enter_amount_checks_check_box_then_and_user_clicks_on_Summary_button() {
+	    
+	   
+	}
+
+	@Then("^User land on the Summary tab$")
+	public void user_land_on_the_Summary_tab() {
+	    
+	   
+	}
+
+	@When("^user Click on Enter payment button$")
+	public void user_Click_on_Enter_payment_button() {
+	    
+	   
+	}
+
+	@Then("^User land on the payment Information tab And user is able to see secure payment radio button enabled$")
+	public void user_land_on_the_payment_Information_tab_And_user_is_able_to_see_secure_payment_radio_button_enabled() {
+	    
+	   
+	}
+
+	@Then("^user is able to see guarantor info$")
+	public void user_is_able_to_see_guarantor_info() {
+	    
+	   
+	}
+
+	@When("^user clicks on the submit button$")
+	public void user_clicks_on_the_submit_button() {
+	    
+	   
+	}
+
+	@Then("^Payment should be submitted successfully$")
+	public void payment_should_be_submitted_successfully() {
+	    
+	   
+	}
 }

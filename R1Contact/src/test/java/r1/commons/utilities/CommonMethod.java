@@ -1,5 +1,6 @@
 package r1.commons.utilities;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -9,6 +10,9 @@ import java.util.Properties;
 import java.util.Random;
 import java.util.Set;
 
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.encryption.InvalidPasswordException;
+import org.apache.pdfbox.text.PDFTextStripper;
 import org.junit.Assert;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchFrameException;
@@ -250,5 +254,26 @@ public class CommonMethod extends BasePage {
 		je.executeScript("arguments[0].scrollIntoView(true);", element);
 
 	}
-
+	/*Random number*/
+	public static int random() {
+		int randomNumber=0;
+	Random objGenerator = new Random();
+    for (int iCount = 0; iCount< 10; iCount++){
+    	randomNumber  = objGenerator.nextInt(30)+1;
+    	
+    }
+	return randomNumber;
+    }
+/*	
+ * Extracting text from pdf and read it
+*/
+	public void readPdf(String pdfpath) throws InvalidPasswordException, IOException {
+		//load existing pdf document
+		File file = new File(pdfpath);
+		PDDocument doc =PDDocument.load(file);
+		
+		//Instantiating PDFTextStripper class
+		PDFTextStripper pdfStripper = new PDFTextStripper();
+		pdfStripper.getText(doc);
+	}
 }
