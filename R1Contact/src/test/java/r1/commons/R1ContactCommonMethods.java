@@ -2,12 +2,16 @@ package r1.commons;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.junit.Assert;
 
 import net.serenitybdd.core.annotations.findby.By;
+import net.thucydides.core.pages.WebElementFacade;
+import r1.commons.databaseconnection.QueryExecutor;
 import r1.commons.utilities.CommonMethod;
 
 public class R1ContactCommonMethods extends BasePage {
@@ -18,6 +22,8 @@ public class R1ContactCommonMethods extends BasePage {
 	private int colSize;
 	boolean flag;
 	private static int searchEleCount = 0;
+	private String queryPropFileName= "R1ContactQueries";
+	private String facilityFile="Facilities";
 	CommonMethod comMethod;
 	/*
 	 * ................................... Get TABLE COLUMN VALUE
@@ -162,5 +168,29 @@ public class R1ContactCommonMethods extends BasePage {
 					accFlag);
 		}
 	}
-
+	
+	/*click dropDown*/
+	public void clickdropdown(String  element,String options, String clickOption) throws InterruptedException {
+		element(By.xpath(element)).click();
+		Thread.sleep(1000);
+	List<net.serenitybdd.core.pages.WebElementFacade>optionsList=findAll(By.xpath(options));
+	int size=optionsList.size();
+	for(int i=0; i<size;i++) {
+		String optionName=optionsList.get(i).getText();
+		if(optionName.equalsIgnoreCase(clickOption)) {
+			optionsList.get(i).click();
+			break;
+		}
+	}
+				
+			
+		}
+	
+	/*Run query*/
+	public void runQuery(String queryName, String facilityKey)
+			throws ClassNotFoundException, FileNotFoundException, SQLException, IOException {
+		QueryExecutor.runQueryTran(queryPropFileName, queryName,facilityKey,facilityFile);
+	}
 }
+
+

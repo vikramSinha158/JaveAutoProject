@@ -255,15 +255,23 @@ public class CommonMethod extends BasePage {
 
 	}
 	/*Random number*/
-	public static int random() {
+	public static int random(int num) {
 		int randomNumber=0;
 	Random objGenerator = new Random();
     for (int iCount = 0; iCount< 10; iCount++){
-    	randomNumber  = objGenerator.nextInt(30)+1;
+    	randomNumber  = objGenerator.nextInt(num)+1;
     	
     }
 	return randomNumber;
     }
+	
+	public void verifyElement(WebElementFacade element) {
+		Assert.assertTrue("Element is not displayed!", element.isDisplayed());
+	}
+	
+	public void verifyCheckBox(WebElementFacade element) {
+		Assert.assertTrue("CheckBox is not selected!", element.isSelected());
+	}
 /*	
  * Extracting text from pdf and read it
 */

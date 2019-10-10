@@ -60,28 +60,22 @@ public class AccountPage extends BasePage {
 	
 	@FindBy(id="Facility") private WebElementFacade facilityDrpDown;
 	
-	@FindBy(xpath="//span[text()=' Payment History ']") private WebElementFacade paymentHistory ;
-
-	public void runQueryTranServer(String queryName)
-			throws ClassNotFoundException, FileNotFoundException, SQLException, IOException {
-		QueryExecutor.runQueryTran(this.getClass().getSimpleName().replace("Page", ""), queryName);
-	}
 
 	/*
 	 * Clicks the the account passed by property file
 	 */
-	public void selectAndClickAccount(String clickItem) throws FileNotFoundException, IOException {
+	public void selectAndClickAccount(String clickItem, String AccountNumber) throws FileNotFoundException, IOException {
 
 		if (clickItem.equalsIgnoreCase("inbound")) {
-			contactCommon.clickOnMatchingColValue(accountRows, colNum, CommonMethod.readProperties("AccountNumber"),
+			contactCommon.clickOnMatchingColValue(accountRows, colNum, CommonMethod.readProperties(AccountNumber),
 					inboundLink);
 		}
 
 		else if (clickItem.equalsIgnoreCase("outbound")) {
-			contactCommon.clickOnMatchingColValue(accountRows, colNum, CommonMethod.readProperties("AccountNumber"),
+			contactCommon.clickOnMatchingColValue(accountRows, colNum, CommonMethod.readProperties(AccountNumber),
 					outboundLink);
 		} else if (clickItem.equalsIgnoreCase("arrow")) {
-			contactCommon.clickOnMatchingColValue(accountRows, colNum, CommonMethod.readProperties("AccountNumber"),
+			contactCommon.clickOnMatchingColValue(accountRows, colNum, CommonMethod.readProperties(AccountNumber),
 					arrowLink);
 		}
 
@@ -188,10 +182,8 @@ public class AccountPage extends BasePage {
 		CommonMethod.DrpVisibleTxt(facilityDrpDown, facilityName);
 	}
 	
-	/*Click payment History  */
-	public void clickPaymentHistory() {
-		
+	public void JhouseOwnerAccountNum(String queryName, String facilityKey) throws ClassNotFoundException, FileNotFoundException, SQLException, IOException {
+		contactCommon.runQuery(queryName, facilityKey);
 	}
-	
 	
 }

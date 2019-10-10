@@ -17,6 +17,7 @@ public class HomeReminderStepDef {
 	ReminderPage rem;
 	AccountPage accountPage;
 	AccountDetailsPage account;
+	String AccountNum="AccountNumber";
 
 	@Then("^user should be able to see Agent Information$")
 	public void user_should_be_able_to_see_Agent_Information() throws InterruptedException {
@@ -62,7 +63,7 @@ public class HomeReminderStepDef {
 	@When("^Pick one account from the list by click on Arrow$")
 	public void pick_one_account_from_the_list_by_click_on_Arrow() throws FileNotFoundException, IOException {
 
-		accountPage.selectAndClickAccount("arrow");
+		accountPage.selectAndClickAccount("arrow", AccountNum);
 
 	}
 

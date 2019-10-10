@@ -12,10 +12,8 @@ import net.serenitybdd.cucumber.CucumberWithSerenity;
 glue = "r1.steps.definitions",
 
 monochrome = true,
-tags= {"@428494"},
+//tags= {"@428494"},
 dryRun= false
-
-
 		)
 
 public class RunnerTest {

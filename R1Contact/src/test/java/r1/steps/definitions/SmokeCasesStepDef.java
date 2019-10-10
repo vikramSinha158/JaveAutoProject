@@ -16,6 +16,7 @@ import r1.pages.BalanceLinkPage;
 import r1.pages.HomePage;
 import r1.pages.MyTabsPage;
 import r1.pages.PatientInfoPage;
+import r1.pages.PaymentPage;
 import r1.pages.ReminderPage;
 import r1.pages.RightPartyConPage;
 
@@ -30,7 +31,10 @@ public class SmokeCasesStepDef extends BasePage {
 	PatientInfoPage patientInfo;
 	RightPartyConPage rpcPage;
 	BalanceLinkPage balancePage;
+	PaymentPage payment;
 	String JHouseAccount;
+	String AccountNum="AccountNumber";
+	String WheatonAccountNum="WheatonAccountNumber";
 
 	@Given("^user is on R(\\d+) contact login page$")
 	public void user_is_on_R_contact_login_page(int arg) {
@@ -123,7 +127,7 @@ public class SmokeCasesStepDef extends BasePage {
 	@When("^user clicks \"([^\"]*)\" given at the end of the row for the account$")
 	public void user_clicks_given_at_the_end_of_the_row_for_the_account(String arg1)
 			throws FileNotFoundException, IOException {
-		account.selectAndClickAccount(arg1);
+		account.selectAndClickAccount(arg1, AccountNum);
 	}
 
 	@Then("^user should be able to see the account info page with the following details present on the screen Guarantor Patient Balances Account Information$")
@@ -136,7 +140,7 @@ public class SmokeCasesStepDef extends BasePage {
 	 */
 	@Then("^Then user should be land on the account info page$")
 	public void then_user_should_be_land_on_the_account_info_page() {
-		accoundel.verifyAccInfoAccNum();
+		accoundel.verifyAccInfoAccNum(AccountNum);
 	}
 
 	@Then("^user should be able to see the below tabs InsuranceNotes Transactions Payment History Letter Sent Encounter Information Account Activity$")
@@ -150,7 +154,7 @@ public class SmokeCasesStepDef extends BasePage {
 	@Then("^user should be navigate back to the account page$")
 	public void user_should_be_navigate_back_to_the_account_page() throws FileNotFoundException, IOException {
 		rem.VerifyDuplicateReminderAlert();
-		accoundel.verifyAccInfoAccNum();
+		accoundel.verifyAccInfoAccNum(AccountNum);
 	}
 
 	/*
@@ -181,7 +185,7 @@ public class SmokeCasesStepDef extends BasePage {
 	@When("^user clicks on the \"([^\"]*)\" enter arrow$")
 	public void user_clicks_on_the_enter_arrow(String inboundArrow) throws FileNotFoundException, IOException {
 
-		account.selectAndClickAccount(inboundArrow);
+		account.selectAndClickAccount(inboundArrow, AccountNum);
 	}
 
 	@Then("^user should be navigate to right party verification page$")
@@ -198,7 +202,7 @@ public class SmokeCasesStepDef extends BasePage {
 
 	@Then("^user should be land on the account info page$")
 	public void user_should_be_land_on_the_account_info_page() {
-		accoundel.verifyAccInfoAccNum();
+		accoundel.verifyAccInfoAccNum(AccountNum);
 
 	}
 
@@ -274,8 +278,7 @@ public class SmokeCasesStepDef extends BasePage {
 	@Then("^user fetch the \"([^\"]*)\" get AccountNum having Jhouse owner$")
 	public void user_fetch_the_get_AccountNum_having_Jhouse_owner(String queryName)
 			throws ClassNotFoundException, FileNotFoundException, SQLException, IOException {
-
-		account.runQueryTranServer(queryName);
+		account.JhouseOwnerAccountNum(queryName, "BOMCKEY");
 		DatabaseConn.resultSet.next();
 		JHouseAccount = DatabaseConn.resultSet.getString("accountNum");
 
@@ -391,59 +394,74 @@ public class SmokeCasesStepDef extends BasePage {
 		account.selectFacility("Wheaton Franciscan Healthcare (Wisconsin)");
 		
 	}
-
-
-	@When("^user Click on \"([^\"]*)\" tab and pick one option from the drop down secure payment  arrangement$")
-	public void user_Click_on_tab_and_pick_one_option_from_the_drop_down_secure_payment_arrangement(String arg1) {
-	    
-	   
+	
+	@When("^user fetch the \"([^\"]*)\" and search for it$")
+	public void user_fetch_the_and_search_for_it(String propkey) throws ClassNotFoundException, FileNotFoundException, SQLException, IOException {
+	   payment.fetchNonZeroAccountNum(propkey, "ASWIKEY");
+	   payment.searchAccount();
 	}
+	
+	@When("^user clicks \"([^\"]*)\" given at the end of the WHEATON PHYSICIAN SERVICES account row$")
+	public void user_clicks_given_at_the_end_of_the_WHEATON_PHYSICIAN_SERVICES_account_row(String arg1) throws FileNotFoundException, IOException {
+		payment.clickOnAccount();
+		
+	}
+
+	@When("^user Click on \"([^\"]*)\" tab and pick one option from the drop down secure payment arrangement$")
+	public void user_Click_on_tab_and_pick_one_option_from_the_drop_down_secure_payment_arrangement(String arg1) throws InterruptedException {
+		accoundel.clickPaymentHistory();
+		accoundel.paymentDropdown();
+		
+	}
+
 
 	@Then("^User should be land on the payment initial page\\.$")
 	public void user_should_be_land_on_the_payment_initial_page() {
-	    
+		payment.verifiyInitialPage(); 
 	   
 	}
 
 	@When("^user enter amount,checks check box then and user clicks on Summary button$")
 	public void user_enter_amount_checks_check_box_then_and_user_clicks_on_Summary_button() {
-	    
+	    payment.enterAndCheck();
 	   
 	}
 
 	@Then("^User land on the Summary tab$")
 	public void user_land_on_the_Summary_tab() {
-	    
+		payment.verifiySummaryPage(); 
 	   
 	}
 
 	@When("^user Click on Enter payment button$")
 	public void user_Click_on_Enter_payment_button() {
-	    
+	    payment.clickPayment();
 	   
 	}
 
 	@Then("^User land on the payment Information tab And user is able to see secure payment radio button enabled$")
 	public void user_land_on_the_payment_Information_tab_And_user_is_able_to_see_secure_payment_radio_button_enabled() {
+	    payment.verifiyPaymentInformation();
+	    payment.checkIncludeCheckBox();
 	    
 	   
 	}
 
 	@Then("^user is able to see guarantor info$")
 	public void user_is_able_to_see_guarantor_info() {
-	    
+	    payment.verifiyGuarantorInfo();
 	   
 	}
 
 	@When("^user clicks on the submit button$")
 	public void user_clicks_on_the_submit_button() {
-	    
+	    payment.clickSummarySubmit();
 	   
 	}
 
 	@Then("^Payment should be submitted successfully$")
 	public void payment_should_be_submitted_successfully() {
-	    
+	   payment.verifiySuccessMessage(); 
 	   
 	}
 }

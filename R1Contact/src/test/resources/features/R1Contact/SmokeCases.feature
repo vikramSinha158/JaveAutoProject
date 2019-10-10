@@ -164,10 +164,9 @@ Then a pdf file should be open
 Scenario: Verify the payment posting using secure payment
 When user Click on 'Search' account link
 And select accounts option for WHEATON PHYSICIAN SERVICES
-And Enter last name as "K" and press ENTER and List of Accounts should be displayed
-When user clicks on the "arrow" enter arrow  
-Then user should be land on the account info page
-When user Click on "Payment history" tab and pick one option from the drop down secure payment  arrangement
+And user fetch the "WheatonNonZeroAccountNum" and search for it 
+When user clicks "arrow" given at the end of the WHEATON PHYSICIAN SERVICES account row
+And user Click on "Payment history" tab and pick one option from the drop down secure payment arrangement
 Then User should be land on the payment initial page.
 When user enter amount,checks check box then and user clicks on Summary button
 Then User land on the Summary tab 

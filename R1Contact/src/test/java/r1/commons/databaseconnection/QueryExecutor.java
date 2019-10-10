@@ -8,10 +8,10 @@ import r1.commons.utilities.CommonMethod;
 
 public class QueryExecutor {
 
-	public static void runQueryTran(String dbPropertiesFileName, String queryName)
+	public static void runQueryTran(String dbPropertiesFileName, String queryName, String facilityKey, String facilityFile)
 			throws ClassNotFoundException, FileNotFoundException, SQLException, IOException {
 		DatabaseConn.getServerDBName(CommonMethod.LoadProperties("webdriver.base.url"),
-				CommonMethod.LoadProperties("facility"));
+				CommonMethod.queryProperties(facilityKey, facilityFile));
 		DatabaseConn.serverConn(DatabaseConn.serverName, DatabaseConn.databaseName,
 				CommonMethod.queryProperties(queryName, dbPropertiesFileName));
 	}

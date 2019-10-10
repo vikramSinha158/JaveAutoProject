@@ -23,6 +23,9 @@ public class AccountDetailsPage extends PageObject {
 	private String accNumberxpath = "//div[@class='account-number']";
 	private String codeRowBeforeXpath="//div[@id='RequestConfigs']//tbody/tr[";
 	private String codeRowAfterXpath="]/td/a";
+	private String payment="//span[text()='--New Payment--']";
+	private String newPaymentDropDown="//ul[@class='t-reset']/li";
+	private int maxIndex=30;
 	
 	@FindBy(xpath = "//div[@class='pull-left right-item']/a")
 	private List<WebElementFacade> patientAndGuarntName;
@@ -64,6 +67,8 @@ public class AccountDetailsPage extends PageObject {
 	
 	@FindBy(xpath="//div[@id='RequestConfigs']//thead") private WebElementFacade codeTableHeader;
 	
+	@FindBy(xpath="//span[text()=' Payment History ']") private WebElementFacade paymentHistory ;
+	
 	int PatientDtlTabs = Integer.parseInt(CommonMethod.readProperties("patientDetailtabs"));
 
 	public void patientAndGuarntName() {
@@ -95,11 +100,11 @@ public class AccountDetailsPage extends PageObject {
 		Assert.assertEquals("Account info page has not all expected tabs", PatientDtlTabs, counter);
 	}
 
-	public void runQueryTranServer(String queryName)
+	/*public void runQueryTranServer(String queryName)
 			throws ClassNotFoundException, FileNotFoundException, SQLException, IOException {
 		QueryExecutor.runQueryTran(this.getClass().getSimpleName().replace("Page", ""), queryName);
 	}
-
+*/
 	public void clickOnPatientLink() {
 		clickOn(patientInfoLink);
 	}
@@ -109,8 +114,8 @@ public class AccountDetailsPage extends PageObject {
 		clickOn(balanceClk);
 	}
 
-	public void verifyAccInfoAccNum() {
-		contactCommon.verifyAccountNumber(accNumberxpath, CommonMethod.readProperties("AccountNumber"));
+	public void verifyAccInfoAccNum(String AccountNumber ) {
+		contactCommon.verifyAccountNumber(accNumberxpath, CommonMethod.readProperties(AccountNumber));
 	}
 
 	/*-------HOME--  Click on patient detail tabs  ------*/
@@ -190,7 +195,7 @@ public class AccountDetailsPage extends PageObject {
 	
 	// Create request
 	public void createReq() {
-		element(By.xpath(codeRowBeforeXpath+CommonMethod.random()+codeRowAfterXpath)).click();
+		element(By.xpath(codeRowBeforeXpath+CommonMethod.random(maxIndex)+codeRowAfterXpath)).click();
 	}
 	
 	public void codeAndDes() {
@@ -198,5 +203,14 @@ public class AccountDetailsPage extends PageObject {
 		
 	}
 	
+	/*Click payment History  */
+	public void clickPaymentHistory() {
+		paymentHistory.click();
+	}
 	
+
+/*	payment dropdown*/
+	public void paymentDropdown() throws InterruptedException {
+		contactCommon.clickdropdown(payment,newPaymentDropDown, "Single credit card payment");
+}
 }
