@@ -67,9 +67,10 @@ And Reminders list(If any reminder set by the agent)
 And Home, My Tabs and other Tabs
 When user Click on 'Search' account link
 Then Search account page should be displayed with searching criterias like..Account Number, First Name, Last Name etc
-When Enter last name as "K" and press ENTER and List of Accounts should be displayed
-When Pick one account from the list by click on Arrow
-Then Then user should be land on the account info page
+And select accounts option for WHEATON PHYSICIAN SERVICES
+And user fetch the "WheatonNonZeroAccountNum" and search for it
+And user clicks "arrow" given at the end of the WHEATON PHYSICIAN SERVICES account row 
+Then verify user account information on account info page
 And user should be able to see the below tabs InsuranceNotes Transactions Payment History Letter Sent Encounter Information Account Activity
 When user clicks on the New request icon
 Then user should be navigate to create request page
@@ -150,11 +151,10 @@ Examples:
 @428417
 Scenario: Verify Bill Statement
 When user Click on 'Search' account link
-Then Search account page should be displayed with searching criterias like..Account Number, First Name, Last Name etc 
-When user selects the last name search criteria on account search page
-And Enter last name as "K" and press ENTER and List of Accounts should be displayed
-When user clicks on the "arrow" enter arrow 
-Then user should be land on the account info page
+And select accounts option for WHEATON PHYSICIAN SERVICES
+And user fetch the "WheatonNonZeroAccountNum" and search for it
+And user clicks "arrow" given at the end of the WHEATON PHYSICIAN SERVICES account row 
+Then verify user account information on account info page
 When user clicks on the Bill statement link
 Then an overlay window should be appeared 
 When user clicks on the Pdf link

@@ -1,11 +1,20 @@
 package r1.pages;
 
+import java.io.BufferedInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.apache.pdfbox.pdfparser.PDFParser;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.encryption.InvalidPasswordException;
+import org.apache.pdfbox.text.PDFTextStripper;
 import org.junit.Assert;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import net.serenitybdd.core.annotations.findby.By;
 import net.serenitybdd.core.annotations.findby.FindBy;
@@ -19,6 +28,7 @@ public class AccountDetailsPage extends PageObject {
 	CommonMethod comMethod;
 	R1ContactCommonMethods contactCommon;
 	HomePage home;
+	AccountPage account;
 	String agentPatientPageEmail;
 	private String accNumberxpath = "//div[@class='account-number']";
 	private String codeRowBeforeXpath="//div[@id='RequestConfigs']//tbody/tr[";
@@ -63,11 +73,22 @@ public class AccountDetailsPage extends PageObject {
 	@FindBy(xpath = "//div[@class='has-icon head-box']")
 	private List<WebElementFacade> accountInfoSection;
 	
+	@FindBy(xpath="//td[contains(text(),'CHARITY APPLICATION')]/following-sibling::td/a") 
+	private WebElementFacade chrityCreate;
+	
 	@FindBy(id="DoRequest") private WebElementFacade requestIcon;
 	
 	@FindBy(xpath="//div[@id='RequestConfigs']//thead") private WebElementFacade codeTableHeader;
 	
 	@FindBy(xpath="//span[text()=' Payment History ']") private WebElementFacade paymentHistory ;
+	
+	@FindBy(xpath="//a[text()='Bill Statements']") private WebElementFacade billStatement;
+	
+	@FindBy(xpath="//span[text()='Billing Statement Report']") private WebElementFacade billingStatReport;
+	
+	@FindBy(xpath="//a[text()='Show PDF']") private WebElementFacade showAnyPDF;
+	
+	@FindBy(xpath="//div[@id='content']") private WebElementFacade pdfSrc;
 	
 	int PatientDtlTabs = Integer.parseInt(CommonMethod.readProperties("patientDetailtabs"));
 
@@ -100,11 +121,6 @@ public class AccountDetailsPage extends PageObject {
 		Assert.assertEquals("Account info page has not all expected tabs", PatientDtlTabs, counter);
 	}
 
-	/*public void runQueryTranServer(String queryName)
-			throws ClassNotFoundException, FileNotFoundException, SQLException, IOException {
-		QueryExecutor.runQueryTran(this.getClass().getSimpleName().replace("Page", ""), queryName);
-	}
-*/
 	public void clickOnPatientLink() {
 		clickOn(patientInfoLink);
 	}
@@ -117,7 +133,10 @@ public class AccountDetailsPage extends PageObject {
 	public void verifyAccInfoAccNum(String AccountNumber ) {
 		contactCommon.verifyAccountNumber(accNumberxpath, CommonMethod.readProperties(AccountNumber));
 	}
-
+	
+	public void verifyAccountWithDb(String AccountNum) {
+		contactCommon.verifyAccountNumber(accNumberxpath, AccountNum);
+	}
 	/*-------HOME--  Click on patient detail tabs  ------*/
 
 	public void clickPatientDtlTabs(String menuName) {
@@ -195,7 +214,8 @@ public class AccountDetailsPage extends PageObject {
 	
 	// Create request
 	public void createReq() {
-		element(By.xpath(codeRowBeforeXpath+CommonMethod.random(maxIndex)+codeRowAfterXpath)).click();
+		chrityCreate.click();
+		
 	}
 	
 	public void codeAndDes() {
@@ -208,9 +228,66 @@ public class AccountDetailsPage extends PageObject {
 		paymentHistory.click();
 	}
 	
-
-/*	payment dropdown*/
+	/*	payment dropdown*/
 	public void paymentDropdown() throws InterruptedException {
 		contactCommon.clickdropdown(payment,newPaymentDropDown, "Single credit card payment");
 }
+	
+	/*click on Bill Statement*/
+	public void clickBillStatement() throws InterruptedException {
+		billStatement.click();
+		WebDriverWait wait = new WebDriverWait(getDriver(),30);
+          wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='Billing Statement Report']")));
+
+		
+	}
+	
+	/*Bill statement report window*/
+	
+	public void billReportWindow() {
+		String statementText=billingStatReport.getText();
+		Assert.assertEquals(statementText,"Billing Statement Report");
+				
+	}
+	
+	public void clickShowPDF() {
+		showAnyPDF.click();
+	}
+	
+	public void verifyPDF() throws InvalidPasswordException, IOException {
+/*		  String output;
+		  home.switchHeaderFrame();
+		String pdfUrl= pdfSrc.getAttribute("src");
+		URL url = new URL(pdfUrl);
+		InputStream is = url.openStream();
+		BufferedInputStream fileToParse = new BufferedInputStream(is);
+		PDDocument document = null;
+
+        try {
+
+            document = PDDocument.load(fileToParse);
+
+            output= new PDFTextStripper().getText(document);
+
+        } finally {
+
+            if (document != null) {
+
+                document.close();
+
+            }
+
+            fileToParse.close();
+
+            is.close();
+
+        }
+
+        return output;
+	}
+*/ 	getDriver().switchTo().defaultContent();
+		boolean pdfUrl= pdfSrc.isDisplayed();
+		//System.out.println(pdfUrl);
+		//comMethod.readPdf(pdfUrl);
+	}
 }

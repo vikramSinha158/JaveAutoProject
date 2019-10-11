@@ -13,6 +13,7 @@ import r1.commons.utilities.CommonMethod;
 import r1.pages.AccountDetailsPage;
 import r1.pages.AccountPage;
 import r1.pages.BalanceLinkPage;
+import r1.pages.CodeAndDesPage;
 import r1.pages.HomePage;
 import r1.pages.MyTabsPage;
 import r1.pages.PatientInfoPage;
@@ -32,6 +33,7 @@ public class SmokeCasesStepDef extends BasePage {
 	RightPartyConPage rpcPage;
 	BalanceLinkPage balancePage;
 	PaymentPage payment;
+	CodeAndDesPage code;
 	String JHouseAccount;
 	String AccountNum="AccountNumber";
 	String WheatonAccountNum="WheatonAccountNumber";
@@ -342,22 +344,22 @@ public class SmokeCasesStepDef extends BasePage {
 
 	@Then("^user should be able to see the Request form\\.$")
 	public void user_should_be_able_to_see_the_Request_form() {
-
+		code.chrtyRequestText();
 	}
 
 	@When("^user enter all details$")
 	public void user_enter_all_details() {
-
+		code.enterAddress();
 	}
 
 	@When("^user clicks on the Save button$")
 	public void user_clicks_on_the_Save_button() {
-
+		code.clickRequest();
 	}
 
 	@Then("^user should be able to save the request successfully$")
 	public void user_should_be_able_to_save_the_request_successfully() {
-
+		code.verifyReqMessage();
 
 	}
 
@@ -366,23 +368,23 @@ public class SmokeCasesStepDef extends BasePage {
 	 */
 
 	@When("^user clicks on the Bill statement link$")
-	public void user_clicks_on_the_Bill_statement_link() {
-
+	public void user_clicks_on_the_Bill_statement_link() throws InterruptedException {
+		accoundel.clickBillStatement();
 	}
 
 	@Then("^an overlay window should be appeared$")
 	public void an_overlay_window_should_be_appeared() {
-
+		accoundel.billReportWindow();
 	}
 
 	@When("^user clicks on the Pdf link$")
 	public void user_clicks_on_the_Pdf_link() {
-
+		accoundel.clickShowPDF();
 	}
 
 	@Then("^a pdf file should be open$")
-	public void a_pdf_file_should_be_open() {
-
+	public void a_pdf_file_should_be_open() throws IOException {
+		accoundel.verifyPDF();
 	}
 
 	/*	
@@ -397,14 +399,19 @@ public class SmokeCasesStepDef extends BasePage {
 	
 	@When("^user fetch the \"([^\"]*)\" and search for it$")
 	public void user_fetch_the_and_search_for_it(String propkey) throws ClassNotFoundException, FileNotFoundException, SQLException, IOException {
-	   payment.fetchNonZeroAccountNum(propkey, "ASWIKEY");
-	   payment.searchAccount();
+		account.fetchNonZeroAccountNum(propkey, "ASWIKEY");
+		account.searchAccount();
 	}
 	
 	@When("^user clicks \"([^\"]*)\" given at the end of the WHEATON PHYSICIAN SERVICES account row$")
 	public void user_clicks_given_at_the_end_of_the_WHEATON_PHYSICIAN_SERVICES_account_row(String arg1) throws FileNotFoundException, IOException {
-		payment.clickOnAccount();
+		account.clickOnAccount();
 		
+	}
+	
+	@Then("^verify user account information on account info page$")
+	public void verify_user_account_information_on_account_info_page() {
+	   accoundel.verifyAccountWithDb(AccountPage.wheatonNonZeroAccountNum);
 	}
 
 	@When("^user Click on \"([^\"]*)\" tab and pick one option from the drop down secure payment arrangement$")
@@ -417,7 +424,8 @@ public class SmokeCasesStepDef extends BasePage {
 
 	@Then("^User should be land on the payment initial page\\.$")
 	public void user_should_be_land_on_the_payment_initial_page() {
-		payment.verifiyInitialPage(); 
+		payment.verifiyInitialPage();
+		
 	   
 	}
 

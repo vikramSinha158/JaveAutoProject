@@ -10,11 +10,12 @@ import net.serenitybdd.core.annotations.findby.FindBy;
 import net.serenitybdd.core.pages.WebElementFacade;
 import r1.commons.BasePage;
 import r1.commons.R1ContactCommonMethods;
+import r1.commons.databaseconnection.DatabaseConn;
 import r1.commons.databaseconnection.QueryExecutor;
 import r1.commons.utilities.CommonMethod;
 
 public class AccountPage extends BasePage {
-
+	public static String wheatonNonZeroAccountNum;
 	private int counter = 0;
 	R1ContactCommonMethods contactCommon;
 	CommonMethod common;
@@ -184,6 +185,28 @@ public class AccountPage extends BasePage {
 	
 	public void JhouseOwnerAccountNum(String queryName, String facilityKey) throws ClassNotFoundException, FileNotFoundException, SQLException, IOException {
 		contactCommon.runQuery(queryName, facilityKey);
+	}
+	
+	/*fetch account from db*/
+	
+	public void fetchNonZeroAccountNum(String queryName, String facilityKey)
+			throws ClassNotFoundException, FileNotFoundException, SQLException, IOException {
+		contactCommon.runQuery(queryName, facilityKey);
+		DatabaseConn.resultSet.next();
+		wheatonNonZeroAccountNum = DatabaseConn.resultSet.getString("accountNum");
+		
+	}
+	
+	/*enter account and click on search button*/
+	
+	public void searchAccount() {
+		enterAccNumForSearch(wheatonNonZeroAccountNum);
+		clickForAccSearch();
+	}
+	
+	/*click on wheatonNonZeroAccountNum arrow*/
+	public void clickOnAccount() throws FileNotFoundException, IOException {
+		clickOnArrowWithDbAccNum(wheatonNonZeroAccountNum);
 	}
 	
 }

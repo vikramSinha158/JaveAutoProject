@@ -14,21 +14,44 @@ public class PaymentPage extends BasePage {
 	
 	String wheatonNonZeroAccountNum;
 
-	@FindBy(xpath="//a[text()='Initial']") private WebElementFacade initiaPaymnet;
-	@FindBy(xpath="//a[text()='Summary']") private WebElementFacade SummaryPaymnet;
-	@FindBy(xpath="//a[text()='Payment Information']") private WebElementFacade PaymentInformation;
-	@FindBy(xpath="//td[@id='0-Balance']") private WebElementFacade balance;
-	@FindBy(xpath="//td[@id='0-Balance']//following-sibling::td/input") private WebElementFacade amountfield;
-	@FindBy(xpath="//td[@id='0-Balance']//following-sibling::td/div[@class='checkbox-margin']/div/input[contains(@id,'DoInitial')]") private WebElementFacade includeCheck;
-	@FindBy(id="InitialSummary") private WebElementFacade summaryButton;
-	@FindBy(xpath="//input[@value='Enter Payment']") private WebElementFacade paymentbtn;
-	@FindBy(xpath="//input[@value='SecureInput']") private WebElementFacade secureInput;
-	@FindBy(xpath="//div[@class='cc-entry address flt-lft']/div[contains(text(),'Current Guarantor')]") private WebElementFacade GuarantorName;
-	@FindBy(xpath="//div[@class='flt-lft row' and contains(text(),'Success')]") private WebElementFacade successMessage;
-	@FindBy(xpath="//input[@value='Submit' and @name='ButtonClicked']") private WebElementFacade summarySubmit;
-	@FindBy(xpath="//div[@class='flt-lft row' and contains(text(),'Success')]") private WebElementFacade SuccessMessage;
+	@FindBy(xpath="//a[text()='Initial']") 
+	private WebElementFacade initiaPaymnet;
 	
+	@FindBy(xpath="//a[text()='Summary']") 
+	private WebElementFacade SummaryPaymnet;
 	
+	@FindBy(xpath="//a[text()='Payment Information']") 
+	private WebElementFacade PaymentInformation;
+	
+	@FindBy(xpath="//td[@id='0-Balance']") 
+	private WebElementFacade balance;
+	
+	@FindBy(xpath="//td[@id='0-Balance']//following-sibling::td/input") 
+	private WebElementFacade amountfield;
+	
+	@FindBy(xpath="//td[@id='0-Balance']//following-sibling::td/div[@class='checkbox-margin']/div/input[contains(@id,'DoInitial')]") 
+	private WebElementFacade includeCheck;
+	
+	@FindBy(id="InitialSummary") 
+	private WebElementFacade summaryButton;
+	
+	@FindBy(xpath="//input[@value='Enter Payment']") 
+	private WebElementFacade paymentbtn;
+	
+	@FindBy(xpath="//input[@value='SecureInput']") 
+	private WebElementFacade secureInput;
+	
+	@FindBy(xpath="//div[@class='cc-entry address flt-lft']/div[contains(text(),'Current Guarantor')]") 
+	private WebElementFacade GuarantorName;
+	
+	@FindBy(xpath="//div[@class='flt-lft row' and contains(text(),'Success')]") 
+	private WebElementFacade successMessage;
+	
+	@FindBy(xpath="//input[@value='Submit' and @name='ButtonClicked']") 
+	private WebElementFacade summarySubmit;
+	
+	@FindBy(xpath="//div[@class='flt-lft row' and contains(text(),'Success')]") 
+	private WebElementFacade SuccessMessage;
 	
 	R1ContactCommonMethods contactMethod;
 	AccountPage account;
@@ -76,23 +99,7 @@ public class PaymentPage extends BasePage {
 		summarySubmit.click();
 	}
 	
-	
-	public void fetchNonZeroAccountNum(String queryName, String facilityKey)
-			throws ClassNotFoundException, FileNotFoundException, SQLException, IOException {
-		contactMethod.runQuery(queryName, facilityKey);
-		DatabaseConn.resultSet.next();
-		wheatonNonZeroAccountNum = DatabaseConn.resultSet.getString("accountNum");
-		
-	}
-	
-	public void searchAccount() {
-		account.enterAccNumForSearch(wheatonNonZeroAccountNum);
-		account.clickForAccSearch();
-	}
-	
-	public void clickOnAccount() throws FileNotFoundException, IOException {
-		account.clickOnArrowWithDbAccNum(wheatonNonZeroAccountNum);
-	}
+
 	public void enterAndCheck() {
 		String bal=balance.getText();
 		String[] split=bal.split("\\.");
