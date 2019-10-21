@@ -6,11 +6,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-
 import org.junit.Assert;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import net.serenitybdd.core.annotations.findby.By;
-import net.thucydides.core.pages.WebElementFacade;
 import r1.commons.databaseconnection.QueryExecutor;
 import r1.commons.utilities.CommonMethod;
 
@@ -177,7 +177,7 @@ public class R1ContactCommonMethods extends BasePage {
 	int size=optionsList.size();
 	for(int i=0; i<size;i++) {
 		String optionName=optionsList.get(i).getText();
-		if(optionName.equalsIgnoreCase(clickOption)) {
+		if(optionName.contains(clickOption)) {
 			optionsList.get(i).click();
 			break;
 		}
@@ -191,6 +191,15 @@ public class R1ContactCommonMethods extends BasePage {
 			throws ClassNotFoundException, FileNotFoundException, SQLException, IOException {
 		QueryExecutor.runQueryTran(queryPropFileName, queryName,facilityKey,facilityFile);
 	}
+	
+	/*	wait for element*/
+		public void waitForControl(String waitElement)
+			{
+				WebDriverWait wait = new WebDriverWait(getDriver(),65);
+		        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(waitElement))); 
+			} 
+		 
+
 }
 
 

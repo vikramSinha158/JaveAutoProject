@@ -148,11 +148,11 @@ Examples:
    |QueryForJHouseAuccountNum|
    |queryAccountJHouse|
 
-@428417
+@428417 
 Scenario: Verify Bill Statement
 When user Click on 'Search' account link
 And select accounts option for WHEATON PHYSICIAN SERVICES
-And user fetch the "WheatonNonZeroAccountNum" and search for it
+And user fetch the "BillingAccount" and search for it
 And user clicks "arrow" given at the end of the WHEATON PHYSICIAN SERVICES account row 
 Then verify user account information on account info page
 When user clicks on the Bill statement link
@@ -160,13 +160,13 @@ Then an overlay window should be appeared
 When user clicks on the Pdf link
 Then a pdf file should be open 
 
-@428494
+@428494   
 Scenario: Verify the payment posting using secure payment
 When user Click on 'Search' account link
 And select accounts option for WHEATON PHYSICIAN SERVICES
-And user fetch the "WheatonNonZeroAccountNum" and search for it 
-When user clicks "arrow" given at the end of the WHEATON PHYSICIAN SERVICES account row
-And user Click on "Payment history" tab and pick one option from the drop down secure payment arrangement
+And user fetch the "NewPaymentAccount" for payment posting and search for it 
+When user selects the New payment account by clicking on the arrow button
+And user Click on "Payment history" tab and pick one option from the drop down "Single credit card payment"
 Then User should be land on the payment initial page.
 When user enter amount,checks check box then and user clicks on Summary button
 Then User land on the Summary tab 
@@ -174,7 +174,63 @@ When user Click on Enter payment button
 Then User land on the payment Information tab And user is able to see secure payment radio button enabled 
 And user is able to see guarantor info
 When user clicks on the submit button
-Then Payment should be submitted successfully   
+Then Payment should be submitted successfully
+
+@428495 
+Scenario: Verify the payment posting using Agent input with revspring
+When user Click on 'Search' account link
+And select accounts option for WHEATON PHYSICIAN SERVICES
+And user fetch the "NewPaymentAccount" for payment posting and search for it 
+When user selects the New payment account by clicking on the arrow button
+And user Click on "Payment history" tab and pick one option from the drop down "Check payment arrangment"
+Then User should be land on the payment initial page.
+When user enter amount,checks check box then and user clicks on Summary button
+And user Click on Enter payment button
+Then User land on the payment Information tab And user is able to see agent input radio button enabled
+And Then iFrame screen should be displayed
+When user add payment information 
+And click on submit button
+Then a profile id should be generated 
+When user copy that profile id 
+And user paste the profile id into the profile text box
+And user clicks on the submit button on payment information page
+Then Payment should be submitted successfully for check payment arrangement
+
+@428496
+Scenario: Verify the payment posting using Agent input with Emerge
+When user Click on 'Search' account link
+And select accounts option for WHEATON PHYSICIAN SERVICES
+And user fetch the "NewPaymentAccount" for payment posting and search for it
+When user selects the New payment account by clicking on the arrow button
+And user Click on "Payment history" tab and pick one option from the drop down "Credit card payment arrangment"
+Then User should be land on the payment initial page.
+When user enter amount,checks check box then and user clicks on Summary button
+And user Click on Enter payment button
+Then User land on the payment Information tab And user is able to see agent input radio button enabled
+And Then iFrame screen should be displayed
+When user add payment information 
+And click on submit button
+Then a profile id should be generated
+When user copy that profile id
+And user paste the profile id into the profile text box
+And user clicks on the submit button on payment information page
+Then Payment should be submitted successfully for check payment arrangement 
+
+@428497 
+Scenario: Verify the Regular payment posting
+When user Click on 'Search' account link
+And select accounts option for WHEATON PHYSICIAN SERVICES
+And user fetch the "NewPaymentAccount" for payment posting and search for it 
+When user selects the New payment account by clicking on the arrow button
+And user Click on "Payment history" tab and pick one option from the drop down "Regular payment arrangment"
+Then user should be land on the payment dovetail page.
+And user enter amount,checks check box,select emi perion then and user clicks on Summary button
+Then Then user should be land on the summary tab
+And user Click on Enter payment button
+Then user should be land on the payment information tab
+When user clicks on the submit button on payment information
+Then Payment should be processed successfully
+ 
 
 
 

@@ -282,6 +282,6 @@ public class CommonMethod extends BasePage {
 		//Instantiating PDFTextStripper class
 		PDFTextStripper pdfStripper = new PDFTextStripper();
 		String ss=pdfStripper.getText(doc);
-		System.out.println(ss);
+		
 	}
 }

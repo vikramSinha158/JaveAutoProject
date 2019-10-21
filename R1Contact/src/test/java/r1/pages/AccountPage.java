@@ -15,7 +15,6 @@ import r1.commons.databaseconnection.QueryExecutor;
 import r1.commons.utilities.CommonMethod;
 
 public class AccountPage extends BasePage {
-	public static String wheatonNonZeroAccountNum;
 	private int counter = 0;
 	R1ContactCommonMethods contactCommon;
 	CommonMethod common;
@@ -189,24 +188,24 @@ public class AccountPage extends BasePage {
 	
 	/*fetch account from db*/
 	
-	public void fetchNonZeroAccountNum(String queryName, String facilityKey)
+	public void fetchAccountNumber(String queryName, String facilityKey)
 			throws ClassNotFoundException, FileNotFoundException, SQLException, IOException {
 		contactCommon.runQuery(queryName, facilityKey);
-		DatabaseConn.resultSet.next();
-		wheatonNonZeroAccountNum = DatabaseConn.resultSet.getString("accountNum");
 		
 	}
 	
 	/*enter account and click on search button*/
 	
-	public void searchAccount() {
-		enterAccNumForSearch(wheatonNonZeroAccountNum);
+	public void searchAccount(String accountNumber) {
+		enterAccNumForSearch(accountNumber);
 		clickForAccSearch();
 	}
 	
 	/*click on wheatonNonZeroAccountNum arrow*/
-	public void clickOnAccount() throws FileNotFoundException, IOException {
-		clickOnArrowWithDbAccNum(wheatonNonZeroAccountNum);
+	public void clickOnAccount(String accountNumber) throws FileNotFoundException, IOException {
+		clickOnArrowWithDbAccNum(accountNumber);
 	}
+
+
 	
 }

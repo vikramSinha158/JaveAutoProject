@@ -229,8 +229,8 @@ public class AccountDetailsPage extends PageObject {
 	}
 	
 	/*	payment dropdown*/
-	public void paymentDropdown() throws InterruptedException {
-		contactCommon.clickdropdown(payment,newPaymentDropDown, "Single credit card payment");
+	public void paymentDropdown(String value) throws InterruptedException {
+		contactCommon.clickdropdown(payment,newPaymentDropDown, value);
 }
 	
 	/*click on Bill Statement*/
@@ -254,40 +254,16 @@ public class AccountDetailsPage extends PageObject {
 		showAnyPDF.click();
 	}
 	
+	@FindBy(xpath="//iframe[@id='iframepdf1571320266191']") private WebElementFacade pdfFrame;
 	public void verifyPDF() throws InvalidPasswordException, IOException {
-/*		  String output;
-		  home.switchHeaderFrame();
-		String pdfUrl= pdfSrc.getAttribute("src");
-		URL url = new URL(pdfUrl);
+		URL url = new URL("http://uatccc.accretivehealth.com/Account/GetBillingStatementPdf?aAccountNumber=fab2ccd0-7880-e911-80e5-0050569a120c&aFac=ASWI&aPatId=");
 		InputStream is = url.openStream();
-		BufferedInputStream fileToParse = new BufferedInputStream(is);
-		PDDocument document = null;
-
-        try {
-
-            document = PDDocument.load(fileToParse);
-
-            output= new PDFTextStripper().getText(document);
-
-        } finally {
-
-            if (document != null) {
-
-                document.close();
-
-            }
-
-            fileToParse.close();
-
-            is.close();
-
-        }
-
-        return output;
-	}
-*/ 	getDriver().switchTo().defaultContent();
-		boolean pdfUrl= pdfSrc.isDisplayed();
-		//System.out.println(pdfUrl);
-		//comMethod.readPdf(pdfUrl);
+		BufferedInputStream fileparse= new BufferedInputStream(is);
+		PDDocument doc = null;
+		doc=PDDocument.load(fileparse);
+		String pdfContent =new PDFTextStripper().getText(doc);
+		System.out.println(pdfContent);
+		
+		
 	}
 }

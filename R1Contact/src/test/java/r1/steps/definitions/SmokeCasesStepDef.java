@@ -36,14 +36,14 @@ public class SmokeCasesStepDef extends BasePage {
 	CodeAndDesPage code;
 	String JHouseAccount;
 	String AccountNum="AccountNumber";
-	String WheatonAccountNum="WheatonAccountNumber";
-
+	String billingAccount;
+	String newPaymentAccount;
+	
 	@Given("^user is on R(\\d+) contact login page$")
 	public void user_is_on_R_contact_login_page(int arg) {
 		OpenBrowser();
 		home.switchHeaderFrame();
 		home.changeVisibleDate();
-
 	}
 
 	@When("^user Land on the R(\\d+)Contact application home page$")
@@ -366,7 +366,32 @@ public class SmokeCasesStepDef extends BasePage {
 	/*	
 	 * Test Case 428417:Verify Bill Statement
 	 */
-
+	@When("^select accounts option for WHEATON PHYSICIAN SERVICES$")
+	public void select_accounts_option_for_WHEATON_PHYSICIAN_SERVICES() {
+		account.selectFacility("Wheaton Franciscan Healthcare (Wisconsin)");
+		
+	}
+	
+	@When("^user fetch the \"([^\"]*)\" and search for it$")
+	public void user_fetch_the_and_search_for_it(String propkey) throws ClassNotFoundException, FileNotFoundException, SQLException, IOException {
+		account.fetchAccountNumber(propkey, "ASWIKEY");
+		DatabaseConn.resultSet.next();
+		billingAccount = DatabaseConn.resultSet.getString("accountNum");
+		account.searchAccount(billingAccount);
+	}
+	
+	
+	@When("^user clicks \"([^\"]*)\" given at the end of the WHEATON PHYSICIAN SERVICES account row$")
+	public void user_clicks_given_at_the_end_of_the_WHEATON_PHYSICIAN_SERVICES_account_row(String arg1) throws FileNotFoundException, IOException {
+		account.clickOnAccount(billingAccount);
+		
+	}
+	
+	@Then("^verify user account information on account info page$")
+	public void verify_user_account_information_on_account_info_page() {
+	   accoundel.verifyAccountWithDb(billingAccount);
+	}
+	
 	@When("^user clicks on the Bill statement link$")
 	public void user_clicks_on_the_Bill_statement_link() throws InterruptedException {
 		accoundel.clickBillStatement();
@@ -391,36 +416,25 @@ public class SmokeCasesStepDef extends BasePage {
 	 * Test case: 428494  Verify the payment posting using secure payment
 	 */
 	
-	@When("^select accounts option for WHEATON PHYSICIAN SERVICES$")
-	public void select_accounts_option_for_WHEATON_PHYSICIAN_SERVICES() {
-		account.selectFacility("Wheaton Franciscan Healthcare (Wisconsin)");
-		
-	}
-	
-	@When("^user fetch the \"([^\"]*)\" and search for it$")
-	public void user_fetch_the_and_search_for_it(String propkey) throws ClassNotFoundException, FileNotFoundException, SQLException, IOException {
-		account.fetchNonZeroAccountNum(propkey, "ASWIKEY");
-		account.searchAccount();
-	}
-	
-	@When("^user clicks \"([^\"]*)\" given at the end of the WHEATON PHYSICIAN SERVICES account row$")
-	public void user_clicks_given_at_the_end_of_the_WHEATON_PHYSICIAN_SERVICES_account_row(String arg1) throws FileNotFoundException, IOException {
-		account.clickOnAccount();
-		
-	}
-	
-	@Then("^verify user account information on account info page$")
-	public void verify_user_account_information_on_account_info_page() {
-	   accoundel.verifyAccountWithDb(AccountPage.wheatonNonZeroAccountNum);
+	@When("^user fetch the \"([^\"]*)\" for payment posting and search for it$")
+	public void user_fetch_the_for_payment_posting_and_search_for_it(String propkey) throws ClassNotFoundException, FileNotFoundException, SQLException, IOException {
+		account.fetchAccountNumber(propkey, "ASWIKEY");
+		DatabaseConn.resultSet.next();
+		newPaymentAccount = DatabaseConn.resultSet.getString("accountNum");
+		account.searchAccount(newPaymentAccount);
 	}
 
-	@When("^user Click on \"([^\"]*)\" tab and pick one option from the drop down secure payment arrangement$")
-	public void user_Click_on_tab_and_pick_one_option_from_the_drop_down_secure_payment_arrangement(String arg1) throws InterruptedException {
+	@When("^user selects the New payment account by clicking on the arrow button$")
+	public void user_selects_the_New_payment_account_by_clicking_on_the_arrow_button() throws FileNotFoundException, IOException {
+		account.clickOnAccount(newPaymentAccount);
+	}
+	
+
+	@When("^user Click on \"([^\"]*)\" tab and pick one option from the drop down \"([^\"]*)\"$")
+	public void user_Click_on_tab_and_pick_one_option_from_the_drop_down(String arg1, String dropdownValue) throws InterruptedException {
 		accoundel.clickPaymentHistory();
-		accoundel.paymentDropdown();
-		
+		accoundel.paymentDropdown(dropdownValue);
 	}
-
 
 	@Then("^User should be land on the payment initial page\\.$")
 	public void user_should_be_land_on_the_payment_initial_page() {
@@ -431,7 +445,7 @@ public class SmokeCasesStepDef extends BasePage {
 
 	@When("^user enter amount,checks check box then and user clicks on Summary button$")
 	public void user_enter_amount_checks_check_box_then_and_user_clicks_on_Summary_button() {
-	    payment.enterAndCheck();
+	    payment.enterAndCheck(newPaymentAccount);
 	   
 	}
 
@@ -471,5 +485,98 @@ public class SmokeCasesStepDef extends BasePage {
 	public void payment_should_be_submitted_successfully() {
 	   payment.verifiySuccessMessage(); 
 	   
+	}
+	
+	/*Test Case 428495:Verify the payment posting using Agent input with revspring*/
+	
+	@Then("^User land on the payment Information tab And user is able to see agent input radio button enabled$")
+	public void user_land_on_the_payment_Information_tab_And_user_is_able_to_see_agent_input_radio_button_enabled() {
+		  payment.verifiyPaymentInformation();
+		  payment.agentInputCheckBox();
+	    
+	}
+
+	@Then("^Then iFrame screen should be displayed$")
+	public void then_iFrame_screen_should_be_displayed() {
+	    payment.verifyRevspringFrame();
+	    
+	}
+
+	@When("^user add payment information$")
+	public void user_add_payment_information() {
+	     payment.enterCardDetails();
+	    
+	}
+
+	@When("^click on submit button$")
+	public void click_on_submit_button() {
+	    payment.submitProfile();
+	    
+	}
+
+	@Then("^a profile id should be generated$")
+	public void a_profile_id_should_be_generated() {
+	    payment.verifyProfileID();
+	    
+	}
+
+	@When("^user copy that profile id$")
+	public void user_copy_that_profile_id() {
+	   payment.copyProfileID();
+	    
+	}
+
+	@When("^user paste the profile id into the profile text box$")
+	public void user_paste_the_profile_id_into_the_profile_text_box() throws InterruptedException {
+	    payment.sendProfileID();
+	    
+	}
+	
+	@When("^user clicks on the submit button on payment information page$")
+	public void user_clicks_on_the_submit_button_on_payment_information_page() {
+	   payment.submitPayment();
+	 
+	}
+
+
+	@Then("^Payment should be submitted successfully for check payment arrangement$")
+	public void payment_should_be_submitted_successfully_for_check_payment_arrangement() {
+		payment.verifyProcess();
+		payment.verifySubmittedMessage();
+	   
+	}
+	
+	/*	Test Case 428497:Verify the Regular payment posting*/
+	
+	@Then("^user should be land on the payment dovetail page\\.$")
+	public void user_should_be_land_on_the_payment_dovetail_page() {
+		payment.verifiyDovetailPage();
+	}
+
+
+	@Then("^user enter amount,checks check box,select emi perion then and user clicks on Summary button$")
+	public void user_enter_amount_checks_check_box_select_emi_perion_then_and_user_clicks_on_Summary_button() throws InterruptedException {
+		 payment.dovetailCheck();
+
+	}
+
+	@Then("^Then user should be land on the summary tab$")
+	public void then_user_should_be_land_on_the_summary_tab() {
+	   payment.verifiySummaryPage();
+	}
+
+	@Then("^user should be land on the payment information tab$")
+	public void user_should_be_land_on_the_payment_information_tab() {
+	  payment.verifiyPaymentInformation();
+	}
+
+	@When("^user clicks on the submit button on payment information$")
+	public void user_clicks_on_the_submit_button_on_payment_information() {
+		payment.submitPaymentInfo();
+	}
+	
+	@Then("^Payment should be processed successfully$")
+	public void payment_should_be_processed_successfully() {
+	  payment.verifyProcess();
 	}
 }
