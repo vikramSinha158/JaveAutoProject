@@ -1,9 +1,7 @@
 package r1.pages;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
-
 import org.junit.Assert;
 import org.openqa.selenium.support.ui.Select;
 import net.serenitybdd.core.annotations.findby.By;

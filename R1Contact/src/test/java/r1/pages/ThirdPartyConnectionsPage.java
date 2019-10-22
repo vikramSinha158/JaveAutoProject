@@ -1,16 +1,10 @@
 package r1.pages;
 
 import net.serenitybdd.core.pages.PageObject;
-
 import java.util.List;
-
 import org.junit.Assert;
-
-
 import net.serenitybdd.core.annotations.findby.FindBy;
-import net.serenitybdd.core.pages.PageObject;
 import net.serenitybdd.core.pages.WebElementFacade;
-import net.thucydides.core.annotations.findby.By;
 import r1.commons.R1ContactCommonMethods;
 import r1.commons.utilities.CommonMethod;
 

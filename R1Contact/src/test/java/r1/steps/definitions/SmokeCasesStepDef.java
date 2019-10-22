@@ -19,7 +19,6 @@ import r1.pages.ClientMaintenance;
 import r1.pages.LattersPage;
 import r1.pages.LogicProfilePage;
 import r1.pages.ThirdPartyConnectionsPage;
-import r1.pages.ThirdPartyConnectionsPage;
 import r1.pages.HomePage;
 import r1.pages.MyTabsPage;
 import r1.pages.PatientInfoPage;

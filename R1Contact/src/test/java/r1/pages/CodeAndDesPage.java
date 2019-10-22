@@ -17,15 +17,20 @@ public class CodeAndDesPage extends BasePage {
 	@FindBy(xpath="//input[@name='CheckedRecords']")
 	private WebElementFacade accCheckbox;
 	
-	@FindBy(id="TextAnswers") private  WebElementFacade addTextarea;
+	@FindBy(id="TextAnswers") 
+	private  WebElementFacade addTextarea;
 	
-	@FindBy(id="MoneyAnswers") private  WebElementFacade totalBal;
+	@FindBy(id="MoneyAnswers") 
+	private  WebElementFacade totalBal;
 	
-	@FindBy(id="Note") private WebElementFacade note;
+	@FindBy(id="Note") 
+	private WebElementFacade note;
 	
-	@FindBy(id="Save") private WebElementFacade save;
+	@FindBy(id="Save") 
+	private WebElementFacade save;
 	
-	@FindBy(id="Message") private WebElementFacade submitRequestMsg;
+	@FindBy(id="Message") 
+	private WebElementFacade submitRequestMsg;
 	
 	public void chrtyRequestText() {
 		Assert.assertTrue("chrtyRequest is not coming!!!", chrtyRequestText.isDisplayed());
