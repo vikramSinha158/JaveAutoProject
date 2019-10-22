@@ -14,10 +14,13 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.encryption.InvalidPasswordException;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.junit.Assert;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchFrameException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import net.serenitybdd.core.annotations.findby.By;
 import net.serenitybdd.core.pages.PageObject;
@@ -284,4 +287,77 @@ public class CommonMethod extends BasePage {
 		String ss=pdfStripper.getText(doc);
 		
 	}
-}
+	
+	 /*check the display of list of element*/
+		public void isDisplayListItem(List<WebElementFacade> elements)
+		{
+			boolean itemDispay=false;
+			
+			for (int i = 0; i < elements.size(); i++) {
+
+				
+				if (elements.get(i).isDisplayed()) {
+					//scrollInView(elements.get(i));
+					highLightSteps(elements.get(i));
+					itemDispay=true;
+				}
+				else
+				{
+					itemDispay=false;
+					Assert.assertTrue(elements.get(i).getText() + " not displayed", itemDispay);
+				}
+			}
+		}
+		
+		
+		/* Method to click element from list of item */
+		public void clickListTabs(List<WebElementFacade> elementList,String elementTobeName) {
+
+			boolean tabcheck = false;
+
+			for (int i = 0; i < elementList.size(); i++) {
+				
+				if (elementList.get(i).getText().toUpperCase().contains(elementTobeName.trim().toUpperCase())) {
+
+				
+					clickOn(elementList.get(i));
+					tabcheck = true;
+					break;
+				}
+			}
+
+			Assert.assertTrue(elementTobeName + " Element Not found ", tabcheck);
+
+		}
+		
+		/* Method to wait control */
+		public void waitForControl(String waitElement)
+		{
+			WebDriverWait wait = new WebDriverWait(getDriver(),50);
+	        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(waitElement))); 
+		}
+		
+		/* Method to dismiss alert */
+		public void dimissAlert()
+		{
+			boolean alerFlag=false;
+			Alert alt = null;
+				try {
+
+					 alt=getDriver().switchTo().alert();
+					alerFlag=true;
+				} catch (Exception e) {
+					alerFlag= false;
+					Assert.assertTrue("No alert found after click ", alerFlag);
+				}
+			if(alerFlag==true)
+			{
+				Assert.assertTrue(alerFlag);
+				alt.dismiss();
+			}
+		}
+		
+		
+	}
+
+

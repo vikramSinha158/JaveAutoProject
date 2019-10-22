@@ -31,11 +31,8 @@ public class AccountDetailsPage extends PageObject {
 	AccountPage account;
 	String agentPatientPageEmail;
 	private String accNumberxpath = "//div[@class='account-number']";
-	private String codeRowBeforeXpath="//div[@id='RequestConfigs']//tbody/tr[";
-	private String codeRowAfterXpath="]/td/a";
 	private String payment="//span[text()='--New Payment--']";
 	private String newPaymentDropDown="//ul[@class='t-reset']/li";
-	private int maxIndex=30;
 	
 	@FindBy(xpath = "//div[@class='pull-left right-item']/a")
 	private List<WebElementFacade> patientAndGuarntName;
@@ -78,17 +75,32 @@ public class AccountDetailsPage extends PageObject {
 	
 	@FindBy(id="DoRequest") private WebElementFacade requestIcon;
 	
-	@FindBy(xpath="//div[@id='RequestConfigs']//thead") private WebElementFacade codeTableHeader;
+	@FindBy(xpath="//div[@id='RequestConfigs']//thead") 
+	private WebElementFacade codeTableHeader;
 	
-	@FindBy(xpath="//span[text()=' Payment History ']") private WebElementFacade paymentHistory ;
+	@FindBy(xpath="//span[text()=' Payment History ']") 
+	private WebElementFacade paymentHistory ;
 	
-	@FindBy(xpath="//a[text()='Bill Statements']") private WebElementFacade billStatement;
+	@FindBy(xpath="//a[text()='Bill Statements']") 
+	private WebElementFacade billStatement;
 	
-	@FindBy(xpath="//span[text()='Billing Statement Report']") private WebElementFacade billingStatReport;
+	@FindBy(xpath="//span[text()='Billing Statement Report']") 
+	private WebElementFacade billingStatReport;
 	
-	@FindBy(xpath="//a[text()='Show PDF']") private WebElementFacade showAnyPDF;
+	@FindBy(xpath="//a[text()='Show PDF']") 
+	private WebElementFacade showAnyPDF;
 	
-	@FindBy(xpath="//div[@id='content']") private WebElementFacade pdfSrc;
+	@FindBy(xpath="//div[@id='content']") 
+	private WebElementFacade pdfSrc;
+	
+	@FindBy(xpath="//input[@id='Note']") 
+	private WebElementFacade txtForNote ;	
+	
+	@FindBy(xpath="//button[@id='Save'][@type='submit']") 
+	private WebElementFacade clkSubmitBtn ;
+						 
+	@FindBy(xpath="//table[@ng-table='tableParams']//tbody//tr[1]//td[@data-title-text='Notes']//span") 
+	private WebElementFacade noteTextCellvalue ;
 	
 	int PatientDtlTabs = Integer.parseInt(CommonMethod.readProperties("patientDetailtabs"));
 
@@ -218,6 +230,8 @@ public class AccountDetailsPage extends PageObject {
 		
 	}
 	
+	
+	
 	public void codeAndDes() {
 		Assert.assertTrue("No code and description rows are coming", codeAndDesRows.size()>0);
 		
@@ -232,6 +246,29 @@ public class AccountDetailsPage extends PageObject {
 	public void paymentDropdown(String value) throws InterruptedException {
 		contactCommon.clickdropdown(payment,newPaymentDropDown, value);
 }
+	
+	/*	Enter text for notes  */
+	public void enterTextForNotes()
+	{
+		txtForNote.sendKeys(CommonMethod.readProperties("textForStatusNotes"));
+	}
+	
+	
+	/*	click notes button after entering notes  */
+	public void clkNotesBtn()
+	{
+		clickOn(clkSubmitBtn);
+	}
+	
+	public void verifyAccountNotesInNotesTable()
+	{
+		
+		String notesTxt=noteTextCellvalue.getText();
+		
+		comMethod.scrollInView(noteTextCellvalue);
+		Assert.assertTrue("Actual vlaue not match with expected text "+ notesTxt, notesTxt.contains(CommonMethod.readProperties("textForStatusNotes")));
+	}
+	
 	
 	/*click on Bill Statement*/
 	public void clickBillStatement() throws InterruptedException {

@@ -186,6 +186,40 @@ public class R1ContactCommonMethods extends BasePage {
 			
 		}
 	
+	/*
+	 * Click on SubMenudropDown
+	 */
+	public void clickSubMenudropdown(String element,String ManuOptions, String clickMenuName,
+			String SubManuOptions,String SbuMenuName) throws InterruptedException {
+		
+		boolean loopChk=false;
+		element(By.xpath(element)).click();
+		Thread.sleep(1000);		
+		 List<net.serenitybdd.core.pages.WebElementFacade> list=findAll(By.xpath(ManuOptions));
+				
+		for (int i = 0; i < list.size(); i++) {
+			System.out.println(list.get(i).getText());
+			if (list.get(i).getText().equalsIgnoreCase(clickMenuName)) 
+				list.get(i).click();
+				Thread.sleep(1000);
+				
+				List<net.serenitybdd.core.pages.WebElementFacade> innerlist=findAll(By.xpath(SubManuOptions));
+				for (int j = 0; j < innerlist.size(); j++) {
+					if (innerlist.get(j).getText().equalsIgnoreCase(SbuMenuName)) {
+						innerlist.get(j).click();
+						loopChk=true;
+						break;						
+				       }
+
+			   }
+			
+			  if(loopChk==true)
+			  break;
+			}
+		}
+
+	
+	
 	/*Run query*/
 	public void runQuery(String queryName, String facilityKey)
 			throws ClassNotFoundException, FileNotFoundException, SQLException, IOException {

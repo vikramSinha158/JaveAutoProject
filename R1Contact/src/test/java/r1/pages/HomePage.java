@@ -347,6 +347,13 @@ public class HomePage extends BasePage {
 		verifyInnerDropdown(adminSubmenu, adminXpath, "Settings", settingSubmenu, "SettingsDropdowns");
 	}
 
+	String settingMenuPath="//span[text()='Administration']//following-sibling::div/ul/li/span";
+	public void clickOnSubMenu(String subManuItemClick) throws InterruptedException
+	{
+		r1ComMethod.clickSubMenudropdown(adminXpath, adminSubmenu,"Settings", settingSubmenu,subManuItemClick);
+	}
+	
+	
 	public void reminderHeader() {
 		CommonMethod.isDisplayedMethod(date);
 		CommonMethod.isDisplayedMethod(time);

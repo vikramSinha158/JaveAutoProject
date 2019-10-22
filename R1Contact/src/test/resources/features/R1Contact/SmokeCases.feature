@@ -68,7 +68,7 @@ And Home, My Tabs and other Tabs
 When user Click on 'Search' account link
 Then Search account page should be displayed with searching criterias like..Account Number, First Name, Last Name etc
 And select accounts option for WHEATON PHYSICIAN SERVICES
-And user fetch the "WheatonNonZeroAccountNum" and search for it
+And user fetch the "BillingAccount" and search for it
 And user clicks "arrow" given at the end of the WHEATON PHYSICIAN SERVICES account row 
 Then verify user account information on account info page
 And user should be able to see the below tabs InsuranceNotes Transactions Payment History Letter Sent Encounter Information Account Activity
@@ -160,7 +160,19 @@ Then an overlay window should be appeared
 When user clicks on the Pdf link
 Then a pdf file should be open 
 
-@428494   
+@428418
+Scenario: Verify the update account status
+When user Click on 'Search' account link
+Then Search account page should be displayed with searching criterias like..Account Number, First Name, Last Name etc 
+When user selects the last name search criteria on account search page
+And Enter last name as "K" and press ENTER and List of Accounts should be displayed
+When user clicks on the "arrow" enter arrow 
+Then user should be land on the account info page
+When user enter the text into the status notes text box
+And user clicks on the enter arrow
+Then account notes should be updated with same note
+
+@428494  @Test  
 Scenario: Verify the payment posting using secure payment
 When user Click on 'Search' account link
 And select accounts option for WHEATON PHYSICIAN SERVICES
@@ -176,7 +188,7 @@ And user is able to see guarantor info
 When user clicks on the submit button
 Then Payment should be submitted successfully
 
-@428495 
+@428495  @Test
 Scenario: Verify the payment posting using Agent input with revspring
 When user Click on 'Search' account link
 And select accounts option for WHEATON PHYSICIAN SERVICES
@@ -230,7 +242,109 @@ And user Click on Enter payment button
 Then user should be land on the payment information tab
 When user clicks on the submit button on payment information
 Then Payment should be processed successfully
- 
+
+
+
+@428498
+Scenario: Verify 'the my queue tab under the my tabs'
+When user click on My tabs link
+And user is on My tab screen
+When User clicks the "My Queue" first tab on tab page
+And user clicks the "My Payments" second tab
+And user clicks on the "My Reminders" third tab 
+And user clicks on the "My Requests" fouth tab 
+And user clicks on the "My Account History" fith tab
+
+
+@435814
+Scenario: Campaign_Verify the Add New Record overlay/pop window
+And When user hover on Administration & hover on Settings link & clicks on "Client Maintenance" link
+Then user is on Client Maintenance page
+And user select client "Borgess Health (Michigan)"
+When user clicks on Campaign
+And user on Compaign Page
+And user clicks on Add New Record
+Then user should be able to view isBDQualified column in account table with Name , Insert and Cancel button  
+
+@435816
+Scenario: Campaign_Verify the Alter Campaign filter screen
+And When user hover on Administration & hover on Settings link & clicks on "Client Maintenance" link
+Then user is on Client Maintenance page
+And user select client "Borgess Health (Michigan)"
+When user clicks on Campaign
+And user on Compaign Page
+Then user should be able to view pop/Overlay window should be open with filters
+And user can view One 'Select' condition, row ,type,Data Source, label. Operator,Value,Delete
+And user can view add new button_Save button & Cancel button
+
+
+@435815
+Scenario: Campaign_Verify the Delete icon associate with rows
+And When user hover on Administration & hover on Settings link & clicks on "Client Maintenance" link
+Then user is on Client Maintenance page
+And user select client "Borgess Health (Michigan)"
+When user clicks on Campaign
+And user on Compaign Page
+And user clicks on Alter button
+Then user should be able to view  Delete icon should not be displayed on the first two rows
+And user can view that other than two rows delete icon should be dispalyed on all the where type rows
+
+
+@435817
+Scenario: Campaign_Verify the Edit order overlay/pop window
+And When user hover on Administration & hover on Settings link & clicks on "Client Maintenance" link
+Then user is on Client Maintenance page
+And user select client "Borgess Health (Michigan)"
+When user clicks on Campaign
+And user on Compaign Page
+Then user should be able to view Edit Order overlay/pop up window should be displayed 
+Then user able to view Name of Logic,Insert at position dropdown,Ordering dropdown,Update button,Cancel button
+
+@428500
+Scenario: Verify Logic Profiles client maintenance settings
+And When user hover on Administration & hover on Settings link & clicks on "Client Maintenance" link
+Then user is on Client Maintenance page
+And user select client "Borgess Health (Michigan)"
+When user click on Logic Profile link
+Then user should be able to view logic profile screen 
+And user is able to access Add new record,
+And   user is able to acces Alter/Create, 
+And   user is able to acces Edit Details button
+And   user is able to acces Delete icon 
+
+@428503
+Scenario: Verify the Letters under client maintenance settings
+And When user hover on Administration & hover on Settings link & clicks on "Client Maintenance" link
+Then user is on Client Maintenance page
+And user select client "Borgess Health (Michigan)"
+When user click on Letters Profile link
+Then user should be able to view Letters profile screen 
+And user is able to access Add new record in Latters page
+And   user is able to acces Alter/Create in Latters page 
+And   user is able to acces Edit Details button in Latters page
+And   user is able to acces Toggle button in Latters page
+And   user is able to acces Delete icon in Latters page 
+
+@428511
+Scenario: Verify Third Party Connections under the client maintenance settings
+And When user hover on Administration & hover on Settings link & clicks on "Client Maintenance" link
+Then user is on Client Maintenance page
+And user select client "Borgess Health (Michigan)"
+When user click on ThirdPartyConnections link
+Then user should be able to view ThirdPartyConnections screen 
+And user is able to access Add new record in ThirdPartyConnections page
+And user is able to acces Edit Details button in ThirdPartyConnections page
+
+@428501
+Scenario: Verify API Configuration client maintenance settings
+And When user hover on Administration & hover on Settings link & clicks on "Client Maintenance" link
+Then user is on Client Maintenance page
+And user select client "Borgess Health (Michigan)"
+When user click on APIconfiguration link
+Then user should be able to view click on APIconfiguration screen 
+And user is able to access Add new record in click on APIconfiguration page
+And user is able to acces Edit Details button in click on APIconfiguration page
+
 
 
 

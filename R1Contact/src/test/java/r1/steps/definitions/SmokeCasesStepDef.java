@@ -3,7 +3,6 @@ package r1.steps.definitions;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
-
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -14,6 +13,13 @@ import r1.pages.AccountDetailsPage;
 import r1.pages.AccountPage;
 import r1.pages.BalanceLinkPage;
 import r1.pages.CodeAndDesPage;
+import r1.pages.ApiConfigurationPage;
+import r1.pages.CampaignPage;
+import r1.pages.ClientMaintenance;
+import r1.pages.LattersPage;
+import r1.pages.LogicProfilePage;
+import r1.pages.ThirdPartyConnectionsPage;
+import r1.pages.ThirdPartyConnectionsPage;
 import r1.pages.HomePage;
 import r1.pages.MyTabsPage;
 import r1.pages.PatientInfoPage;
@@ -34,10 +40,17 @@ public class SmokeCasesStepDef extends BasePage {
 	BalanceLinkPage balancePage;
 	PaymentPage payment;
 	CodeAndDesPage code;
+	ClientMaintenance cltMaintainance;
+	CampaignPage campaign;
+	LogicProfilePage logicProfile;
+	ThirdPartyConnectionsPage ThirdPartyCon;
+	ApiConfigurationPage apiConfig;
+	LattersPage letters;
 	String JHouseAccount;
 	String AccountNum="AccountNumber";
 	String billingAccount;
 	String newPaymentAccount;
+	String WheatonAccountNum="WheatonAccountNumber"; // added from vikram
 	
 	@Given("^user is on R(\\d+) contact login page$")
 	public void user_is_on_R_contact_login_page(int arg) {
@@ -579,4 +592,289 @@ public class SmokeCasesStepDef extends BasePage {
 	public void payment_should_be_processed_successfully() {
 	  payment.verifyProcess();
 	}
+	
+	/*
+	 *  IN303350
+	 */
+	/*
+     * Test case: 428418 step to enter text in patient info page "
+     */
+     
+     @When("^user enter the text into the status notes text box$")
+     public void user_enter_the_text_into_the_status_notes_text_box() {
+
+            accoundel.enterTextForNotes();
+     }
+
+/*
+     * Test case: 428418 step to clicks on the enter arrow "
+     */
+     
+     @When("^user clicks on the enter arrow$")
+     public void user_clicks_on_the_enter_arrow() {
+            accoundel.clkNotesBtn();
+        
+     }
+     
+     /*
+     * Test case: 428418 step to verify notes in table  "
+     */
+
+     @Then("^account notes should be updated with same note$")
+     public void account_notes_should_be_updated_with_same_note() {
+            
+            accoundel.verifyAccountNotesInNotesTable();
+            
+     }
+     
+     @When("^user click on My tabs link$")
+     public void user_click_on_My_tabs_link() {
+            home.clickOnMyTab();
+        
+     }
+
+
+     @When("^user is on My tab screen$")
+     public void user_is_on_My_tab_screen() {
+            tab.verifyMyTab();
+     }
+     
+
+ @When("^User clicks the \"([^\"]*)\" first tab on tab page$")
+ public void user_clicks_the_first_tab_on_tab_page(String myQuery) {
+      tab.clickOntabs(myQuery);
+      tab.veryfyMyQueryTableHeader();
+ }
+
+ @When("^user clicks the \"([^\"]*)\" second tab$")
+ public void user_clicks_the_second_tab(String myPayment) {
+         tab.clickOntabs(myPayment);
+      tab.veryfyMyPaymentTableHeader();
+ }
+ 
+ @When("^user clicks on the \"([^\"]*)\" third tab$")
+ public void user_clicks_on_the_third_tab(String myReminder) {
+        tab.clickOntabs(myReminder);
+        tab.veryfyMyReminderTableHeader();
+ }
+ 
+ @When("^user clicks on the \"([^\"]*)\" fouth tab$")
+ public void user_clicks_on_the_fouth_tab(String myRequest) {
+        tab.clickOntabs(myRequest);
+        tab.veryfyMyReminderTableHeader();
+ }
+ 
+ @When("^user clicks on the \"([^\"]*)\" fith tab$")
+ public void user_clicks_on_the_fith_tab(String myAccount) {
+        tab.clickOntabs(myAccount);
+        tab.veryfyMyAccountTableHeader();
+ }
+ 
+
+ @Given("^When user hover on Administration & hover on Settings link & clicks on \"([^\"]*)\" link$")
+ public void when_user_hover_on_Administration_hover_on_Settings_link_clicks_on_link(String clientMaintenace) throws InterruptedException {
+     home.clickOnSubMenu(clientMaintenace);
+ }
+
+
+ @Then("^user is on Client Maintenance page$")
+ public void user_is_on_Client_Maintenance_page() {
+        cltMaintainance.verifyClientMaintenancePage();
+ 
+ }
+
+ @Then("^user select client \"([^\"]*)\"$")
+ public void user_select_client(String BorgessHealth ) throws InterruptedException {
+        cltMaintainance.selectClientMaintenanceList(BorgessHealth);
+        cltMaintainance.waitForClientMaintenancePage();
+ }
+
+ @When("^user clicks on Campaign$")
+ public void user_clicks_on_Campaign() {
+        
+        cltMaintainance.clickOnCampaignLink();
+ }
+ 
+ @When("^user on Compaign Page$")
+ public void user_on_Compaign_Page() {
+        campaign.verifyCampaignPage();
+ }
+
+
+ @When("^user clicks on Add New Record$")
+ public void user_clicks_on_Add_New_Record() {
+    campaign.clickOnCampaignAddRecord();
+ }
+
+ @Then("^user should be able to view isBDQualified column in account table with Name , Insert and Cancel button$")
+ public void user_should_be_able_to_view_isBDQualified_column_in_account_table_with_Name_Insert_and_Cancel_button() {
+     campaign.VerifyControlOnAddRecord();
+ }
+ 
+ @Then("^user should be able to view pop/Overlay window should be open with filters$")
+ public void user_should_be_able_to_view_pop_Overlay_window_should_be_open_with_filters() {
+        campaign.clickonAlterBtnCampaignTbl();
+        campaign.verifyDialogFilterDispaly();
+ }
+
+
+ @Then("^user can view One 'Select' condition, row ,type,Data Source, label\\. Operator,Value,Delete$")
+ public void user_can_view_One_Select_condition_row_type_Data_Source_label_Operator_Value_Delete() {
+        campaign.verifyFilterHeader();
+ }
+
+
+ @Then("^user can view add new button_Save button & Cancel button$")
+ public void user_can_view_add_new_button_Save_button_Cancel_button() {
+     campaign.VerifyControlsFilterDialog();
+ }
+ 
+ @When("^user clicks on Alter button$")
+ public void user_clicks_on_Alter_button() {
+        campaign.clickonAlterBtnCampaignTbl();
+        
+ }
+
+
+ @Then("^user should be able to view  Delete icon should not be displayed on the first two rows$")
+ public void user_should_be_able_to_view_Delete_icon_should_not_be_displayed_on_the_first_two_rows() {
+        campaign.verifyDialogFilterDispaly();
+        campaign.verifyNotDisplayDeleteIcon();
+ }
+ 
+ @Then("^user can view that other than two rows delete icon should be dispalyed on all the where type rows$")
+ public void user_can_view_that_other_than_two_rows_delete_icon_should_be_dispalyed_on_all_the_where_type_rows() {
+    campaign.verifyDeleteIconOnFilter();
+ }
+ 
+ @Then("^user should be able to view Edit Order overlay/pop up window should be displayed$")
+ public void user_should_be_able_to_view_Edit_Order_overlay_pop_up_window_should_be_displayed() {
+        campaign.clickonEditBtnCampaignTbl();
+        campaign.verifyComapignEditPopUp();
+ }
+
+
+ @Then("^user able to view Name of Logic,Insert at position dropdown,Ordering dropdown,Update button,Cancel button$")
+ public void user_able_to_view_Name_of_Logic_Insert_at_position_dropdown_Ordering_dropdown_Update_button_Cancel_button() {
+        campaign.verifyControlOnEditPopUp();
+ }
+ 
+ @When("^user click on Logic Profile link$")
+ public void user_click_on_Logic_Profile_link() {
+        cltMaintainance.clickOnLogicLink();
+ }
+ 
+ @Then("^user should be able to view logic profile screen$")
+ public void user_should_be_able_to_view_logic_profile_screen() {
+        
+        logicProfile.verifyLogicProfilePage();
+ }
+
+
+ @Then("^user is able to access Add new record,$")
+ public void user_is_able_to_access_Add_new_record() {
+        logicProfile.verifyAddRecordLogicProfilePopUp();
+ }
+
+ @Then("^user is able to acces Alter/Create,$")
+ public void user_is_able_to_acces_Alter_Create() {
+        logicProfile.verifyAlterLogicFilterDispaly();
+ }
+
+ @Then("^user is able to acces Edit Details button$")
+ public void user_is_able_to_acces_Edit_Details_button() {
+        logicProfile.verifyLogicProfileEdit();
+ }
+
+ @Then("^user is able to acces Delete icon$")
+ public void user_is_able_to_acces_Delete_icon() {
+        logicProfile.verifyDeleteAlert();
+ }
+ 
+ @When("^user click on Letters Profile link$")
+ public void user_click_on_Letters_Profile_link() {
+        
+        cltMaintainance.clickOnLettersLink();
+ }
+
+
+ @Then("^user should be able to view Letters profile screen$")
+ public void user_should_be_able_to_view_Letters_profile_screen() {
+        letters.verifyLettersPage();
+     
+ }
+
+ @Then("^user is able to access Add new record in Latters page$")
+ public void user_is_able_to_access_Add_new_record_in_Latters_page() {
+        letters.verifyAddRecordLettersPopUp();
+   
+ }
+
+ @Then("^user is able to acces Alter/Create in Latters page$")
+ public void user_is_able_to_acces_Alter_Create_in_Latters_page() {
+        
+        letters.verifyAlterLettersFilterDispaly();
+ }
+
+ @Then("^user is able to acces Edit Details button in Latters page$")
+ public void user_is_able_to_acces_Edit_Details_button_in_Latters_page() {
+        letters.verifyLettersEdit();
+   
+ }
+
+ @Then("^user is able to acces Toggle button in Latters page$")
+ public void user_is_able_to_acces_Toggle_button_in_Latters_page() {
+        letters.verifyToggleAlertLetter();
+    
+ }
+
+ @Then("^user is able to acces Delete icon in Latters page$")
+ public void user_is_able_to_acces_Delete_icon_in_Latters_page() {
+        letters.verifyDeleteAlertLetter();
+   
+ }
+
+ @When("^user click on ThirdPartyConnections link$")
+ public void user_click_on_ThirdPartyConnections_link() {
+        cltMaintainance.clickOnThirdPartyConLink();
+ }
+
+
+ @Then("^user should be able to view ThirdPartyConnections screen$")
+ public void user_should_be_able_to_view_ThirdPartyConnections_screen() {
+        ThirdPartyCon.verifyThirdPartyConPage();
+ }
+
+ @Then("^user is able to access Add new record in ThirdPartyConnections page$")
+ public void user_is_able_to_access_Add_new_record_in_ThirdPartyConnections_page() {
+        ThirdPartyCon.verifyAddRecordThirdPartyConPopUp();
+ }
+
+ @Then("^user is able to acces Edit Details button in ThirdPartyConnections page$")
+ public void user_is_able_to_acces_Edit_Details_button_in_ThirdPartyConnections_page() {
+        ThirdPartyCon.verifyThirdPartyConTblEdit();
+ }
+ 
+ @When("^user click on APIconfiguration link$")
+ public void user_click_on_APIconfiguration_link() {
+   cltMaintainance.clickOnApiConfigLink();
+ }
+
+
+ @Then("^user should be able to view click on APIconfiguration screen$")
+ public void user_should_be_able_to_view_click_on_APIconfiguration_screen() {
+        apiConfig.verifyApiConfigPage();
+ }
+
+ @Then("^user is able to access Add new record in click on APIconfiguration page$")
+ public void user_is_able_to_access_Add_new_record_in_click_on_APIconfiguration_page() {
+        apiConfig.verifyAddRecordApiConfigPopUp();
+ }
+
+ @Then("^user is able to acces Edit Details button in click on APIconfiguration page$")
+ public void user_is_able_to_acces_Edit_Details_button_in_click_on_APIconfiguration_page() {
+        apiConfig.verifyApiConfigTblEdit();
+ }
+
+	
 }
