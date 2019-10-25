@@ -50,6 +50,7 @@ public class SmokeCasesStepDef extends BasePage {
 	String billingAccount;
 	String newPaymentAccount;
 	String WheatonAccountNum="WheatonAccountNumber"; // added from vikram
+	String newAccount;
 	
 	@Given("^user is on R(\\d+) contact login page$")
 	public void user_is_on_R_contact_login_page(int arg) {
@@ -874,6 +875,32 @@ public class SmokeCasesStepDef extends BasePage {
  public void user_is_able_to_acces_Edit_Details_button_in_click_on_APIconfiguration_page() {
         apiConfig.verifyApiConfigTblEdit();
  }
+ 
+ /*
+ * Test Case 428407: Verify the 'Account Info' page
+ */
+ 
+ @When("^User fetch the \"([^\"]*)\" for search and click search button$")
+        public void user_fetch_the_for_search_and_click_search_button(String propkey) throws ClassNotFoundException, FileNotFoundException, SQLException, IOException {
+               account.fetchAccountNumber(propkey, "BOMCKEY");
+               DatabaseConn.resultSet.next();
+               newAccount = DatabaseConn.resultSet.getString("AccountNum");
+               account.searchAccount(newAccount);
+        }
+        
+        @Then("^User select the account by clicking on arrow button$")
+        public void user_select_the_account_by_clicking_on_arrow_button() {
+               try {
+                     account.clickOnAccount(newAccount);
+               } catch (FileNotFoundException e) {
+        
+                     e.printStackTrace();
+               } catch (IOException e) {
+                     
+                     e.printStackTrace();
+               }
+        }
+
 
 	
 }

@@ -27,10 +27,9 @@ Scenario: Verify the 'Account Info' page
 Given user is on R1 contact login page
 And user mouse hover on search dropdown and clicks on the Account
 Then user should be able to view the account search page with search criterias PhoneNumber MRN Account NumberAddress State Fname LastName Zip
-When user selects the last name search criteria on account search page and user enters "K" in the search box
-Then Then user should see the search results populated with number of retrieved accounts with last name "K"
-When user clicks "arrow" given at the end of the row for the account
-Then user should be able to see the account info page with the following details present on the screen Guarantor Patient Balances Account Information 
+When User fetch the "Account" for search and click search button
+Then User select the account by clicking on arrow button
+Then user should be able to see the account info page with the following details present on the screen Guarantor Patient Balances Account Information  
 
 @428408
 Scenario: Verify the tabs available on the account information page
