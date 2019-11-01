@@ -177,7 +177,7 @@ public class R1ContactCommonMethods extends BasePage {
 	int size=optionsList.size();
 	for(int i=0; i<size;i++) {
 		String optionName=optionsList.get(i).getText();
-		if(optionName.contains(clickOption)) {
+		if(optionName.equalsIgnoreCase(clickOption)) {
 			optionsList.get(i).click();
 			break;
 		}

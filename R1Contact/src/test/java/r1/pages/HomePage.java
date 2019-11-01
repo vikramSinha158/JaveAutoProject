@@ -27,7 +27,7 @@ public class HomePage extends BasePage {
 	int totalcount;
 	public static String agentEmailID;
 	String reminderRow = "//table[@ng-table='tableParams']//tbody//tr";
-	String defaultTime = "12:00 AM"; // It will remain constant
+	
 	String homeReminderInfoRow = "//table[@ng-table='tableParams']//tbody//tr[@ng-repeat='row in $data']";
 	String homeReminderInfoCol = "//table[@ng-table='tableParams']//thead//tr[@class='ng-table-sort-header']//th";
 	String deleteIcon1Path = "]//td//i[@id='tooltip-popup-triggerDeleteReminder']";
@@ -419,19 +419,44 @@ public class HomePage extends BasePage {
 	 * @throws IOException
 	 * @throws FileNotFoundException
 	 **********************************************/
-
-	public void verifyDefaultTime() throws FileNotFoundException, IOException {
-		ArrayList<String> listOfAccount = r1ComMethod.getColValue(homeReminderInfoRow, homeReminderInfoCol,
-				"Account Number");
-		ArrayList<String> listOfTime = r1ComMethod.getColValue(homeReminderInfoRow, homeReminderInfoCol, "Time");
-		for (int i = 0; i < listOfAccount.size(); i++) {
-			String accountNum = listOfAccount.get(i);
-			if (accountNum.contentEquals(accountNumber())) {
-				accountIndex = i;
+	
+	
+	@FindBy(xpath = "//div[@class='ng-table-pager ng-scope']/ul/li/a/span")
+	private List<WebElementFacade> tablePageNumber;
+	
+	public void verifyReminderTimeInHome(String dbAccNum,String expectedTime) throws FileNotFoundException, IOException {
+		
+		boolean checkClk=false;
+		
+		for(WebElementFacade pageNum:tablePageNumber)
+		{
+			clickOn(pageNum);
+			ArrayList<String> listOfAccount = r1ComMethod.getColValue(homeReminderInfoRow, homeReminderInfoCol,
+					"Account Number");
+			ArrayList<String> listOfTime = r1ComMethod.getColValue(homeReminderInfoRow, homeReminderInfoCol, "Time");
+			for (int i = 0; i < listOfAccount.size(); i++) {
+				String accountNum = listOfAccount.get(i);
+				if (accountNum.contentEquals(dbAccNum)) {
+					accountIndex = i;
+					String ActualTime = listOfTime.get(accountIndex);
+					System.out.println("expected time " + expectedTime + "  Actuel time " + ActualTime);
+					System.out.println("Account db number " + dbAccNum  + "  gui " + accountNum);
+					
+					Assert.assertEquals(expectedTime,ActualTime);
+					
+				
+					checkClk=true;
+					break;
+				}
 			}
+			
+			
+			if(checkClk==true)
+				break;
+			
 		}
-		String ActualTime = listOfTime.get(accountIndex);
-		Assert.assertEquals(ActualTime, defaultTime);
+		
+		
 	}
 
 	/*--------------------------------------Sorting In ascending-------------------------------------------------------*/

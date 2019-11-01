@@ -17,6 +17,7 @@ import org.junit.Assert;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchFrameException;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -53,6 +54,26 @@ public class CommonMethod extends BasePage {
 		}
 		return selectDropdown.getFirstSelectedOption().getText();
 	}
+	
+	public void selectListWithElement(String element, String text) throws InterruptedException {
+		
+	
+		WebElementFacade dropdownEle=element(By.id(element));
+		dropdownEle.click();
+		
+			Select selectDropdown = new Select(dropdownEle);
+			List<WebElement> listOptionDropdown = selectDropdown.getOptions();
+			for (int i = 0; i < listOptionDropdown.size(); i++) {
+				if (listOptionDropdown.get(i).getText().equalsIgnoreCase(text)) {
+										
+						selectDropdown.selectByVisibleText(text);
+										
+						break;
+					} 
+					
+				}
+			}
+		
 
 	public static int dropDownSize(WebElementFacade list) {
 		Select drpList = new Select(list);
@@ -333,7 +354,7 @@ public class CommonMethod extends BasePage {
 		/* Method to wait control */
 		public void waitForControl(String waitElement)
 		{
-			WebDriverWait wait = new WebDriverWait(getDriver(),50);
+			WebDriverWait wait = new WebDriverWait(getDriver(),100);
 	        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(waitElement))); 
 		}
 		

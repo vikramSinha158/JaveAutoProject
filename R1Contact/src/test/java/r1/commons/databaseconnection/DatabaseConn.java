@@ -74,8 +74,8 @@ public class DatabaseConn {
 			 * DEV Care Server
 			 ***************************************************/
 
-			else if (url.contains("dev1hub")) {
-				serverConn("DEVRHUBWBND03", "Accretive", query);
+			else if (url.contains("dev1ccc")) {
+				serverConn("DEVCONTWCOR01", "stingray", query);
 				while (resultSet.next()) {
 					serverName = resultSet.getString("servername");
 					databaseName = resultSet.getString("databasename");
@@ -112,6 +112,35 @@ public class DatabaseConn {
 
 		try {
 			String dbUrl = "jdbc:sqlserver://" + serverHost + ";databaseName=" + dbName + ";integratedSecurity=true";
+			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+
+			Connection conn = DriverManager.getConnection(dbUrl);
+			Statement stmt = conn.createStatement();
+			resultSet = stmt.executeQuery(query);
+
+		} catch (Exception e) {
+
+		}
+	}
+	
+	public static void serverConn(String serverHost, String dbName, String query,String username, String password)
+			throws ClassNotFoundException, SQLException {
+		String path = System.getProperty("java.library.path");
+		path = "src/test/resources/drivers" + ";" + path;
+		System.setProperty("java.library.path", path);
+
+		try {
+			final Field sysPathsField = ClassLoader.class.getDeclaredField("sys_paths");
+			sysPathsField.setAccessible(true);
+			sysPathsField.set(null, null);
+
+		} catch (Exception ex) {
+			throw new RuntimeException(ex);
+		}
+
+		try {
+			String dbUrl = "jdbc:sqlserver://" + serverHost + ";databaseName=" + dbName + ";user = \" + username\r\n" + 
+					"					+ \";password = \" + password;// \";integratedSecurity=true";
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 
 			Connection conn = DriverManager.getConnection(dbUrl);

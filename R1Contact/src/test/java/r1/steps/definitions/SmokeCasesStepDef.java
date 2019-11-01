@@ -888,7 +888,7 @@ public class SmokeCasesStepDef extends BasePage {
                account.searchAccount(newAccount);
         }
         
-        @Then("^User select the account by clicking on arrow button$")
+  @Then("^User select the account by clicking on arrow button$")
         public void user_select_the_account_by_clicking_on_arrow_button() {
                try {
                      account.clickOnAccount(newAccount);
