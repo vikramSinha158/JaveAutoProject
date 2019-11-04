@@ -145,6 +145,12 @@ public class HomePage extends BasePage {
 	@FindBy(xpath = "//div[contains(text(),'Email')]//following-sibling::div")
 	private WebElementFacade agentEmail;
 
+	@FindBy(xpath = "//table[@ng-table='tableParams']/thead/tr[1]/th/div/span")
+	private List<WebElementFacade> reminderHeader;
+	
+	@FindBy(xpath = "//div[@class='ng-table-pager ng-scope']/ul/li/a/span")
+	private List<WebElementFacade> tablePageNumber;
+
 	/*
 	 * page title
 	 */
@@ -354,6 +360,27 @@ public class HomePage extends BasePage {
 	}
 	
 	
+	/**********************************************************
+	 * Verify reminder header are in caps or not
+
+	
+	 **********************************************/
+	public void verifyReminderHeaderCaps()
+	{
+		boolean capsCheck=true;;
+		
+		for(int i=0;i<reminderHeader.size()-1;i++)
+		{
+			capsCheck=com.isUpperCaseCheck(reminderHeader.get(i).getText());
+			
+             Assert.assertTrue(reminderHeader.get(i).getText() + " does not contain upper case ", capsCheck);
+             com.highLightSteps(reminderHeader.get(i));
+			
+			
+		}
+		
+	}
+	
 	public void reminderHeader() {
 		CommonMethod.isDisplayedMethod(date);
 		CommonMethod.isDisplayedMethod(time);
@@ -361,6 +388,10 @@ public class HomePage extends BasePage {
 		CommonMethod.isDisplayedMethod(accountnum);
 		CommonMethod.isDisplayedMethod(notes);
 		CommonMethod.isDisplayedMethod(Balance);
+		
+	
+		
+
 	}
 
 
@@ -414,23 +445,22 @@ public class HomePage extends BasePage {
 	}
 
 	/**********************************************************
-	 * Verify default time
+	 * Verify reminder time from home page reminder table
 	 *
 	 * @throws IOException
 	 * @throws FileNotFoundException
 	 **********************************************/
 	
 	
-	@FindBy(xpath = "//div[@class='ng-table-pager ng-scope']/ul/li/a/span")
-	private List<WebElementFacade> tablePageNumber;
+
 	
-	public void verifyReminderTimeInHome(String dbAccNum,String expectedTime) throws FileNotFoundException, IOException {
+	public void verifyReminderTimeInHome(String dbAccNum,String expectedTime) throws FileNotFoundException, IOException, InterruptedException {
 		
 		boolean checkClk=false;
-		
-		for(WebElementFacade pageNum:tablePageNumber)
-		{
-			clickOn(pageNum);
+				
+		for(int j=0;j<tablePageNumber.size();j++) {
+			
+			clickOn(tablePageNumber.get(j));
 			ArrayList<String> listOfAccount = r1ComMethod.getColValue(homeReminderInfoRow, homeReminderInfoCol,
 					"Account Number");
 			ArrayList<String> listOfTime = r1ComMethod.getColValue(homeReminderInfoRow, homeReminderInfoCol, "Time");
@@ -439,12 +469,8 @@ public class HomePage extends BasePage {
 				if (accountNum.contentEquals(dbAccNum)) {
 					accountIndex = i;
 					String ActualTime = listOfTime.get(accountIndex);
-					System.out.println("expected time " + expectedTime + "  Actuel time " + ActualTime);
-					System.out.println("Account db number " + dbAccNum  + "  gui " + accountNum);
-					
-					Assert.assertEquals(expectedTime,ActualTime);
-					
-				
+				    Assert.assertEquals(expectedTime,ActualTime);
+									
 					checkClk=true;
 					break;
 				}

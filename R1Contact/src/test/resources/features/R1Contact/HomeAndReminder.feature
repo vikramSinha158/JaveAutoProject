@@ -30,9 +30,11 @@ And user clicks on the reminder save button
 When user navigate to home page 
 Then verify the reminder created and user should see the reminder with default time 00:00
 
-@408189 @homeReminder
+#modified
+@408189
 Scenario: Reminder_Verify the header in the 'Reminder' home screen
 Given Verify the header in 'Reminders' section
+And header should be in Caps
  
 #modified
 @410383

@@ -228,6 +228,8 @@ public class CommonMethod extends BasePage {
 		js.executeScript("arguments[0].setAttribute('style', 'background: yellow; border: 2px solid red;');", element);
 
 	}
+	
+
 
 	/*
 	 * Bootstrap dropDownHandling
@@ -376,6 +378,20 @@ public class CommonMethod extends BasePage {
 				Assert.assertTrue(alerFlag);
 				alt.dismiss();
 			}
+		}
+		
+		/* Method to check all letters are in caps or not in string */
+		public boolean isUpperCaseCheck(String s)
+		{
+			String str = s.replaceAll("\\s", ""); 
+		    for (int i=0; i<str.length(); i++)
+		    {
+		        if (!Character.isUpperCase(str.charAt(i)))
+		        {
+		            return false;
+		        }
+		    }
+		    return true;
 		}
 		
 		

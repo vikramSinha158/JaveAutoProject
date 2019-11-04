@@ -293,13 +293,18 @@ public class HomeReminderStepDef {
 	}
 
 	@Then("^verify the reminder created and user should see the reminder with default time (\\d+):(\\d+)$")
-	public void verify_the_reminder_created_and_user_should_see_the_reminder_with_default_time(int arg1, int arg2) throws FileNotFoundException, IOException {
+	public void verify_the_reminder_created_and_user_should_see_the_reminder_with_default_time(int arg1, int arg2) throws FileNotFoundException, IOException, InterruptedException {
 		home.verifyReminderTimeInHome(reminderAccount,defaultTime);
 	}
 	
 	@Then("^verify the reminder created time and reminder time should be same as it was created for$")
-	public void verify_the_reminder_created_time_and_reminder_time_should_be_same_as_it_was_created_for() throws FileNotFoundException, IOException {
+	public void verify_the_reminder_created_time_and_reminder_time_should_be_same_as_it_was_created_for() throws FileNotFoundException, IOException, InterruptedException {
 		home.verifyReminderTimeInHome(reminderAccount,setTimeInReminder);
+	}
+	
+	@Given("^header should be in Caps$")
+	public void header_should_be_in_Caps() {
+	  home.verifyReminderHeaderCaps();
 	}
 
 
