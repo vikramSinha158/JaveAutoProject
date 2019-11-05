@@ -150,6 +150,12 @@ public class ReminderPage extends BasePage {
 	public void reminderAlertAssertion() {
 		String reminderAlert = getDriver().switchTo().alert().getText();
 		Assert.assertTrue("Expected Alert Message is not coming!", reminderAlert.contains(containCheck));
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		getDriver().switchTo().alert().dismiss();
 
 	}
