@@ -21,7 +21,6 @@ public class R1ContactCommonMethods extends BasePage {
 	private int rowSize;
 	private int colSize;
 	boolean flag;
-	private static int searchEleCount = 0;
 	private String queryPropFileName= "R1ContactQueries";
 	private String facilityFile="Facilities";
 	CommonMethod comMethod;
@@ -101,7 +100,7 @@ public class R1ContactCommonMethods extends BasePage {
 
 	public int checkElementcontain(String homeReminderInfoRow, String homeReminderInfoCol, String columnHeader,
 			String searchElement) {
-
+		 int searchEleCount = 0;
 		ArrayList<String> homeTablecolData = getColValue(homeReminderInfoRow, homeReminderInfoCol, columnHeader);
 		try {
 			for (int i = 0; i < homeTablecolData.size(); i++) {

@@ -144,12 +144,14 @@ public class HomePage extends BasePage {
 	private WebElementFacade buttonToShowDate;
 	@FindBy(xpath = "//div[contains(text(),'Email')]//following-sibling::div")
 	private WebElementFacade agentEmail;
-
 	@FindBy(xpath = "//table[@ng-table='tableParams']/thead/tr[1]/th/div/span")
-	private List<WebElementFacade> reminderHeader;
-	
+	private List<WebElementFacade> reminderHeader;	
 	@FindBy(xpath = "//div[@class='ng-table-pager ng-scope']/ul/li/a/span")
-	private List<WebElementFacade> tablePageNumber;
+	private List<WebElementFacade> tablePageNumber; 
+	@FindBy(xpath = "//input[@name='remTime']")
+	private WebElementFacade txtSearchTime; 
+		 
+
 
 	/*
 	 * page title
@@ -194,52 +196,67 @@ public class HomePage extends BasePage {
 
 	 * Reminder Filter
 	 ***********************************/
-	public int checkCountofTablerRow() {
-		boolean check = true;
-		if (homeReminderTableRow.size() < 1) {
-			check = false;
-			Assert.assertTrue("Rowcount is less then Zero,NoRow found", check);
-		} else {
-			homeRiminderRowCount = homeReminderTableRow.size();
-		}
-		return homeRiminderRowCount;
-	}
+    public int checkCountofTablerRow() {
+        boolean check = true;
+        if (homeReminderTableRow == null) {
+               check = false;
+               Assert.assertTrue("Rowcount is less then Zero,NoRow found", check);
+        } else {
+               homeRiminderRowCount = homeReminderTableRow.size();
+        }
+        return homeRiminderRowCount;
+ }
+
 
 	/*
 	 * verify filter search is not working
 	 */
 
-	public void checkContainHometable() throws FileNotFoundException, IOException {
-		String searchElement = CommonMethod.readProperties("FilterSearch");
-		totalcount = homeReminderTableRow.size();
-		if (columnHeader.equalsIgnoreCase("Account Number")) {
-			txtSearchAccountNum.sendKeys(searchElement);
-			homeRiminderRowCount = homeReminderTableRow.size();
-			searchEleRow = r1ComMethod.checkElementcontain(homeReminderInfoRow, homeReminderInfoCol, columnHeader,
-					searchElement);
-		} else if (columnHeader.equalsIgnoreCase("Date")) {
-			txtSearchDate.sendKeys(searchElement);
-			homeRiminderRowCount = checkCountofTablerRow();
-			searchEleRow = r1ComMethod.checkElementcontain(homeReminderInfoRow, homeReminderInfoCol, columnHeader,
-					searchElement);
-		} else if (columnHeader.equalsIgnoreCase("Facility")) {
-			txtSearchFacility.sendKeys(searchElement);
-			homeRiminderRowCount = checkCountofTablerRow();
-			searchEleRow = r1ComMethod.checkElementcontain(homeReminderInfoRow, homeReminderInfoCol, columnHeader,
-					searchElement);
-		} else if (columnHeader.equalsIgnoreCase("Notes")) {
-			txtSearchNote.sendKeys(searchElement);
-			homeRiminderRowCount = checkCountofTablerRow();
-			searchEleRow = r1ComMethod.checkElementcontain(homeReminderInfoRow, homeReminderInfoCol, columnHeader,
-					searchElement);
-		} else if (columnHeader.equalsIgnoreCase("Balance")) {
-			txtSearchBalance.sendKeys(searchElement);
-			homeRiminderRowCount = checkCountofTablerRow();
-			searchEleRow = r1ComMethod.checkElementcontain(homeReminderInfoRow, homeReminderInfoCol, columnHeader,
-					searchElement);
-		}
-		Assert.assertEquals("Row for search element not match", homeRiminderRowCount, searchEleRow);
-	}
+    public void checkContainHometable(String search, String headerName) throws FileNotFoundException, IOException {
+        String searchElement = CommonMethod.readProperties(search);
+        totalcount = homeReminderTableRow.size();
+        if (headerName.equalsIgnoreCase("Account Number")) {
+               txtSearchAccountNum.sendKeys(searchElement);
+               homeRiminderRowCount = homeReminderTableRow.size();
+               searchEleRow = r1ComMethod.checkElementcontain(homeReminderInfoRow, homeReminderInfoCol, headerName,
+                            searchElement);
+               txtSearchAccountNum.clear();
+               } else if (headerName.equalsIgnoreCase("Date")) {
+               txtSearchDate.sendKeys(searchElement);
+               homeRiminderRowCount = checkCountofTablerRow();
+               searchEleRow = r1ComMethod.checkElementcontain(homeReminderInfoRow, homeReminderInfoCol, headerName,
+                            searchElement);
+               txtSearchDate.clear();
+               } else if (headerName.equalsIgnoreCase("Time")) {
+                     txtSearchTime.sendKeys(searchElement);
+                     homeRiminderRowCount = checkCountofTablerRow();
+                     searchEleRow = r1ComMethod.checkElementcontain(homeReminderInfoRow, homeReminderInfoCol, headerName,
+                                   searchElement);
+                     txtSearchTime.clear();
+        } else if (headerName.equalsIgnoreCase("Facility")) {
+               txtSearchFacility.sendKeys(searchElement);
+               homeRiminderRowCount = checkCountofTablerRow();
+               searchEleRow = r1ComMethod.checkElementcontain(homeReminderInfoRow, homeReminderInfoCol, headerName,
+                            searchElement);
+               txtSearchFacility.clear();
+        
+        } else if (headerName.equalsIgnoreCase("Notes")) {
+               txtSearchNote.sendKeys(searchElement);
+               homeRiminderRowCount = checkCountofTablerRow();
+               searchEleRow = r1ComMethod.checkElementcontain(homeReminderInfoRow, homeReminderInfoCol, headerName,
+                            searchElement);
+               txtSearchNote.clear();
+        } else if (headerName.equalsIgnoreCase("Balance")) {
+               txtSearchBalance.sendKeys(searchElement);
+               homeRiminderRowCount = checkCountofTablerRow();
+               searchEleRow = r1ComMethod.checkElementcontain(homeReminderInfoRow, homeReminderInfoCol, headerName,
+                            searchElement);
+               txtSearchBalance.clear();
+        }
+        Assert.assertEquals("Row for search element not match", homeRiminderRowCount, searchEleRow);
+ 
+ }
+
 
 	/* Agent name verification */
 

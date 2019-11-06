@@ -12,7 +12,7 @@ import net.serenitybdd.cucumber.CucumberWithSerenity;
 glue = "r1.steps.definitions",
 
 monochrome = true,
-tags= {"@440383,@440385"},
+tags= {"@440387"},
 dryRun= false
 		)
 

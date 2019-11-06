@@ -129,11 +129,16 @@ public class HomeReminderStepDef {
 		home.verifyReminderSearch();
 	}
 
-	@Then("^Verify the type of Search box$")
-	public void verify_the_type_of_Search_box() throws NoSuchFieldException, FileNotFoundException, IOException {
+    @Then("^Verify the type of Search box$")
+    public void verify_the_type_of_Search_box() throws NoSuchFieldException, FileNotFoundException, IOException {
+           home.checkContainHometable("DateSearch", "Date");
+           home.checkContainHometable("TimeSearch", "Time");
+           home.checkContainHometable("FacilitySearch", "Facility");
+           home.checkContainHometable("AccountSearch", "Account Number");
+           home.checkContainHometable("NotesSearch", "Notes");
+           home.checkContainHometable("BalanceSearch", "Balance");           
+    }
 
-		home.checkContainHometable();
-	}
 
 	/***********************************************
 	 * Test Case 408191*:Reminder_Verify the sort option in 'Reminder' home screen
