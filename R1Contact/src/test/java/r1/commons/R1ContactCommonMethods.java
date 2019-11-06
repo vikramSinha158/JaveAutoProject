@@ -2,12 +2,16 @@ package r1.commons;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
-
 import org.junit.Assert;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import net.serenitybdd.core.annotations.findby.By;
+import r1.commons.databaseconnection.QueryExecutor;
 import r1.commons.utilities.CommonMethod;
 
 public class R1ContactCommonMethods extends BasePage {
@@ -17,7 +21,8 @@ public class R1ContactCommonMethods extends BasePage {
 	private int rowSize;
 	private int colSize;
 	boolean flag;
-	private static int searchEleCount = 0;
+	private String queryPropFileName= "R1ContactQueries";
+	private String facilityFile="Facilities";
 	CommonMethod comMethod;
 	/*
 	 * ................................... Get TABLE COLUMN VALUE
@@ -95,7 +100,7 @@ public class R1ContactCommonMethods extends BasePage {
 
 	public int checkElementcontain(String homeReminderInfoRow, String homeReminderInfoCol, String columnHeader,
 			String searchElement) {
-
+		 int searchEleCount = 0;
 		ArrayList<String> homeTablecolData = getColValue(homeReminderInfoRow, homeReminderInfoCol, columnHeader);
 		try {
 			for (int i = 0; i < homeTablecolData.size(); i++) {
@@ -162,5 +167,72 @@ public class R1ContactCommonMethods extends BasePage {
 					accFlag);
 		}
 	}
+	
+	/*click dropDown*/
+	public void clickdropdown(String  element,String options, String clickOption) throws InterruptedException {
+		element(By.xpath(element)).click();
+		Thread.sleep(1000);
+	List<net.serenitybdd.core.pages.WebElementFacade>optionsList=findAll(By.xpath(options));
+	int size=optionsList.size();
+	for(int i=0; i<size;i++) {
+		String optionName=optionsList.get(i).getText();
+		if(optionName.equalsIgnoreCase(clickOption)) {
+			optionsList.get(i).click();
+			break;
+		}
+	}
+				
+			
+		}
+	
+	/*
+	 * Click on SubMenudropDown
+	 */
+	public void clickSubMenudropdown(String element,String ManuOptions, String clickMenuName,
+			String SubManuOptions,String SbuMenuName) throws InterruptedException {
+		
+		boolean loopChk=false;
+		element(By.xpath(element)).click();
+		Thread.sleep(1000);		
+		 List<net.serenitybdd.core.pages.WebElementFacade> list=findAll(By.xpath(ManuOptions));
+				
+		for (int i = 0; i < list.size(); i++) {
+			System.out.println(list.get(i).getText());
+			if (list.get(i).getText().equalsIgnoreCase(clickMenuName)) 
+				list.get(i).click();
+				Thread.sleep(1000);
+				
+				List<net.serenitybdd.core.pages.WebElementFacade> innerlist=findAll(By.xpath(SubManuOptions));
+				for (int j = 0; j < innerlist.size(); j++) {
+					if (innerlist.get(j).getText().equalsIgnoreCase(SbuMenuName)) {
+						innerlist.get(j).click();
+						loopChk=true;
+						break;						
+				       }
+
+			   }
+			
+			  if(loopChk==true)
+			  break;
+			}
+		}
+
+	
+	
+	/*Run query*/
+	public void runQuery(String queryName, String facilityKey)
+			throws ClassNotFoundException, FileNotFoundException, SQLException, IOException {
+		QueryExecutor.runQueryTran(queryPropFileName, queryName,facilityKey,facilityFile);
+	}
+	
+	/*	wait for element*/
+		public void waitForControl(String waitElement)
+			{
+				WebDriverWait wait = new WebDriverWait(getDriver(),65);
+		        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(waitElement))); 
+			} 
+		 
 
 }
+
+

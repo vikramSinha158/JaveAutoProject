@@ -57,6 +57,20 @@ public class ReminderPage extends BasePage {
 
 	@FindBy(xpath = "//img[@src='/Content/images/save.PNG']")
 	private WebElementFacade reminderSave;
+	
+	
+	String TimeIcinBtn = "//span[@title='Open the time view']";
+	
+	
+	String timedropdown="//div[@class='t-popup t-group t-time-popup']/ul/li";
+	
+	public void selectTimeFromReminder(String timeToBeselected) throws InterruptedException
+	{
+		contactCommon.clickdropdown(TimeIcinBtn, timedropdown, timeToBeselected);
+		
+	}
+	
+	
 
 	public void reminderIcon() {
 		Assert.assertTrue("Reminder icon is not coming", reminderIcon.isVisible());
@@ -91,6 +105,23 @@ public class ReminderPage extends BasePage {
 		TimeField.sendKeys(CommonMethod.readProperties("ReminderTime"));
 
 	}
+	
+	public void FillOnlyDateOnReminder() throws FileNotFoundException, IOException {
+		dateField.clear();
+		String reminderDate = reminderDateToFill();
+		dateField.sendKeys(reminderDate);
+		
+
+	}
+	
+	public void FillOnlyTimeOnReminder() throws FileNotFoundException, IOException {
+	
+		TimeField.clear();
+		TimeField.sendKeys(CommonMethod.readProperties("ReminderTime"));
+
+	}
+	
+	
 
 	public void setReminderNote(String note) {
 		reminderNote.clear();
@@ -119,6 +150,12 @@ public class ReminderPage extends BasePage {
 	public void reminderAlertAssertion() {
 		String reminderAlert = getDriver().switchTo().alert().getText();
 		Assert.assertTrue("Expected Alert Message is not coming!", reminderAlert.contains(containCheck));
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		getDriver().switchTo().alert().dismiss();
 
 	}

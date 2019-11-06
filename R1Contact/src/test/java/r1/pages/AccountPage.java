@@ -10,11 +10,9 @@ import net.serenitybdd.core.annotations.findby.FindBy;
 import net.serenitybdd.core.pages.WebElementFacade;
 import r1.commons.BasePage;
 import r1.commons.R1ContactCommonMethods;
-import r1.commons.databaseconnection.QueryExecutor;
 import r1.commons.utilities.CommonMethod;
 
 public class AccountPage extends BasePage {
-
 	private int counter = 0;
 	R1ContactCommonMethods contactCommon;
 	CommonMethod common;
@@ -60,28 +58,22 @@ public class AccountPage extends BasePage {
 	
 	@FindBy(id="Facility") private WebElementFacade facilityDrpDown;
 	
-	@FindBy(xpath="//span[text()=' Payment History ']") private WebElementFacade paymentHistory ;
-
-	public void runQueryTranServer(String queryName)
-			throws ClassNotFoundException, FileNotFoundException, SQLException, IOException {
-		QueryExecutor.runQueryTran(this.getClass().getSimpleName().replace("Page", ""), queryName);
-	}
 
 	/*
 	 * Clicks the the account passed by property file
 	 */
-	public void selectAndClickAccount(String clickItem) throws FileNotFoundException, IOException {
+	public void selectAndClickAccount(String clickItem, String AccountNumber) throws FileNotFoundException, IOException {
 
 		if (clickItem.equalsIgnoreCase("inbound")) {
-			contactCommon.clickOnMatchingColValue(accountRows, colNum, CommonMethod.readProperties("AccountNumber"),
+			contactCommon.clickOnMatchingColValue(accountRows, colNum, CommonMethod.readProperties(AccountNumber),
 					inboundLink);
 		}
 
 		else if (clickItem.equalsIgnoreCase("outbound")) {
-			contactCommon.clickOnMatchingColValue(accountRows, colNum, CommonMethod.readProperties("AccountNumber"),
+			contactCommon.clickOnMatchingColValue(accountRows, colNum, CommonMethod.readProperties(AccountNumber),
 					outboundLink);
 		} else if (clickItem.equalsIgnoreCase("arrow")) {
-			contactCommon.clickOnMatchingColValue(accountRows, colNum, CommonMethod.readProperties("AccountNumber"),
+			contactCommon.clickOnMatchingColValue(accountRows, colNum, CommonMethod.readProperties(AccountNumber),
 					arrowLink);
 		}
 
@@ -188,10 +180,30 @@ public class AccountPage extends BasePage {
 		CommonMethod.DrpVisibleTxt(facilityDrpDown, facilityName);
 	}
 	
-	/*Click payment History  */
-	public void clickPaymentHistory() {
+	public void JhouseOwnerAccountNum(String queryName, String facilityKey) throws ClassNotFoundException, FileNotFoundException, SQLException, IOException {
+		contactCommon.runQuery(queryName, facilityKey);
+	}
+	
+	/*fetch account from db*/
+	
+	public void fetchAccountNumber(String queryName, String facilityKey)
+			throws ClassNotFoundException, FileNotFoundException, SQLException, IOException {
+		contactCommon.runQuery(queryName, facilityKey);
 		
 	}
 	
+	/*enter account and click on search button*/
+	
+	public void searchAccount(String accountNumber) {
+		enterAccNumForSearch(accountNumber);
+		clickForAccSearch();
+	}
+	
+	/*click on wheatonNonZeroAccountNum arrow*/
+	public void clickOnAccount(String accountNumber) throws FileNotFoundException, IOException {
+		clickOnArrowWithDbAccNum(accountNumber);
+	}
+
+
 	
 }

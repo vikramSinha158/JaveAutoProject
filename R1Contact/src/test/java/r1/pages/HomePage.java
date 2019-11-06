@@ -27,7 +27,7 @@ public class HomePage extends BasePage {
 	int totalcount;
 	public static String agentEmailID;
 	String reminderRow = "//table[@ng-table='tableParams']//tbody//tr";
-	String defaultTime = "12:00 AM"; // It will remain constant
+	
 	String homeReminderInfoRow = "//table[@ng-table='tableParams']//tbody//tr[@ng-repeat='row in $data']";
 	String homeReminderInfoCol = "//table[@ng-table='tableParams']//thead//tr[@class='ng-table-sort-header']//th";
 	String deleteIcon1Path = "]//td//i[@id='tooltip-popup-triggerDeleteReminder']";
@@ -144,6 +144,14 @@ public class HomePage extends BasePage {
 	private WebElementFacade buttonToShowDate;
 	@FindBy(xpath = "//div[contains(text(),'Email')]//following-sibling::div")
 	private WebElementFacade agentEmail;
+	@FindBy(xpath = "//table[@ng-table='tableParams']/thead/tr[1]/th/div/span")
+	private List<WebElementFacade> reminderHeader;	
+	@FindBy(xpath = "//div[@class='ng-table-pager ng-scope']/ul/li/a/span")
+	private List<WebElementFacade> tablePageNumber; 
+	@FindBy(xpath = "//input[@name='remTime']")
+	private WebElementFacade txtSearchTime; 
+		 
+
 
 	/*
 	 * page title
@@ -188,52 +196,67 @@ public class HomePage extends BasePage {
 
 	 * Reminder Filter
 	 ***********************************/
-	public int checkCountofTablerRow() {
-		boolean check = true;
-		if (homeReminderTableRow.size() < 1) {
-			check = false;
-			Assert.assertTrue("Rowcount is less then Zero,NoRow found", check);
-		} else {
-			homeRiminderRowCount = homeReminderTableRow.size();
-		}
-		return homeRiminderRowCount;
-	}
+    public int checkCountofTablerRow() {
+        boolean check = true;
+        if (homeReminderTableRow == null) {
+               check = false;
+               Assert.assertTrue("Rowcount is less then Zero,NoRow found", check);
+        } else {
+               homeRiminderRowCount = homeReminderTableRow.size();
+        }
+        return homeRiminderRowCount;
+ }
+
 
 	/*
 	 * verify filter search is not working
 	 */
 
-	public void checkContainHometable() throws FileNotFoundException, IOException {
-		String searchElement = CommonMethod.readProperties("FilterSearch");
-		totalcount = homeReminderTableRow.size();
-		if (columnHeader.equalsIgnoreCase("Account Number")) {
-			txtSearchAccountNum.sendKeys(searchElement);
-			homeRiminderRowCount = homeReminderTableRow.size();
-			searchEleRow = r1ComMethod.checkElementcontain(homeReminderInfoRow, homeReminderInfoCol, columnHeader,
-					searchElement);
-		} else if (columnHeader.equalsIgnoreCase("Date")) {
-			txtSearchDate.sendKeys(searchElement);
-			homeRiminderRowCount = checkCountofTablerRow();
-			searchEleRow = r1ComMethod.checkElementcontain(homeReminderInfoRow, homeReminderInfoCol, columnHeader,
-					searchElement);
-		} else if (columnHeader.equalsIgnoreCase("Facility")) {
-			txtSearchFacility.sendKeys(searchElement);
-			homeRiminderRowCount = checkCountofTablerRow();
-			searchEleRow = r1ComMethod.checkElementcontain(homeReminderInfoRow, homeReminderInfoCol, columnHeader,
-					searchElement);
-		} else if (columnHeader.equalsIgnoreCase("Notes")) {
-			txtSearchNote.sendKeys(searchElement);
-			homeRiminderRowCount = checkCountofTablerRow();
-			searchEleRow = r1ComMethod.checkElementcontain(homeReminderInfoRow, homeReminderInfoCol, columnHeader,
-					searchElement);
-		} else if (columnHeader.equalsIgnoreCase("Balance")) {
-			txtSearchBalance.sendKeys(searchElement);
-			homeRiminderRowCount = checkCountofTablerRow();
-			searchEleRow = r1ComMethod.checkElementcontain(homeReminderInfoRow, homeReminderInfoCol, columnHeader,
-					searchElement);
-		}
-		Assert.assertEquals("Row for search element not match", homeRiminderRowCount, searchEleRow);
-	}
+    public void checkContainHometable(String search, String headerName) throws FileNotFoundException, IOException {
+        String searchElement = CommonMethod.readProperties(search);
+        totalcount = homeReminderTableRow.size();
+        if (headerName.equalsIgnoreCase("Account Number")) {
+               txtSearchAccountNum.sendKeys(searchElement);
+               homeRiminderRowCount = homeReminderTableRow.size();
+               searchEleRow = r1ComMethod.checkElementcontain(homeReminderInfoRow, homeReminderInfoCol, headerName,
+                            searchElement);
+               txtSearchAccountNum.clear();
+               } else if (headerName.equalsIgnoreCase("Date")) {
+               txtSearchDate.sendKeys(searchElement);
+               homeRiminderRowCount = checkCountofTablerRow();
+               searchEleRow = r1ComMethod.checkElementcontain(homeReminderInfoRow, homeReminderInfoCol, headerName,
+                            searchElement);
+               txtSearchDate.clear();
+               } else if (headerName.equalsIgnoreCase("Time")) {
+                     txtSearchTime.sendKeys(searchElement);
+                     homeRiminderRowCount = checkCountofTablerRow();
+                     searchEleRow = r1ComMethod.checkElementcontain(homeReminderInfoRow, homeReminderInfoCol, headerName,
+                                   searchElement);
+                     txtSearchTime.clear();
+        } else if (headerName.equalsIgnoreCase("Facility")) {
+               txtSearchFacility.sendKeys(searchElement);
+               homeRiminderRowCount = checkCountofTablerRow();
+               searchEleRow = r1ComMethod.checkElementcontain(homeReminderInfoRow, homeReminderInfoCol, headerName,
+                            searchElement);
+               txtSearchFacility.clear();
+        
+        } else if (headerName.equalsIgnoreCase("Notes")) {
+               txtSearchNote.sendKeys(searchElement);
+               homeRiminderRowCount = checkCountofTablerRow();
+               searchEleRow = r1ComMethod.checkElementcontain(homeReminderInfoRow, homeReminderInfoCol, headerName,
+                            searchElement);
+               txtSearchNote.clear();
+        } else if (headerName.equalsIgnoreCase("Balance")) {
+               txtSearchBalance.sendKeys(searchElement);
+               homeRiminderRowCount = checkCountofTablerRow();
+               searchEleRow = r1ComMethod.checkElementcontain(homeReminderInfoRow, homeReminderInfoCol, headerName,
+                            searchElement);
+               txtSearchBalance.clear();
+        }
+        Assert.assertEquals("Row for search element not match", homeRiminderRowCount, searchEleRow);
+ 
+ }
+
 
 	/* Agent name verification */
 
@@ -347,6 +370,34 @@ public class HomePage extends BasePage {
 		verifyInnerDropdown(adminSubmenu, adminXpath, "Settings", settingSubmenu, "SettingsDropdowns");
 	}
 
+	String settingMenuPath="//span[text()='Administration']//following-sibling::div/ul/li/span";
+	public void clickOnSubMenu(String subManuItemClick) throws InterruptedException
+	{
+		r1ComMethod.clickSubMenudropdown(adminXpath, adminSubmenu,"Settings", settingSubmenu,subManuItemClick);
+	}
+	
+	
+	/**********************************************************
+	 * Verify reminder header are in caps or not
+
+	
+	 **********************************************/
+	public void verifyReminderHeaderCaps()
+	{
+		boolean capsCheck=true;;
+		
+		for(int i=0;i<reminderHeader.size()-1;i++)
+		{
+			capsCheck=com.isUpperCaseCheck(reminderHeader.get(i).getText());
+			
+             Assert.assertTrue(reminderHeader.get(i).getText() + " does not contain upper case ", capsCheck);
+             com.highLightSteps(reminderHeader.get(i));
+			
+			
+		}
+		
+	}
+	
 	public void reminderHeader() {
 		CommonMethod.isDisplayedMethod(date);
 		CommonMethod.isDisplayedMethod(time);
@@ -354,6 +405,10 @@ public class HomePage extends BasePage {
 		CommonMethod.isDisplayedMethod(accountnum);
 		CommonMethod.isDisplayedMethod(notes);
 		CommonMethod.isDisplayedMethod(Balance);
+		
+	
+		
+
 	}
 
 
@@ -365,18 +420,18 @@ public class HomePage extends BasePage {
 	public void checkreminderList() {
 
 		int actualReminders = homeReminderTableRow.size();
-		if (actualReminders > 1) {
+		/*if (actualReminders > 1) {
 			int expectedReminders = printedReminderOnHeader();
 			Assert.assertEquals("Number of reminders are not matching", actualReminders, expectedReminders);
 		} else {
-			Assert.assertTrue("No reminders present", actualReminders == 0);
+			Assert.assertTrue("No reminders present", actualReminders == 0);*/
 
 		if (homeReminderTableRow.size() < 1) {
 			Assert.assertFalse("No reminders present", true);
 
 		}
 	}
-	}
+	
 	/******************************************************
 	 * Verify balance
 	 ************************************************************************/
@@ -407,24 +462,44 @@ public class HomePage extends BasePage {
 	}
 
 	/**********************************************************
-	 * Verify default time
+	 * Verify reminder time from home page reminder table
 	 *
 	 * @throws IOException
 	 * @throws FileNotFoundException
 	 **********************************************/
+	
+	
 
-	public void verifyDefaultTime() throws FileNotFoundException, IOException {
-		ArrayList<String> listOfAccount = r1ComMethod.getColValue(homeReminderInfoRow, homeReminderInfoCol,
-				"Account Number");
-		ArrayList<String> listOfTime = r1ComMethod.getColValue(homeReminderInfoRow, homeReminderInfoCol, "Time");
-		for (int i = 0; i < listOfAccount.size(); i++) {
-			String accountNum = listOfAccount.get(i);
-			if (accountNum.contentEquals(accountNumber())) {
-				accountIndex = i;
+	
+	public void verifyReminderTimeInHome(String dbAccNum,String expectedTime) throws FileNotFoundException, IOException, InterruptedException {
+		
+		boolean checkClk=false;
+				
+		for(int j=0;j<tablePageNumber.size();j++) {
+			
+			clickOn(tablePageNumber.get(j));
+			ArrayList<String> listOfAccount = r1ComMethod.getColValue(homeReminderInfoRow, homeReminderInfoCol,
+					"Account Number");
+			ArrayList<String> listOfTime = r1ComMethod.getColValue(homeReminderInfoRow, homeReminderInfoCol, "Time");
+			for (int i = 0; i < listOfAccount.size(); i++) {
+				String accountNum = listOfAccount.get(i);
+				if (accountNum.contentEquals(dbAccNum)) {
+					accountIndex = i;
+					String ActualTime = listOfTime.get(accountIndex);
+				    Assert.assertEquals(expectedTime,ActualTime);
+									
+					checkClk=true;
+					break;
+				}
 			}
+			
+			
+			if(checkClk==true)
+				break;
+			
 		}
-		String ActualTime = listOfTime.get(accountIndex);
-		Assert.assertEquals(ActualTime, defaultTime);
+		
+		
 	}
 
 	/*--------------------------------------Sorting In ascending-------------------------------------------------------*/
@@ -579,6 +654,10 @@ public class HomePage extends BasePage {
 
 	public void todayTabColor(String expectedCssValue) {
 		String day = "Today";
+	
+	    for(int j=0;j<tablePageNumber.size();j++) {
+			
+		clickOn(tablePageNumber.get(j));
 		ArrayList<String> ListOfDate = r1ComMethod.getColValue(homeReminderInfoRow, homeReminderInfoCol, "Date");
 		for (int i = 0; i < ListOfDate.size(); i++) {
 			if (ListOfDate.get(i).contains(day)) {
@@ -586,9 +665,10 @@ public class HomePage extends BasePage {
 				String actualCssValue = element(By.xpath(homeReminderInfoRow + "[" + rowIndex + "]"))
 						.getCssValue("background-color");
 				Assert.assertEquals(actualCssValue, expectedCssValue);
-				break;
+			
 			}
 		}
+	}
 	}
 
 	/*********************************************************

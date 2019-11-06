@@ -2,9 +2,7 @@ package r1.steps.definitions;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-
 import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
 import r1.commons.BasePage;
 import r1.pages.HomePage;
 import r1.pages.ReminderPage;
