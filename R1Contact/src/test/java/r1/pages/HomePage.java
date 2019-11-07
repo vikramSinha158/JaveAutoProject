@@ -27,6 +27,7 @@ public class HomePage extends BasePage {
 	int totalcount;
 	public static String agentEmailID;
 	String reminderRow = "//table[@ng-table='tableParams']//tbody//tr";
+ 
 	
 	String homeReminderInfoRow = "//table[@ng-table='tableParams']//tbody//tr[@ng-repeat='row in $data']";
 	String homeReminderInfoCol = "//table[@ng-table='tableParams']//thead//tr[@class='ng-table-sort-header']//th";
@@ -492,8 +493,7 @@ public class HomePage extends BasePage {
 					break;
 				}
 			}
-			
-			
+						
 			if(checkClk==true)
 				break;
 			
@@ -504,12 +504,12 @@ public class HomePage extends BasePage {
 
 	/*--------------------------------------Sorting In ascending-------------------------------------------------------*/
 
-	private void checkAscShortingStatus() {
+	private void checkAscShortingStatus(String colHeader) {
 		boolean chkShortStatus = true;
 		if (sortDescElement.isDisplayed()) {
 			clickOn(sortDescElement);
 			if (sortAscElement.isDisplayed()) {
-				r1ComMethod.verifySorting(homeReminderInfoRow, homeReminderInfoCol, columnHeader);
+				r1ComMethod.verifySorting(homeReminderInfoRow, homeReminderInfoCol, colHeader);
 			} else {
 				chkShortStatus = false;
 				Assert.assertTrue("Element for Assending is not visible", chkShortStatus);
@@ -517,38 +517,38 @@ public class HomePage extends BasePage {
 		}
 	}
 
-	public void sortingAscColumnHead() {
+	public void sortingAscColumnHead(String columnHeaderAsc ) {
 
-		if (columnHeader.equalsIgnoreCase("Account Number")) {
+		if (columnHeaderAsc.equalsIgnoreCase("Account Number")) {
 
 			clickOn(sortAccNumHeader);
-			checkAscShortingStatus();
+			checkAscShortingStatus(columnHeaderAsc);
 
-		} else if (columnHeader.equalsIgnoreCase("Facility")) {
+		} else if (columnHeaderAsc.equalsIgnoreCase("Facility")) {
 
 			clickOn(sortFacilityHeader);
-			checkAscShortingStatus();
+			checkAscShortingStatus(columnHeaderAsc);
 
-		} else if (columnHeader.equalsIgnoreCase("Notes")) {
+		} else if (columnHeaderAsc.equalsIgnoreCase("Notes")) {
 
 			clickOn(sortNoteHeader);
-			checkAscShortingStatus();
+			checkAscShortingStatus(columnHeaderAsc);
 
-		} else if (columnHeader.equalsIgnoreCase("Balance")) {
+		} else if (columnHeaderAsc.equalsIgnoreCase("Balance")) {
 
 			clickOn(sortBalanceHeader);
-			checkAscShortingStatus();
+			checkAscShortingStatus(columnHeaderAsc);
 		}
 
 	}
 
 	/*--------------------------------------Sorting In descending-------------------------------------------------------*/
 
-	private void checkDescShortingStatus() {
+	private void checkDescShortingStatus(String colHeaderdsc) {
 		boolean chkDescStatus = true;
 		if (sortDescElement.isDisplayed()) {
 
-			r1ComMethod.verifyDescSorting(homeReminderInfoRow, homeReminderInfoCol, columnHeader);
+			r1ComMethod.verifyDescSorting(homeReminderInfoRow, homeReminderInfoCol, colHeaderdsc);
 
 		} else {
 			chkDescStatus = false;
@@ -556,27 +556,27 @@ public class HomePage extends BasePage {
 		}
 	}
 
-	public void sortingDescColumnHeader() {
+	public void sortingDescColumnHeader(String columnHeaderDsc) {
 
-		if (columnHeader.equalsIgnoreCase("Account Number")) {
+		if (columnHeaderDsc.equalsIgnoreCase("Account Number")) {
 
 			clickOn(sortAccNumHeader);
-			checkDescShortingStatus();
+			checkDescShortingStatus(columnHeaderDsc);
 
-		} else if (columnHeader.equalsIgnoreCase("Facility")) {
+		} else if (columnHeaderDsc.equalsIgnoreCase("Facility")) {
 
 			clickOn(sortFacilityHeader);
-			checkDescShortingStatus();
+			checkDescShortingStatus(columnHeaderDsc);
 
-		} else if (columnHeader.equalsIgnoreCase("Notes")) {
+		} else if (columnHeaderDsc.equalsIgnoreCase("Notes")) {
 
 			clickOn(sortNoteHeader);
-			checkDescShortingStatus();
+			checkDescShortingStatus(columnHeaderDsc);
 
-		} else if (columnHeader.equalsIgnoreCase("Balance")) {
+		} else if (columnHeaderDsc.equalsIgnoreCase("Balance")) {
 
 			clickOn(sortBalanceHeader);
-			checkDescShortingStatus();
+			checkDescShortingStatus(columnHeaderDsc);
 		}
 
 	}
@@ -636,6 +636,76 @@ public class HomePage extends BasePage {
 
 			}
 		}
+	}
+	
+	
+
+	/*--------------------------------------Verify  Delete reminder account -------------------------------------------------------*/
+	public void verifyDeleteReminderHome(String dbAccNum,String expectedTime) throws FileNotFoundException, IOException, InterruptedException {
+		
+		boolean delStatus=false;
+				
+		for(int j=0;j<tablePageNumber.size();j++) {
+			
+			clickOn(tablePageNumber.get(j));
+			ArrayList<String> listOfAccount = r1ComMethod.getColValue(homeReminderInfoRow, homeReminderInfoCol,
+					"Account Number");
+			
+			ArrayList<String> listOfDate = r1ComMethod.getColValue(homeReminderInfoRow, homeReminderInfoCol, "Date");
+			
+			for (int i = 0; i < listOfAccount.size(); i++) {
+				String accountNum = listOfAccount.get(i);
+				if (accountNum.contentEquals(dbAccNum)) {
+					accountIndex = i;
+			;
+					String ActualDate = listOfDate.get(accountIndex);
+					
+					Assert.assertEquals("Actual date " + ActualDate + " does not with expected date " + ReminderPage.reminderDateToFill(),ReminderPage.reminderDateToFill(),ActualDate);
+
+					int delrow=i+1;
+					String delIconPath = homeReminderInfoRow + "[" + delrow + deleteIcon1Path;
+				
+					WebElementFacade delIcon = element(By.xpath(delIconPath));
+					if (delIcon.isDisplayed()) {
+
+						Thread.sleep(2000);
+
+						clickOn(delIcon);
+						if (deletePop.isDisplayed())
+						{
+							clickOn(DeleteBtnIndeletePop);
+							ArrayList<String> listOfAccAfterAccDel = r1ComMethod.getColValue(homeReminderInfoRow, homeReminderInfoCol,
+									"Account Number");
+							ArrayList<String> listOfDateAfterAccDel = r1ComMethod.getColValue(homeReminderInfoRow, homeReminderInfoCol, "Date");
+													
+							if(listOfAccAfterAccDel.contains(dbAccNum))
+							{
+								int accIndex=listOfAccAfterAccDel.indexOf(dbAccNum);
+								if(listOfDateAfterAccDel.get(accIndex).equalsIgnoreCase(ReminderPage.reminderDateToFill()))
+								{
+									delStatus=false;
+									Assert.assertTrue("Account is not deleted,check it manually ", delStatus);
+									
+								}
+																
+							}
+							else {
+								
+								delStatus=true;
+								break;	
+							}
+							
+						}
+					}
+										
+				}
+			}
+						
+			if(delStatus==true)
+				break;
+			
+		}
+				
 	}
 
 	/****************************************************

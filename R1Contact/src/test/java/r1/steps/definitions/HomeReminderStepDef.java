@@ -147,14 +147,21 @@ public class HomeReminderStepDef {
 	@Given("^Verify the Ascending sort function to sort reminder list$")
 	public void verify_the_Ascending_sort_function_to_sort_reminder_list() {
 
-		home.sortingAscColumnHead();
+		home.sortingAscColumnHead("Account Number");
+		home.sortingAscColumnHead("Facility");
+		//home.sortingAscColumnHead("Notes");
+		//home.sortingAscColumnHead("Balance");
+		
 
 	}
 
 	@Given("^Verify the Descending sort function to sort reminder list$")
 	public void verify_the_Descending_sort_function_to_sort_reminder_list() {
 
-		home.sortingDescColumnHeader();
+		home.sortingDescColumnHeader("Account Number");
+		home.sortingDescColumnHeader("Facility");
+		//home.sortingDescColumnHeader("Notes");
+		//home.sortingDescColumnHeader("Balance");
 	}
 
 	/***************************************************
@@ -311,6 +318,12 @@ public class HomeReminderStepDef {
 	public void header_should_be_in_Caps() {
 	  home.verifyReminderHeaderCaps();
 	}
+	
+	@Then("^user click on Delete Icon and particular row should be deleted from the Reminder section$")
+	public void user_click_on_Delete_Icon_and_particular_row_should_be_deleted_from_the_Reminder_section() throws FileNotFoundException, IOException, InterruptedException {
+	    home.verifyDeleteReminderHome(reminderAccount,setTimeInReminder);
+	}
+	
 
 
 
