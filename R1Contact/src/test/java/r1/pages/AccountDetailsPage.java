@@ -25,9 +25,6 @@ public class AccountDetailsPage extends PageObject {
 	AccountPage account;
 	String agentPatientPageEmail;
 	private String accNumberxpath = "//div[@class='account-number']";
-	private String payment = "//span[text()='--New Payment--']";
-	private String newPaymentDropDown = "//ul[@class='t-reset']/li";
-
 	@FindBy(xpath = "//div[@class='pull-left right-item']/a")
 	private List<WebElementFacade> patientAndGuarntName;
 
@@ -96,6 +93,9 @@ public class AccountDetailsPage extends PageObject {
 
 	@FindBy(xpath = "//table[@ng-table='tableParams']//tbody//tr[1]//td[@data-title-text='Notes']//span")
 	private WebElementFacade noteTextCellvalue;
+	
+	@FindBy(id="aMode")
+	private WebElementFacade paymentDropDown;
 
 	int PatientDtlTabs = Integer.parseInt(CommonMethod.readProperties("patientDetailtabs"));
 
@@ -237,7 +237,7 @@ public class AccountDetailsPage extends PageObject {
 
 	/* payment dropdown */
 	public void paymentDropdown(String value) throws InterruptedException {
-		contactCommon.clickdropdown(payment, newPaymentDropDown, value);
+		CommonMethod.DrpVisibleTxt(paymentDropDown, value);
 	}
 
 	/* Enter text for notes */

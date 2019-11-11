@@ -324,7 +324,18 @@ public class HomeReminderStepDef {
 	    home.verifyDeleteReminderHome(reminderAccount,setTimeInReminder);
 	}
 	
-
-
-
+	/*verify_the_reminder_created_time_and_reminder_time_should_be_same_as_it_was_created_for
+	 * 
+	 */
+	
+	@When("^user select tomorrow date$")
+	public void user_select_tomorrow_date() throws FileNotFoundException, IOException {
+		rem.fillTomorrowReminder();
+	}
+	
+	@Then("^verify the tomorrow reminder color$")
+	public void verify_the_tomorrow_reminder_color() {
+	   home.searchremByAccNUm(reminderAccount);
+	   home.verifyTomRemCol();
+	}
 }

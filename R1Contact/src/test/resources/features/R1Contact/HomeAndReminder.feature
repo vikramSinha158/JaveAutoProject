@@ -2,7 +2,6 @@ Feature: Home and Reminder Verfication
 Background: user navigates to account home page
 Given user is on R1Contact home page
 
-
 @408185
 Scenario: Reminder_Verify the time field on Reminder setup window
 When user Click on 'Search' account link
@@ -36,7 +35,6 @@ Scenario: Reminder_Verify the header in the 'Reminder' home screen
 Given Verify the header in 'Reminders' section
 And header should be in Caps
  
- 
 #modified
 @440385 @Test
 Scenario: Reminder_Verify the Create Reminder while Set a Reminder time
@@ -53,7 +51,6 @@ And enter note in the notes text box
 And user clicks on the reminder save button
 When user navigate to home page 
 Then verify the reminder created time and reminder time should be same as it was created for
-
 
 #modified
 @440383 @Test
@@ -127,6 +124,23 @@ And enter note in the notes text box
 And user clicks on the reminder save button
 When user navigate to home page 
 Then user click on Delete Icon and particular row should be deleted from the Reminder section
+
+@440856 
+Scenario: Home_Reminder_Verify background color for Tomorrow's Reminder
+When user mouse hover on SEARCH link and clicks on the account button
+Then user should be navigate to account search page
+When User fetch the "Account" for search and click for search button
+Then User select the account by clicking on arrow button from account table
+Then user should be navigate to account info page
+When user clicks on the Set a reminders icon
+Then a pop up window should be displayed
+When user select tomorrow date 
+And select time "2:00 PM" from the dropdown
+And enter note in the notes text box
+And user clicks on the reminder save button
+When user navigate to home page 
+Then verify the tomorrow reminder color
+
 
 
 
