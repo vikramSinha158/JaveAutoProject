@@ -360,6 +360,13 @@ public class CommonMethod extends BasePage {
 	        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(waitElement))); 
 		}
 		
+		/* Method to wait control */
+		public void waitToClickable(String waitElement)
+		{
+			WebDriverWait wait = new WebDriverWait(getDriver(),100);
+	        wait.until(ExpectedConditions.elementToBeClickable(By.xpath(waitElement))); 
+		}
+		
 		/* Method to dismiss alert */
 		public void dimissAlert()
 		{

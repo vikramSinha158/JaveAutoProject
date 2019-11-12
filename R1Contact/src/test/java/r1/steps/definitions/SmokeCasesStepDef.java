@@ -522,7 +522,7 @@ public class SmokeCasesStepDef extends BasePage {
 	}
 
 	@When("^click on submit button$")
-	public void click_on_submit_button() {
+	public void click_on_submit_button() throws InterruptedException {
 	    payment.submitProfile();
 	    
 	}

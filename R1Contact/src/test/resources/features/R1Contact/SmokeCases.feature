@@ -207,7 +207,7 @@ And user paste the profile id into the profile text box
 And user clicks on the submit button on payment information page
 Then Payment should be submitted successfully for check payment arrangement
 
-@428496
+@428496 @Test
 Scenario: Verify the payment posting using Agent input with Emerge
 When user Click on 'Search' account link
 And select accounts option for WHEATON PHYSICIAN SERVICES
@@ -227,7 +227,7 @@ And user paste the profile id into the profile text box
 And user clicks on the submit button on payment information page
 Then Payment should be submitted successfully for check payment arrangement 
 
-@428497 
+@428497 @Test
 Scenario: Verify the Regular payment posting
 When user Click on 'Search' account link
 And select accounts option for WHEATON PHYSICIAN SERVICES
@@ -241,8 +241,6 @@ And user Click on Enter payment button
 Then user should be land on the payment information tab
 When user clicks on the submit button on payment information
 Then Payment should be processed successfully
-
-
 
 @428498
 Scenario: Verify 'the my queue tab under the my tabs'

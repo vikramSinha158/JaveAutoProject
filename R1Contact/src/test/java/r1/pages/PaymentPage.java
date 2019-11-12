@@ -3,6 +3,7 @@ package r1.pages;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import org.junit.Assert;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.support.ui.Select;
 import net.serenitybdd.core.annotations.findby.By;
 import net.serenitybdd.core.annotations.findby.FindBy;
@@ -84,6 +85,10 @@ public class PaymentPage extends BasePage {
 
 	@FindBy(xpath="//input[@placeholder='XXXX']")
 	private WebElementFacade cvv;
+	
+	@FindBy(xpath="//input[@placeholder='xxx@xxx.xxx']")
+	private WebElementFacade email;
+	
 
 	@FindBy(xpath="//input[@placeholder='Address 1 ']")
 	private WebElementFacade address;
@@ -291,7 +296,9 @@ public class PaymentPage extends BasePage {
 
 	}
 	//Submit payment profile
-	public void submitProfile() {
+	public void submitProfile() throws InterruptedException {
+		JavascriptExecutor js = (JavascriptExecutor) getDriver();
+		js.executeScript("arguments[0].scrollIntoView();", submitProfile);
 		submitProfile.click();
 	}
 

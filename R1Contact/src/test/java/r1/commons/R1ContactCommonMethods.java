@@ -11,6 +11,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import net.serenitybdd.core.annotations.findby.By;
+import r1.commons.databaseconnection.DatabaseConn;
 import r1.commons.databaseconnection.QueryExecutor;
 import r1.commons.utilities.CommonMethod;
 
@@ -225,6 +226,13 @@ public class R1ContactCommonMethods extends BasePage {
 		QueryExecutor.runQueryTran(queryPropFileName, queryName,facilityKey,facilityFile);
 	}
 	
+	
+	/*Run Query on coor*/
+
+	public static void runQuery(String queryName) throws ClassNotFoundException, FileNotFoundException, SQLException, IOException {
+		DatabaseConn.serverConn("UATCONTWCOR01\\CCCCOR", "Stingray",
+				CommonMethod.queryProperties(queryName, "R1ContactQueries"));
+	}
 	/*	wait for element*/
 		public void waitForControl(String waitElement)
 			{

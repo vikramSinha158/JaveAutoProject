@@ -138,8 +138,17 @@ When user select tomorrow date
 And select time "2:00 PM" from the dropdown
 And enter note in the notes text box
 And user clicks on the reminder save button
-When user navigate to home page 
-Then verify the tomorrow reminder color
+When user navigate to home page
+Then Verify the header in 'Reminders' section 
+And verify the tomorrow reminder color
+
+@440847
+Scenario: Home_Reminder_Verify background color for expired Reminder
+Given Verify the header in 'Reminders' section
+Then user should be able to see Agent Information
+And verify the expired reminder color
+
+
 
 
 
