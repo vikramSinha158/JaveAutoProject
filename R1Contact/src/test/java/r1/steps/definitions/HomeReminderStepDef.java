@@ -342,17 +342,34 @@ public class HomeReminderStepDef {
 
 	/*
 	 * Home_Reminder_Verify background color for expired Reminder
-	 */ 
+	 */
 	@Then("^verify the expired reminder color$")
-	public void verify_the_expired_reminder_color() throws ClassNotFoundException, FileNotFoundException, SQLException, IOException {
+	public void verify_the_expired_reminder_color()
+			throws ClassNotFoundException, FileNotFoundException, SQLException, IOException {
 		R1ContactCommonMethods.runQuery("ExpiredReminder");
 		DatabaseConn.resultSet.next();
 		reminderAccount = DatabaseConn.resultSet.getString("remAccountNum");
-		if(reminderAccount==null) {
+		if (reminderAccount == null) {
 			Assert.assertTrue("No Expired reminder is present for this user!", false);
 		}
 		home.searchremByAccNUm(reminderAccount);
 		home.verifyExpiredRem();
-		
+
 	}
+
+	/*
+	 * Home_Verify Agent Information as per Role provided
+	 */
+	@When("^user verifies user profile information display below the Reminder panel$")
+	public void user_verifies_user_profile_information_display_below_the_Reminder_panel() {
+		home.verifyAgentHeader();
+	}
+
+
+	@Then("^user should be able to view all column names should populating with values$")
+	public void user_should_be_able_to_view_all_column_names_should_populating_with_values() {
+		
+
+	}
+	
 }

@@ -569,7 +569,7 @@ public class SmokeCasesStepDef extends BasePage {
 
 	@Then("^user enter amount,checks check box,select emi perion then and user clicks on Summary button$")
 	public void user_enter_amount_checks_check_box_select_emi_perion_then_and_user_clicks_on_Summary_button() throws InterruptedException {
-		 payment.dovetailCheck();
+		 payment.dovetailCheck(newPaymentAccount);
 
 	}
 

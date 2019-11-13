@@ -148,6 +148,11 @@ Given Verify the header in 'Reminders' section
 Then user should be able to see Agent Information
 And verify the expired reminder color
 
+@442195
+Scenario: Home_Verify Agent Information as per Role provided 
+When user verifies user profile information display below the Reminder panel
+Then user should be able to view all column names should populating with values
+
 
 
 

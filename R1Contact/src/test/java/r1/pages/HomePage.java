@@ -3,6 +3,7 @@ package r1.pages;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -13,6 +14,7 @@ import net.serenitybdd.core.annotations.findby.FindBy;
 import net.serenitybdd.core.pages.WebElementFacade;
 import r1.commons.BasePage;
 import r1.commons.R1ContactCommonMethods;
+import r1.commons.databaseconnection.DatabaseConn;
 import r1.commons.utilities.CommonMethod;
 
 public class HomePage extends BasePage {
@@ -149,6 +151,8 @@ public class HomePage extends BasePage {
 	private List<WebElementFacade> tablePageNumber;
 	@FindBy(xpath = "//input[@name='remTime']")
 	private WebElementFacade txtSearchTime;
+	@FindBy(xpath="//div[@class='flt-lft left-item']")
+	private List<WebElementFacade> agentHeaders;
 
 	/*
 	 * page title
@@ -378,8 +382,6 @@ public class HomePage extends BasePage {
 	 **********************************************/
 	public void verifyReminderHeaderCaps() {
 		boolean capsCheck = true;
-		;
-
 		for (int i = 0; i < reminderHeader.size() - 1; i++) {
 			capsCheck = com.isUpperCaseCheck(reminderHeader.get(i).getText());
 			Assert.assertTrue(reminderHeader.get(i).getText() + " does not contain upper case ", capsCheck);
@@ -760,4 +762,25 @@ public class HomePage extends BasePage {
 				.getCssValue("background-color");
 		Assert.assertEquals(actualCssValue, expectedCssValue);
 	}
+	
+	//verify agent information headers
+	public void verifyAgentHeader() {
+	List<String> list = new ArrayList<String>();
+	List<String> namesList = Arrays.asList( "PRINT NAME", "LOCATION", "MANAGER","ROLE","UNIT","TEAM","EMAIL","PHONE","SHIFT","START DATE","MAX VAL","MESSAGE");
+	int size = agentHeaders.size();
+	for(int i=0; i<size;i++) {
+		list.add(agentHeaders.get(i).getText());
+	}
+	Assert.assertTrue("Some agent information headers aren't missing", list.containsAll(namesList));
+	}
+	
+	public void verifyAgentHeaderValue() {
+/*		R1ContactCommonMethods.runQuery("AgentInfo");
+		DatabaseConn.resultSet.next();*/
+/*		String printName = DatabaseConn.resultSet.getString("remAccountNum");
+		String 
+		if (reminderAccount == null) {
+			Assert.assertTrue("No Expired reminder is present for this user!", false);*/
+	}
+	
 }

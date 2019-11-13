@@ -1,9 +1,11 @@
 package r1.pages;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 import org.junit.Assert;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import net.serenitybdd.core.annotations.findby.By;
 import net.serenitybdd.core.annotations.findby.FindBy;
@@ -108,9 +110,9 @@ public class PaymentPage extends BasePage {
 	@FindBy(xpath="//input[contains(@placeholder,'Postal Code')]")
 	private WebElementFacade postalCode;
 
-	@FindBy(xpath="//button[text()='Submit New Profile']")
+	@FindBy(xpath="//button[@ng-bind-html='submitButtonText']")
 	private WebElementFacade submitProfile;
-
+	
 	@FindBy(xpath="//iframe[@id='EmergeIFrame']")
 	private WebElementFacade emergeFrame;
 
@@ -122,10 +124,18 @@ public class PaymentPage extends BasePage {
 
 	@FindBy(xpath="//button[@type='submit']")
 	private WebElementFacade submit;
+	
+	@FindBy(xpath="//select[@id='PaymentInstallment']")
+	private WebElementFacade emiDrpdown;
+	
 	String accountBalBeforeXpath="//div[@class='flt-lft accounts fake-grid accts-initial table table-bordered tableGridDiv']/table/tbody/tr[";
 	String accountBalAfterXpath="]/td[contains(@id,'Balance')]";
 	String paymentAccountRow="//div[@class='flt-lft accounts fake-grid accts-initial table table-bordered tableGridDiv']/table/tbody/tr";
 	String paymentAccountCol= "//div[@class='flt-lft accounts fake-grid accts-initial table table-bordered tableGridDiv']/table/tbody/tr[1]/td";
+	String dovetailRows="//div[contains(@class, 'accts-dovetail tableGridDiv')]/table/tbody/tr";
+	String dovetailColums="//div[contains(@class, 'accts-dovetail tableGridDiv')]/table/tbody/tr[1]/td";
+	String doveCheckBeforeXpath="//div[contains(@class, 'accts-dovetail tableGridDiv')]/table/tbody/tr[";
+	String deoveCheckAfterXpath="]/td/div/input[@type='checkbox']";
 	String profileId;
 	String emergeFrame1="//iframe[@id='EmergeIFrame']";
 	String emiList="//div[@class='t-popup t-group']/ul/li";
@@ -233,35 +243,30 @@ public class PaymentPage extends BasePage {
 
 	}
 	/*Dovetail page check and submit*/
-	public void dovetailCheck() throws InterruptedException {
-		if(dovetailCheck.isClickable()) {
-			dovetailCheck.click();
+	
+	public void dovetailCheck(String accountNumber) throws InterruptedException {
+		int rowNum = readRealtiveColumn(dovetailRows, dovetailColums, "Account", accountNumber);
+		String dovetailCheck = doveCheckBeforeXpath+(rowNum+1)+deoveCheckAfterXpath;
+		if(element(By.xpath(dovetailCheck)).isClickable()) {
+			element(By.xpath(dovetailCheck)).click();
 		}
 		else {
 			Assert.assertTrue("Already Checked!", false);
 		}
-		selectEMI(); 
+		randEMI(); 
 		doveTailSummaryButton.click();
 
 	}
 
 	// select random  installament
-	public String randEMI() {
-		element(By.xpath(emiDropDownIcon)).click();
-		int size= findAll(By.xpath(emiList)).size();
-		element(By.xpath(emiDropDownIcon)).click();
-		int random = (int) (Math.random() * size - 1) + 1;
-		String clickOption=element(By.xpath(emiDropDownBefore+random+emiDropDownAfter)).getText();
-		return clickOption;
+	public void randEMI() {
+		Select selectDropdown = new Select(emiDrpdown);
+		List<WebElement> listOptionDropdown = selectDropdown.getOptions();
+		int random = (int) (Math.random() * listOptionDropdown.size() - 1) + 1;
+		selectDropdown.selectByIndex(random);
+		}
 
-	}
-
-	// Select Installment dropdown
-	public void selectEMI() throws InterruptedException {
-		String clickOption = randEMI();
-		contactMethod.clickdropdown(emiDropDownIcon, emiList, clickOption);
-	}
-
+	
 	// Click paymentInfo Submit button
 	public void submitPaymentInfo() {
 		payInfoSubmit.click();
@@ -298,10 +303,11 @@ public class PaymentPage extends BasePage {
 	//Submit payment profile
 	public void submitProfile() throws InterruptedException {
 		JavascriptExecutor js = (JavascriptExecutor) getDriver();
-		js.executeScript("arguments[0].scrollIntoView();", submitProfile);
+		js.executeScript("arguments[0].scrollIntoView(true);", submitProfile);
+		Thread.sleep(1000);
 		submitProfile.click();
 	}
-
+	
 	public void verifyProfileID() {
 
 		com.verifyElement(profileID);
