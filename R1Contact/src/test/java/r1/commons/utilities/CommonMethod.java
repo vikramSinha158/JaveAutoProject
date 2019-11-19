@@ -4,12 +4,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 import java.util.Random;
 import java.util.Set;
-
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.encryption.InvalidPasswordException;
 import org.apache.pdfbox.text.PDFTextStripper;
@@ -17,7 +19,6 @@ import org.junit.Assert;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchFrameException;
-import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -400,8 +401,23 @@ public class CommonMethod extends BasePage {
 		    }
 		    return true;
 		}
-		
-		
-	}
+			
+/*Divide two nummber*/
+public double divideTwoNumber(int firstNum,int secondNum)
+{
+	double result=(double)firstNum/secondNum;
+	double roundoffresult = Math.round(result*100.0)/100.0;
+	return roundoffresult;
+}
 
+// next month date
+public String nextMonthDate() {
+	Calendar cal = Calendar.getInstance();
+	cal.add(Calendar.MONTH, 1);
+	Date date = cal.getTime();
+	SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+	String nextMonthDate = formatter.format(date);
+	return nextMonthDate;
+}
+}
 

@@ -1,8 +1,12 @@
 package r1.pages;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
+
 import org.junit.Assert;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
@@ -19,6 +23,7 @@ public class PaymentPage extends BasePage {
 	String wheatonNonZeroAccountNum;
 	int index;
 	String copytext;
+	int random;
 	@FindBy(xpath="//a[text()='Initial']") 
 	private WebElementFacade initiaPaymnet;
 
@@ -128,6 +133,33 @@ public class PaymentPage extends BasePage {
 	@FindBy(xpath="//select[@id='PaymentInstallment']")
 	private WebElementFacade emiDrpdown;
 	
+	@FindBy(xpath="//select[@id='Summaries_0__Reason']")
+	private WebElementFacade reasonDrpdwn;
+	
+	@FindBy(xpath="//div[@id='backButtonMessage']")
+	private WebElementFacade paySubmission;
+	
+	@FindBy(xpath="//div[@class='checkmark-icon']")
+	private WebElementFacade chechmarkIcon;
+	
+	@FindBy(xpath="//input[@id='TotalInstallmentsBalance']")
+	private WebElementFacade totalInstallments;
+	
+	@FindBy(xpath="//input[@id='TotalPerInstallment']")
+	private WebElementFacade totalPerInstallment;
+	
+	@FindBy(xpath="//input[@id='InstallmentsStartDate']")
+	private WebElementFacade installmentsStartDate;
+	
+	@FindBy(xpath="//div[@class='flt-lft result-cell']")
+	private List<WebElementFacade> submittedMsgList;
+	
+	@FindBy(xpath="//div[@id='backButtonMessage']")
+	private WebElementFacade payProgessMsg;
+	
+	@FindBy(xpath="//a[contains(text(),'Checking / Savings')]")
+	private WebElementFacade checking_SavingsBtn;
+	
 	String accountBalBeforeXpath="//div[@class='flt-lft accounts fake-grid accts-initial table table-bordered tableGridDiv']/table/tbody/tr[";
 	String accountBalAfterXpath="]/td[contains(@id,'Balance')]";
 	String paymentAccountRow="//div[@class='flt-lft accounts fake-grid accts-initial table table-bordered tableGridDiv']/table/tbody/tr";
@@ -136,6 +168,7 @@ public class PaymentPage extends BasePage {
 	String dovetailColums="//div[contains(@class, 'accts-dovetail tableGridDiv')]/table/tbody/tr[1]/td";
 	String doveCheckBeforeXpath="//div[contains(@class, 'accts-dovetail tableGridDiv')]/table/tbody/tr[";
 	String deoveCheckAfterXpath="]/td/div/input[@type='checkbox']";
+	String dovetailAdjstBal="]/td/input[contains(@id,'AdjustedBalance')]";
 	String profileId;
 	String emergeFrame1="//iframe[@id='EmergeIFrame']";
 	String emiList="//div[@class='t-popup t-group']/ul/li";
@@ -242,8 +275,48 @@ public class PaymentPage extends BasePage {
 		summaryButton.click();
 
 	}
-	/*Dovetail page check and submit*/
 	
+	/*Regular payment arrangement page adjusted balance*/
+	public String  regularPaymentAdjstBal(String accountNumber) {
+		int rowNum = readRealtiveColumn(paymentAccountRow, paymentAccountCol, "Account", accountNumber);
+		String xpath=doveCheckBeforeXpath+(rowNum+1)+dovetailAdjstBal;
+		String adjustBal= element (By.xpath(xpath)).getAttribute("value");
+		return adjustBal;
+		
+	}
+	
+	/*Verify Regular payment arrangement page adjusted balance with Total Installments Balance*/
+	public void verifyInstallmentsBal(String accountNumber) {
+		String adjustBalance =regularPaymentAdjstBal(accountNumber);
+		String installmentBal= totalInstallments.getAttribute("value");
+		Assert.assertTrue("Total Installments Balance isn't matching with  payment arrangement page adjusted balance  ",
+				adjustBalance.contentEquals(installmentBal));
+	}
+	
+	// Fetch payment per installment
+	public double paymentPerInstallment() {
+		String totalBal = totalInstallments.getAttribute("value");
+		String numberOfEmi=emiDrpdown.getAttribute("value");
+		String[] arrSplit=totalBal.split("\\.");
+		double ppi=com.divideTwoNumber(Integer.parseInt(arrSplit[0]), Integer.parseInt(numberOfEmi));
+		return ppi;
+		
+	}
+	
+	// verify Payment Per Installment 
+	public void verifyPayPerInstallments() {
+		double  payPerInstallments = Double.parseDouble(totalPerInstallment.getAttribute("value")) ;
+		Assert.assertTrue("Pay per installment is not correct!!", payPerInstallments==paymentPerInstallment());
+				
+	}
+	
+	//Verify Start date of installment
+	public void verifyStartInstallmentDate() {
+		String startDate=installmentsStartDate.getAttribute("value");
+		Assert.assertTrue("Start InstallmentDate is not matching!!", startDate.equals(com.nextMonthDate()));
+	}
+	
+	/*Dovetail page check and submit*/
 	public void dovetailCheck(String accountNumber) throws InterruptedException {
 		int rowNum = readRealtiveColumn(dovetailRows, dovetailColums, "Account", accountNumber);
 		String dovetailCheck = doveCheckBeforeXpath+(rowNum+1)+deoveCheckAfterXpath;
@@ -253,16 +326,18 @@ public class PaymentPage extends BasePage {
 		else {
 			Assert.assertTrue("Already Checked!", false);
 		}
-		randEMI(); 
-		doveTailSummaryButton.click();
-
 	}
 
+	/* Click doveTailSummaryButton*/
+	public void clickDoveTailSummary() {
+		doveTailSummaryButton.click();
+	}
+	
 	// select random  installament
 	public void randEMI() {
 		Select selectDropdown = new Select(emiDrpdown);
 		List<WebElement> listOptionDropdown = selectDropdown.getOptions();
-		int random = (int) (Math.random() * listOptionDropdown.size() - 1) + 1;
+		random = (int) (Math.random() * listOptionDropdown.size() - 1) + 1;
 		selectDropdown.selectByIndex(random);
 		}
 
@@ -287,7 +362,6 @@ public class PaymentPage extends BasePage {
 		cardNum.sendKeys(CommonMethod.readProperties("CardNumber"));
 		CommonMethod.selectRandomList(monthOptions);
 		Select selectDropdown = new Select(yearOptions);
-		//List<WebElement> listOptionDropdown = selectDropdown.getOptions();
 		selectDropdown.selectByValue(CommonMethod.readProperties("expiryYear"));
 		cvv.clear();
 		cvv.sendKeys(CommonMethod.readProperties("CVV"));
@@ -298,6 +372,32 @@ public class PaymentPage extends BasePage {
 		CommonMethod.selectRandomList(stateOptions);
 		postalCode.clear();
 		postalCode.sendKeys(CommonMethod.readProperties("PostalCode"));
+
+	}
+	
+	@FindBy(xpath="//Select[@ng-model='formObject.accountType']")
+	private WebElementFacade accountdrpdown;
+	
+	@FindBy(xpath="//input[@rs-checksum='achRoutingNumber']")
+	private WebElementFacade routingNumber;
+	
+	@FindBy(xpath="//input[@rs-checksum='achAccountNumber']")
+	private WebElementFacade accountNumber;
+	
+	// Enter checking / Savings details and submit
+	public void enterChecking_SavingsDetails() {
+		name.clear();
+		name.sendKeys(CommonMethod.readProperties("Name"));
+	CommonMethod.DrpVisibleTxt(accountdrpdown, "Savings");
+	routingNumber.sendKeys(CommonMethod.readProperties("RoutingNumber"));
+	accountNumber.sendKeys(CommonMethod.readProperties("AccountNumber"));
+	address.clear();
+	address.sendKeys(CommonMethod.readProperties("Address"));
+	city.clear();
+	city.sendKeys(CommonMethod.readProperties("City"));
+	CommonMethod.selectRandomList(stateOptions);
+	postalCode.clear();
+	postalCode.sendKeys(CommonMethod.readProperties("PostalCode"));
 
 	}
 	//Submit payment profile
@@ -330,8 +430,37 @@ public class PaymentPage extends BasePage {
 		submit.click();
 	}
 	
-	// Check payment arrangement submitted
-	public void paymentArrangeSubmitted() {
-		
+	//select from reason dropdown
+	public void selectResonDrpdwn(String text) {
+		CommonMethod.DrpVisibleTxt(reasonDrpdwn, text);
+	}
+	
+	//verify pay submission message
+	public void verifySubmission(String text) {
+		String submissionText= paySubmission.getText();
+		Assert.assertTrue("Submission process message is missing!", submissionText.equals(text));
+	}
+	
+	/*chechmarkIcon verification*/
+	public void verifyCheckMarkIcon() {
+		com.verifyElement(chechmarkIcon);
+	}
+	
+	// Verify sumission message
+	public void verifySubmissionMsg() {
+		int submissions = random+1;
+		if(submittedMsgList.size()==submissions) {
+		for(int i=0;i<=submissions;i++) {
+			verifyCheckMarkIcon();
+			verifySubmittedMessage();
+		}
+	} else {
+		Assert.assertTrue("Number of submission is not equal to number of Installments", false);
+		}
+	}
+	
+	// click on checking/savings button
+	public void clickCheckingBtn() {
+		checking_SavingsBtn.click();
 	}
 }
