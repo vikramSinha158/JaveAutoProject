@@ -12,7 +12,7 @@ public class ClientMaintenance extends PageObject {
 	CommonMethod com;
 	String selectClentMaintenance = "//span[text()='select']";
 	String selectMaintenanceList = "aDbxid";
-	
+
 	@FindBy(xpath = "//select[@id='aDbxid']")
 	private WebElementFacade selectClentMaintenanceList;
 
@@ -37,7 +37,7 @@ public class ClientMaintenance extends PageObject {
 	String clientMaintenanceHeader = "//div[contains(text(),' Client Maintenance ')]";
 
 	public void selectClientMaintenanceList(String linkClick) throws InterruptedException {
-	
+
 		com.selectListWithElement(selectMaintenanceList, linkClick);
 		Thread.sleep(2000);
 	}

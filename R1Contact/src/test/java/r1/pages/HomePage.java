@@ -1,4 +1,5 @@
 package r1.pages;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -30,6 +31,7 @@ import r1.commons.BasePage;
 import r1.commons.R1ContactCommonMethods;
 import r1.commons.databaseconnection.DatabaseConn;
 import r1.commons.utilities.CommonMethod;
+
 public class HomePage extends BasePage {
 	R1ContactCommonMethods r1ComMethod;
 	CommonMethod com;
@@ -40,7 +42,6 @@ public class HomePage extends BasePage {
 	int totalcount;
 	public static String agentEmailID;
 	HashMap<String, String> agentInformation;
-
 	String reminderRow = "//table[@ng-table='tableParams']//tbody//tr";
 	String homeReminderInfoRow = "//table[@ng-table='tableParams']//tbody//tr[@ng-repeat='row in $data']";
 	String homeReminderInfoCol = "//table[@ng-table='tableParams']//thead//tr[@class='ng-table-sort-header']//th";
@@ -166,9 +167,9 @@ public class HomePage extends BasePage {
 	private WebElementFacade txtSearchTime;
 	@FindBy(xpath = "//div[@class='flt-lft left-item']")
 	private List<WebElementFacade> agentHeaders;
-    @FindBy(xpath="//div[@class='flt-lft right-item']")  //new
-    private List<WebElementFacade> agentValues;
-	
+	@FindBy(xpath = "//div[@class='flt-lft right-item']") // new
+	private List<WebElementFacade> agentValues;
+
 	/*
 	 * page title
 	 */
@@ -177,7 +178,7 @@ public class HomePage extends BasePage {
 		Assert.assertEquals("Page Title is not matching, Actual page title is:" + pageActualTitle, pageActualTitle,
 				expectedTitle);
 	}
-	
+
 	/*
 	 * homePage tab and validate
 	 */
@@ -191,7 +192,7 @@ public class HomePage extends BasePage {
 			Assert.assertTrue("HomeTab is not working!", clicked);
 		}
 	}
-	
+
 	/*
 	 * Number of reminders printed on header
 	 */
@@ -202,13 +203,13 @@ public class HomePage extends BasePage {
 		// their type
 		return Printedreminders;
 	}
-	
+
 	/* Logo verify */
 	public void logoVerification() {
 		boolean flag = logo.isDisplayed();
 		Assert.assertTrue("Logo is not being displayed!", flag);
 	}
-	
+
 	/************************************************
 	 * 
 	 * Reminder Filter
@@ -223,7 +224,7 @@ public class HomePage extends BasePage {
 		}
 		return homeRiminderRowCount;
 	}
-	
+
 	/*
 	 * verify filter search is not working
 	 */
@@ -269,7 +270,7 @@ public class HomePage extends BasePage {
 		}
 		Assert.assertEquals("Row for search element not match", homeRiminderRowCount, searchEleRow);
 	}
-	
+
 	/* Agent name verification */
 	public void verifyAgentName() throws InterruptedException {
 		String agentNameFromTable = agentPrintName.getText();
@@ -278,16 +279,19 @@ public class HomePage extends BasePage {
 		String actualAgentName = agentArr[0];
 		Assert.assertTrue("Agent name is not matching", agentNameFromTable.contains(actualAgentName));
 	}
+
 	public void switchHeaderFrame() {
 		getDriver().switchTo().frame(headerframeName);
 	}
+
 	public void defaultFrame() {
 		getDriver().switchTo().defaultContent();
 	}
+
 	public void clicOnHome() {
 		clickOn(homeTab);
 	}
-	
+
 	/* Verify header menu */
 	public void verifyHeaderTab() {
 		CommonMethod.isDisplayedMethod(homeTab);
@@ -295,13 +299,16 @@ public class HomePage extends BasePage {
 		CommonMethod.isDisplayedMethod(Initiatives);
 		CommonMethod.isDisplayedMethod(help);
 	}
+
 	public void clickOnMyTab() {
 		clickOn(myTabs);
 	}
+
 	public void clickForSerachAccount() {
 		withAction().moveToElement(hoverOnSerch).click().build().perform();
 		clickOn(AccountElemnet);
 	}
+
 	public void verifyDropdown(String menus, String elment, String propKey) {
 		List<String> listOfmenu = new ArrayList<String>();
 		List<String> actualSubmenu = com.handleBootStrapDropdown(menus, elment);
@@ -314,6 +321,7 @@ public class HomePage extends BasePage {
 		Collections.sort(actualSubmenu);
 		Assert.assertTrue("Office submenu list are not matching!", actualSubmenu.retainAll(listOfmenu));
 	}
+
 	public void verifyInnerDropdown(String options, String element, String clickMenuName, String innerOptions,
 			String propKey) throws InterruptedException {
 		List<String> listOfmenu = new ArrayList<String>();
@@ -327,7 +335,7 @@ public class HomePage extends BasePage {
 		Collections.sort(actualSubmenu);
 		Assert.assertTrue("submenu list are not matching!", actualSubmenu.equals(listOfmenu));
 	}
-	
+
 	/*
 	 * header menu dropdowns
 	 */
@@ -340,33 +348,42 @@ public class HomePage extends BasePage {
 		verifyadminDropdown();
 		verifySettingDropdown();
 	}
+
 	public void verifyOfficeDropdown() {
 		verifyDropdown(officeSubmenu, officeXpath, "OfficeDropdowns");
 	}
+
 	public void verifyInitiativesDropdown() {
 		verifyDropdown(initiativesSubmenu, initiativesXpath, "InitiativesDropdowns");
 	}
+
 	public void verifyHelpDropdown() {
 		verifyDropdown(helpSubmenu, helpXpath, "HelpDropdowns");
 	}
+
 	public void verifyadminDropdown() {
 		verifyDropdown(adminSubmenu, adminXpath, "AdminDropdowns");
 	}
+
 	public void verifyCustomerPulse() throws InterruptedException {
 		verifyInnerDropdown(initiativesSubmenu, initiativesXpath, "Customer Pulse", customerPulsSubmenu,
 				"CustomerPulseDropdowns");
 	}
+
 	public void verifyICE() throws InterruptedException {
 		verifyInnerDropdown(initiativesSubmenu, initiativesXpath, "ICE", icePulsSubmenu, "ICEDropdowns");
 	}
+
 	public void verifySettingDropdown() throws InterruptedException {
 		verifyInnerDropdown(adminSubmenu, adminXpath, "Settings", settingSubmenu, "SettingsDropdowns");
 	}
+
 	String settingMenuPath = "//span[text()='Administration']//following-sibling::div/ul/li/span";
+
 	public void clickOnSubMenu(String subManuItemClick) throws InterruptedException {
 		r1ComMethod.clickSubMenudropdown(adminXpath, adminSubmenu, "Settings", settingSubmenu, subManuItemClick);
 	}
-	
+
 	/**********************************************************
 	 * Verify reminder header are in caps or not
 	 * 
@@ -380,6 +397,7 @@ public class HomePage extends BasePage {
 			com.highLightSteps(reminderHeader.get(i));
 		}
 	}
+
 	public void reminderHeader() {
 		CommonMethod.isDisplayedMethod(date);
 		CommonMethod.isDisplayedMethod(time);
@@ -388,7 +406,7 @@ public class HomePage extends BasePage {
 		CommonMethod.isDisplayedMethod(notes);
 		CommonMethod.isDisplayedMethod(Balance);
 	}
-	
+
 	/*
 	 * verify reminder list size
 	 * 
@@ -399,7 +417,7 @@ public class HomePage extends BasePage {
 			Assert.assertFalse("No reminders present", true);
 		}
 	}
-	
+
 	/******************************************************
 	 * Verify balance
 	 ************************************************************************/
@@ -412,7 +430,7 @@ public class HomePage extends BasePage {
 			Assert.assertEquals(TopBalance, amount);
 		}
 	}
-	
+
 	/**************************************************************
 	 * ReminderSearchField
 	 *********************************************/
@@ -424,7 +442,7 @@ public class HomePage extends BasePage {
 		CommonMethod.isDisplayedMethod(notesReminderSearch);
 		CommonMethod.isDisplayedMethod(balanceReminderSearch);
 	}
-	
+
 	/**********************************************************
 	 * Verify reminder time from home page reminder table
 	 *
@@ -453,7 +471,7 @@ public class HomePage extends BasePage {
 				break;
 		}
 	}
-	
+
 	/*--------------------------------------Sorting In ascending-------------------------------------------------------*/
 	private void checkAscShortingStatus(String colHeader) {
 		boolean chkShortStatus = true;
@@ -467,6 +485,7 @@ public class HomePage extends BasePage {
 			}
 		}
 	}
+
 	public void sortingAscColumnHead(String columnHeaderAsc) {
 		if (columnHeaderAsc.equalsIgnoreCase("Account Number")) {
 			clickOn(sortAccNumHeader);
@@ -482,7 +501,7 @@ public class HomePage extends BasePage {
 			checkAscShortingStatus(columnHeaderAsc);
 		}
 	}
-	
+
 	/*--------------------------------------Sorting In descending-------------------------------------------------------*/
 	private void checkDescShortingStatus(String colHeaderdsc) {
 		boolean chkDescStatus = true;
@@ -493,6 +512,7 @@ public class HomePage extends BasePage {
 			Assert.assertTrue("Element for Assending is not visible", chkDescStatus);
 		}
 	}
+
 	public void sortingDescColumnHeader(String columnHeaderDsc) {
 		if (columnHeaderDsc.equalsIgnoreCase("Account Number")) {
 			clickOn(sortAccNumHeader);
@@ -508,7 +528,7 @@ public class HomePage extends BasePage {
 			checkDescShortingStatus(columnHeaderDsc);
 		}
 	}
-	
+
 	/**********************************************************
 	 * check reminder creation
 	 *
@@ -527,7 +547,7 @@ public class HomePage extends BasePage {
 			}
 		}
 	}
-	
+
 	/*--------------------------------------Verify  Delete icon Populating-------------------------------------------------------*/
 	public void verifyDeletingIconPoulating() throws InterruptedException {
 		int rowCnt = homeReminderTableRow.size();
@@ -554,7 +574,7 @@ public class HomePage extends BasePage {
 			}
 		}
 	}
-	
+
 	/*--------------------------------------Verify  Delete reminder account -------------------------------------------------------*/
 	public void verifyDeleteReminderHome(String dbAccNum, String expectedTime)
 			throws FileNotFoundException, IOException, InterruptedException {
@@ -573,7 +593,7 @@ public class HomePage extends BasePage {
 					Assert.assertEquals(
 							"Actual date " + ActualDate + " does not with expected date "
 									+ ReminderPage.reminderDateToFill(remDate),
-							ReminderPage.reminderDateToFill(remDate), ActualDate);
+									ReminderPage.reminderDateToFill(remDate), ActualDate);
 					int delrow = i + 1;
 					String delIconPath = homeReminderInfoRow + "[" + delrow + deleteIcon1Path;
 					WebElementFacade delIcon = element(By.xpath(delIconPath));
@@ -605,7 +625,7 @@ public class HomePage extends BasePage {
 				break;
 		}
 	}
-	
+
 	/****************************************************
 	 * Set Reminders size
 	 **************************************************************/
@@ -614,7 +634,7 @@ public class HomePage extends BasePage {
 		txtToShowDate.sendKeys(CommonMethod.readProperties("txtToShowDate"));
 		clickOn(buttonToShowDate);
 	}
-	
+
 	/*********************************************************
 	 * Today's tab back ground-color
 	 ***********************************************/
@@ -633,7 +653,7 @@ public class HomePage extends BasePage {
 			}
 		}
 	}
-	
+
 	/*********************************************************
 	 * Get Account Number from property File
 	 *
@@ -643,19 +663,19 @@ public class HomePage extends BasePage {
 	public static String accountNumber() throws FileNotFoundException, IOException {
 		return CommonMethod.readProperties("AccountNumber");
 	}
-	
+
 	/*--------------------------------------Return Agent Email Id------------------------------------------------------*/
 	public String agentEmailId() {
 		agentEmailID = agentEmail.getText();
 		return agentEmailID;
 	}
-	
+
 	/* search reminder by account number */
 	public void searchremByAccNUm(String accNum) {
 		txtSearchAccountNum.clear();
 		txtSearchAccountNum.sendKeys(accNum);
 	}
-	
+
 	/* verify tomorrow reminder color */
 	public void verifyTomRemCol() {
 		String expectedCssValue = "rgba(233, 243, 252, 1)";
@@ -663,7 +683,7 @@ public class HomePage extends BasePage {
 				.getCssValue("background-color");
 		Assert.assertEquals(actualCssValue, expectedCssValue);
 	}
-	
+
 	/* verify expired reminder color */
 	public void verifyExpiredRem() {
 		String expectedCssValue = "rgba(248, 248, 248, 1)";
@@ -671,7 +691,7 @@ public class HomePage extends BasePage {
 				.getCssValue("background-color");
 		Assert.assertEquals(actualCssValue, expectedCssValue);
 	}
-	
+
 	// verify agent information headers
 	public void verifyAgentHeader() {
 		List<String> list = new ArrayList<String>();
@@ -683,95 +703,86 @@ public class HomePage extends BasePage {
 		}
 		Assert.assertTrue("Some agent information headers aren't missing", list.containsAll(namesList));
 	}
-	   
-	/*verify agent values from DB vik*/
-	    
-	    public void verifyAgentInformation() throws ClassNotFoundException, FileNotFoundException, SQLException, IOException, ParseException
-	    {
-	        agentInformation = new HashMap<>();
-	        for(int i=0; i<agentHeaders.size();i++) {
-	            
-	            agentInformation.put(agentHeaders.get(i).getText().trim(),agentValues.get(i).getText().trim());
-	        
-	        }
-	        
-	        verifyAgentHeaderValue("PRINT NAME");
-	        verifyAgentHeaderValue("EMAIL");
-	        verifyAgentHeaderValue("PHONE");
-	        verifyAgentHeaderValue("MANAGER");
-	        verifyAgentHeaderValue("MAX VAL");
-	        verifyAgentHeaderValue("MESSAGE");
-	        verifyAgentHeaderValue("START DATE");
-	        
-	    }
-	    
-	    
-	    /*Method to very values from DB agent values from DB vik */
-	    public void verifyAgentHeaderValue(String Header) throws ClassNotFoundException, FileNotFoundException, SQLException, IOException, ParseException {
-	        R1ContactCommonMethods.runQuery("AgentInfo");
-	        DatabaseConn.resultSet.next();
-	            
-	        for (Map.Entry<String, String> entry : agentInformation.entrySet()) {
-	         
-	            if (Header.equalsIgnoreCase("PRINT NAME")) {
-	                
-	                Assert.assertTrue("", DatabaseConn.resultSet.getString("agentPrintName").equalsIgnoreCase(agentInformation.get("PRINT NAME")));
-	                System.out.println(agentInformation.get("PRINT NAME"));
-	                break;
-	            }
-	            else if (Header.equalsIgnoreCase("MANAGER")) {
-	                
-	                Assert.assertTrue("", DatabaseConn.resultSet.getString("agentManager").equalsIgnoreCase(agentInformation.get("MANAGER")));
-	                System.out.println(agentInformation.get("MANAGER"));
-	                break;
-	            }
-	            else if (Header.equalsIgnoreCase("EMAIL")) {
-	                
-	                Assert.assertTrue("", DatabaseConn.resultSet.getString("agentEmail").equalsIgnoreCase(agentInformation.get("EMAIL")));
-	                System.out.println(agentInformation.get("EMAIL"));
-	                break;
-	            }
-	            else if (Header.equalsIgnoreCase("PHONE")) {
-	                
-	                Assert.assertTrue("", DatabaseConn.resultSet.getString("agentPhone").equalsIgnoreCase(agentInformation.get("PHONE")));
-	                System.out.println(agentInformation.get("PHONE"));
-	                break;
-	            }
-	            else if (Header.equalsIgnoreCase("MAX VAL")) {
-	                
-	                Assert.assertTrue("", DatabaseConn.resultSet.getString("agentMaxVal").equalsIgnoreCase(agentInformation.get("MAX VAL")));
-	                System.out.println(agentInformation.get("MAX VAL"));
-	                break;
-	            }
-	            else if (Header.equalsIgnoreCase("MESSAGE")) {
-	                
-	                Assert.assertTrue("", DatabaseConn.resultSet.getString("agentMessage").equalsIgnoreCase(agentInformation.get("MESSAGE")));
-	                System.out.println(agentInformation.get("MESSAGE"));
-	                break;
-	            }
-	            else if (Header.equalsIgnoreCase("START DATE")) {
-	                
-	                String startdateDb = DatabaseConn.resultSet.getString("agentStartDate");
-	                  
-	                SimpleDateFormat dbDateFormate=new SimpleDateFormat("yyyy-MM-dd");
-	                Date dbDate=dbDateFormate.parse(startdateDb);
-	                SimpleDateFormat convertedFormate=new SimpleDateFormat("MM/dd/yyyy"); 
-	                
-	                String convertedDbDate=convertedFormate.format(dbDate);
-	                
-	            
-	                Assert.assertTrue("", convertedDbDate.equalsIgnoreCase(agentInformation.get("START DATE")));
-	            
-	                break;
-	            }
-	          
-	        }        
-	        
-	    }
 
+	/* verify agent values from DB vik */
 
+	public void verifyAgentInformation()
+			throws ClassNotFoundException, FileNotFoundException, SQLException, IOException, ParseException {
+		agentInformation = new HashMap<>();
+		for (int i = 0; i < agentHeaders.size(); i++) {
 
-        
-    }
+			agentInformation.put(agentHeaders.get(i).getText().trim(), agentValues.get(i).getText().trim());
 
+		}
 
+		verifyAgentHeaderValue("PRINT NAME");
+		verifyAgentHeaderValue("EMAIL");
+		verifyAgentHeaderValue("PHONE");
+		verifyAgentHeaderValue("MANAGER");
+		verifyAgentHeaderValue("MAX VAL");
+		verifyAgentHeaderValue("MESSAGE");
+		verifyAgentHeaderValue("START DATE");
+
+	}
+
+	/* Method to very values from DB agent values from DB vik */
+	public void verifyAgentHeaderValue(String Header)
+			throws ClassNotFoundException, FileNotFoundException, SQLException, IOException, ParseException {
+		R1ContactCommonMethods.runQuery("AgentInfo");
+		DatabaseConn.resultSet.next();
+
+		for (Map.Entry<String, String> entry : agentInformation.entrySet()) {
+
+			if (Header.equalsIgnoreCase("PRINT NAME")) {
+
+				Assert.assertTrue("", DatabaseConn.resultSet.getString("agentPrintName")
+						.equalsIgnoreCase(agentInformation.get("PRINT NAME")));
+				break;
+			} else if (Header.equalsIgnoreCase("MANAGER")) {
+
+				Assert.assertTrue("", DatabaseConn.resultSet.getString("agentManager")
+						.equalsIgnoreCase(agentInformation.get("MANAGER")));
+				break;
+			} else if (Header.equalsIgnoreCase("EMAIL")) {
+
+				Assert.assertTrue("",
+						DatabaseConn.resultSet.getString("agentEmail").equalsIgnoreCase(agentInformation.get("EMAIL")));
+				break;
+			} else if (Header.equalsIgnoreCase("PHONE")) {
+
+				Assert.assertTrue("",
+						DatabaseConn.resultSet.getString("agentPhone").equalsIgnoreCase(agentInformation.get("PHONE")));
+
+				break;
+			} else if (Header.equalsIgnoreCase("MAX VAL")) {
+
+				Assert.assertTrue("", DatabaseConn.resultSet.getString("agentMaxVal")
+						.equalsIgnoreCase(agentInformation.get("MAX VAL")));
+				System.out.println(agentInformation.get("MAX VAL"));
+				break;
+			} else if (Header.equalsIgnoreCase("MESSAGE")) {
+
+				Assert.assertTrue("", DatabaseConn.resultSet.getString("agentMessage")
+						.equalsIgnoreCase(agentInformation.get("MESSAGE")));
+				System.out.println(agentInformation.get("MESSAGE"));
+				break;
+			} else if (Header.equalsIgnoreCase("START DATE")) {
+
+				String startdateDb = DatabaseConn.resultSet.getString("agentStartDate");
+
+				SimpleDateFormat dbDateFormate = new SimpleDateFormat("yyyy-MM-dd");
+				Date dbDate = dbDateFormate.parse(startdateDb);
+				SimpleDateFormat convertedFormate = new SimpleDateFormat("MM/dd/yyyy");
+
+				String convertedDbDate = convertedFormate.format(dbDate);
+
+				Assert.assertTrue("", convertedDbDate.equalsIgnoreCase(agentInformation.get("START DATE")));
+
+				break;
+			}
+
+		}
+
+	}
+
+}

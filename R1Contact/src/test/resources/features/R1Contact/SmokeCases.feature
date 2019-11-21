@@ -175,7 +175,8 @@ Then User should be land on the payment initial page.
 When user enter amount,checks check box then and user clicks on Summary button
 Then User land on the Summary tab 
 When user Click on Enter payment button
-Then User land on the payment Information tab And user is able to see secure payment radio button enabled 
+Then User land on the payment Information tab 
+And  user clicks on the Agent input radio button
 And user is able to see guarantor info
 When user clicks on the submit button
 Then Payment should be submitted successfully

@@ -69,9 +69,8 @@ public class CampaignPage extends PageObject {
 	@FindBy(xpath = "//label[text()='Name']")
 	private WebElementFacade labelName;
 
-    @FindBy(xpath = "//div[@id='CampaignConfigPopUp']//div[@class='editor-field editor-field-widthText']/select") //new
-    private List<WebElementFacade> dropDownOnEditPopUp;
-
+	@FindBy(xpath = "//div[@id='CampaignConfigPopUp']//div[@class='editor-field editor-field-widthText']/select") // new
+	private List<WebElementFacade> dropDownOnEditPopUp;
 
 	@FindBy(xpath = "//a[text()='Update']")
 	private WebElementFacade btnUpdate;
@@ -178,7 +177,7 @@ public class CampaignPage extends PageObject {
 
 				}
 			} catch (NoSuchElementException e) {
-			Assert.assertTrue("Delete icon found in " + i + "row", delIconChk);
+				Assert.assertTrue("Delete icon found in " + i + "row", delIconChk);
 			}
 		}
 	}
@@ -187,5 +186,4 @@ public class CampaignPage extends PageObject {
 		com.isDisplayListItem(DeleteIconOnFltTblList);
 	}
 
-	
 }

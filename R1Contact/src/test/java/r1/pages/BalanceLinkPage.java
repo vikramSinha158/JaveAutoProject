@@ -18,7 +18,7 @@ public class BalanceLinkPage extends PageObject {
 		try {
 			Thread.sleep(3000);
 		} catch (InterruptedException e) {
-			
+
 		}
 		comMethod.highLightSteps(headerBalabceTbl);
 	}
