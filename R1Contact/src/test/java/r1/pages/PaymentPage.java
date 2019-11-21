@@ -1,12 +1,8 @@
 package r1.pages;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
-
 import org.junit.Assert;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
@@ -20,6 +16,10 @@ import r1.commons.utilities.CommonMethod;
 
 public class PaymentPage extends BasePage {
 
+	R1ContactCommonMethods contactMethod;
+	AccountPage account;
+	CommonMethod com;
+	HomePage home;
 	String wheatonNonZeroAccountNum;
 	int index;
 	String copytext;
@@ -157,8 +157,96 @@ public class PaymentPage extends BasePage {
 	@FindBy(xpath="//div[@id='backButtonMessage']")
 	private WebElementFacade payProgessMsg;
 	
+	@FindBy(xpath="//Select[@ng-model='formObject.accountType']")
+	private WebElementFacade accountdrpdown;
+	
+	@FindBy(xpath="//input[@rs-checksum='achRoutingNumber']")
+	private WebElementFacade routingNumber;
+	
+	@FindBy(xpath="//input[@rs-checksum='achAccountNumber']")
+	private WebElementFacade accountNumber;
+	
 	@FindBy(xpath="//a[contains(text(),'Checking / Savings')]")
 	private WebElementFacade checking_SavingsBtn;
+    
+	/*New vik**************************/
+	    @FindBy(xpath="//input[@value='AgentInput']")
+	    private WebElementFacade agentInputRadiobtn;
+	    
+	    @FindBy(xpath="//iframe[@id='PaymentIFrame']")
+	    private WebElementFacade revSpringFrame;
+	    
+	    
+	    @FindBy(xpath="//legend[text()='Billing Information']")
+	    private WebElementFacade revSpringFrameHeader;
+	    
+	    
+	    @FindBy(xpath="//Input[@id='profile_first_name']")
+	    private WebElementFacade revSpringFirstName;
+	    
+	    
+	    @FindBy(xpath="//Input[@id='profile_last_name']")
+	    private WebElementFacade revSpringLastName;
+	    
+	    @FindBy(xpath="//Input[@id='profile_address_1']")
+	    private WebElementFacade revSpringAddres1;
+	    
+	    @FindBy(xpath="//Input[@id='profile_city']")
+	    private WebElementFacade revSpringCity;
+	    
+	    @FindBy(xpath="//Input[@id='profile_state']")
+	    private WebElementFacade revSpringState;
+	    
+	    @FindBy(xpath="//Input[@id='profile_postal_code']")
+	    private WebElementFacade revSpringCode;
+	    
+	    
+	    @FindBy(xpath="//Input[@id='profile_cc_account_number']")
+	    private WebElementFacade revSpringCardNum;
+	    
+	        
+	    @FindBy(xpath="//input[@id='submit_button']")
+	    private WebElementFacade revSpringSubmitBtn;
+	    
+	    
+	    @FindBy(xpath="//div[contains(text(),'profile has been saved')]")
+	    private WebElementFacade revSpringSuccessMsg;
+	    
+	    
+	    @FindBy(xpath="//label[text()='Profile ID']//following-sibling::label")
+	    private WebElementFacade revSpringProfileId;
+	    
+	    
+	    @FindBy(xpath="//input[@id='ProfileId']")
+	    private WebElementFacade revSpringProfileIdTextBox;
+	    
+	    
+	    @FindBy(xpath="//div[@class='save-item']//input[@type='submit']")
+	    private WebElementFacade revSpringfinalSubmitBtn;
+	    
+	    
+	    @FindBy(xpath="//div[text()='Submitted']")
+	    private WebElementFacade revSpringfinalSubmitMsg;
+	    
+	    
+	    @FindBy(xpath="//div[@class='checkmark-icon']")
+	    private WebElementFacade revSpringCheckMark;
+	    
+	 	@FindBy(xpath="//div[text()='Submitted']")
+	    private List<WebElementFacade> revSpringfinalSubmitMsgList;
+	    
+	    String revSpringfinalSubmitMsgListbefore="//div[@class='flt-lft row'][";
+	    String revSpringfinalSubmitMsgListAfter="]//div[text()='Submitted']";
+	    String revSpringCheckMarkBefore="//div[@class='flt-lft row'][";
+	    String revSpringCheckMarkAfter="]//div[@class='checkmark-icon']";
+	    
+	    
+	    int randomEMI;//create random variable as global
+	    
+	    String selectResonSummary="Summaries_0__Reason";
+	    String textItemForReason="PIF";
+	    String revSpringProfileIdtext;
+
 	
 	String accountBalBeforeXpath="//div[@class='flt-lft accounts fake-grid accts-initial table table-bordered tableGridDiv']/table/tbody/tr[";
 	String accountBalAfterXpath="]/td[contains(@id,'Balance')]";
@@ -176,10 +264,6 @@ public class PaymentPage extends BasePage {
 	String emiDropDownBefore="//div[@class='t-popup t-group']/ul/li[text()='";
 	String emiDropDownAfter="']";
 	String revspringFrame="//div[@id='Vendor2PaymentContainer']";
-	R1ContactCommonMethods contactMethod;
-	AccountPage account;
-	CommonMethod com;
-	HomePage home;
 
 	/*verify intial page payment*/
 	public void verifiyInitialPage() {
@@ -337,7 +421,7 @@ public class PaymentPage extends BasePage {
 	public void randEMI() {
 		Select selectDropdown = new Select(emiDrpdown);
 		List<WebElement> listOptionDropdown = selectDropdown.getOptions();
-		random = (int) (Math.random() * listOptionDropdown.size() - 1) + 1;
+		randomEMI = (int) (Math.random() * listOptionDropdown.size() - 1) + 1;
 		selectDropdown.selectByIndex(random);
 		}
 
@@ -375,22 +459,13 @@ public class PaymentPage extends BasePage {
 
 	}
 	
-	@FindBy(xpath="//Select[@ng-model='formObject.accountType']")
-	private WebElementFacade accountdrpdown;
-	
-	@FindBy(xpath="//input[@rs-checksum='achRoutingNumber']")
-	private WebElementFacade routingNumber;
-	
-	@FindBy(xpath="//input[@rs-checksum='achAccountNumber']")
-	private WebElementFacade accountNumber;
-	
 	// Enter checking / Savings details and submit
 	public void enterChecking_SavingsDetails() {
 		name.clear();
 		name.sendKeys(CommonMethod.readProperties("Name"));
 	CommonMethod.DrpVisibleTxt(accountdrpdown, "Savings");
 	routingNumber.sendKeys(CommonMethod.readProperties("RoutingNumber"));
-	accountNumber.sendKeys(CommonMethod.readProperties("AccountNumber"));
+	accountNumber.sendKeys(CommonMethod.readProperties("ChequeAcccountNumber"));
 	address.clear();
 	address.sendKeys(CommonMethod.readProperties("Address"));
 	city.clear();
@@ -463,4 +538,132 @@ public class PaymentPage extends BasePage {
 	public void clickCheckingBtn() {
 		checking_SavingsBtn.click();
 	}
+	
+	// Viks
+	
+    /*Verify submitted message  vik*/
+    public void verifySubmittedMsgForRevSpring()
+    {
+        com.waitForControl("//div[text()='Submitted']");
+        CommonMethod.isDisplayedMethod(revSpringfinalSubmitMsg);
+        com.highLightSteps(revSpringfinalSubmitMsg);
+        CommonMethod.isDisplayedMethod(revSpringCheckMark);
+        com.highLightSteps(revSpringCheckMark);
+        
+    }
+    
+    
+    /*Verify submitted list message  vik*/
+    public void verifySuccessSubmitList()
+    {
+        int instalmentEMI=randomEMI+1;
+            
+        if(instalmentEMI==revSpringfinalSubmitMsgList.size())
+        {
+            for(int i=1;i<=revSpringfinalSubmitMsgList.size();i++)
+            {
+                String xpathSubmit=revSpringfinalSubmitMsgListbefore +i+revSpringfinalSubmitMsgListAfter;
+                
+                com.waitForControl(xpathSubmit);
+                CommonMethod.isDisplayedMethod(element(By.xpath(revSpringfinalSubmitMsgListbefore +i+revSpringfinalSubmitMsgListAfter)));
+                com.highLightSteps(element(By.xpath(revSpringfinalSubmitMsgListbefore +i+revSpringfinalSubmitMsgListAfter)));
+                CommonMethod.isDisplayedMethod(element(By.xpath(revSpringCheckMarkBefore +i+revSpringCheckMarkAfter)));
+                com.highLightSteps(element(By.xpath(revSpringCheckMarkBefore +i+revSpringCheckMarkAfter)));
+            }
+        }
+        else {
+            Assert.assertTrue("installment EMI does not match with submit success message,EMI istallment " +instalmentEMI + " Submitted table record = " +revSpringfinalSubmitMsgList.size(), instalmentEMI==revSpringfinalSubmitMsgList.size());
+        }
+    }
+    
+    
+    
+    /*click onm submit button  vik*/    
+    public void clickOnLastSubmitBtnForRecSpring()
+    {
+        clickOn(revSpringfinalSubmitBtn);
+    }
+    
+    
+    /*copied profie ID vik*/    
+    public void revSpringcopyProfileID() {
+        revSpringProfileIdtext=revSpringProfileId.getText();
+
+
+    }
+
+
+    /*Send copied profie ID vik*/
+    public void sendrevSpringProfileID() throws InterruptedException {
+        getDriver().switchTo().defaultContent();
+        home.switchHeaderFrame();
+        revSpringProfileIdTextBox.sendKeys(revSpringProfileIdtext);
+    }
+    
+    
+    /*verify revspring profile id vik*/
+    public void veryfyReVspringProfileID()
+    {
+        CommonMethod.isDisplayedMethod(revSpringProfileId);
+        com.highLightSteps(revSpringProfileId);
+    }
+    
+    
+
+
+    /*revspring card detail succes submissin msg detail vik*/
+    public void veryfyReVspringSuccesMsg()
+    {
+        CommonMethod.isDisplayedMethod(revSpringSuccessMsg);
+        com.highLightSteps(revSpringSuccessMsg);
+    }
+    
+    
+    /*File revSpring card detail vik*/
+    public void fillRevSpringCardDetails() throws InterruptedException
+    {
+        revSpringFirstName.clear();
+        revSpringFirstName.sendKeys(CommonMethod.readProperties("FirstName"));
+        revSpringLastName.clear();
+        revSpringLastName.sendKeys(CommonMethod.readProperties("LastName"));
+        revSpringAddres1.clear();
+        revSpringAddres1.sendKeys(CommonMethod.readProperties("Address"));
+        revSpringCity.clear();
+        revSpringCity.sendKeys(CommonMethod.readProperties("City"));
+        revSpringState.clear();
+        revSpringState.sendKeys(CommonMethod.readProperties("State"));
+        revSpringCode.clear();
+        revSpringCode.sendKeys(CommonMethod.readProperties("PostalCode"));
+        com.selectListWithElement("profile_kind", "Credit Card");
+        com.selectListWithElement("profile_cc_account_type", "visa");
+        revSpringCardNum.clear();
+        revSpringCardNum.sendKeys(CommonMethod.readProperties("CardNumber"));
+        com.selectListWithElement("profile_cc_expiration_month", "6");
+        com.selectListWithElement("profile_cc_expiration_year", "2027");
+        clickOn(revSpringSubmitBtn);
+                
+    }
+
+    /*Medthod to click radio btn  vik*/
+    public void agentInputRadioBtn() {
+        agentInputRadiobtn.click();
+        com.verifyCheckBox(agentInputRadiobtn);
+    }
+   
+    /*Medthod to select reason in summary vik*/
+    public void  selectReasonForPaySummary() throws InterruptedException
+    {
+       
+        com.selectListWithElement(selectResonSummary, textItemForReason);
+    }
+   
+    /*verify revspring frame vik*/
+    public void revspringFrame() {
+        contactMethod.waitForControl("//iframe[@id='PaymentIFrame']");
+        getDriver().switchTo().frame(revSpringFrame);
+       
+        com.verifyElement(revSpringFrameHeader);
+        com.highLightSteps(revSpringFrameHeader);
+    }
+
 }

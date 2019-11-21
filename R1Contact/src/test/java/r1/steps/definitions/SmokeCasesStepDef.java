@@ -477,7 +477,7 @@ public class SmokeCasesStepDef extends BasePage {
 	@Then("^user should be able to view the payment Information tab$")
 	public void user_should_be_able_to_view_the_payment_Information_tab() {
 		payment.verifiyPaymentInformation();
-	    payment.checkIncludeCheckBox();
+	   
 	}
 
 	@Then("^user is able to see guarantor info$")
@@ -904,5 +904,4 @@ public class SmokeCasesStepDef extends BasePage {
         }
 
 
-	
 }

@@ -3,6 +3,7 @@ package r1.steps.definitions;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.ParseException;
 
 import org.junit.Assert;
 
@@ -367,8 +368,8 @@ public class HomeReminderStepDef {
 
 
 	@Then("^user should be able to view all column names should populating with values$")
-	public void user_should_be_able_to_view_all_column_names_should_populating_with_values() {
-		
+	public void user_should_be_able_to_view_all_column_names_should_populating_with_values() throws ClassNotFoundException, FileNotFoundException, SQLException, IOException, ParseException {
+		home.verifyAgentInformation();
 
 	}
 	

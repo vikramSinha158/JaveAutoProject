@@ -13,7 +13,7 @@ import r1.commons.R1ContactCommonMethods;
 import r1.commons.utilities.CommonMethod;
 
 public class AccountPage extends BasePage {
-	private int counter = 0;
+
 	R1ContactCommonMethods contactCommon;
 	CommonMethod common;
 	CommonMethod comMethod;
@@ -25,6 +25,7 @@ public class AccountPage extends BasePage {
 	private String arrowLink = "//a//div";
 	private String inboundLink = "//a//img[@alt='Example inbound']";
 	private String outboundLink = "//a//img[@alt='Example outbound']";
+	private int counter = 0;
 
 	@FindBy(xpath = "//button[@id='NameSubmit']")
 	private WebElementFacade lastNameSearchclk;

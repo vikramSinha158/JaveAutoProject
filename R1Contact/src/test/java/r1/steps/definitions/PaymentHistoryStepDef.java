@@ -6,6 +6,7 @@ import java.sql.SQLException;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import r1.commons.R1ContactCommonMethods;
 import r1.commons.databaseconnection.DatabaseConn;
 import r1.commons.utilities.CommonMethod;
 import r1.pages.AccountDetailsPage;
@@ -45,6 +46,7 @@ public class PaymentHistoryStepDef {
 	ApiConfigurationPage apiConfig;
 	LattersPage letters;
 	String newPaymentAccount;
+	String paymentAccount;
 
 	/*Verify the payment posting using Agent input with Emerge*/
 	
@@ -117,4 +119,118 @@ public class PaymentHistoryStepDef {
 	public void user_clicks_on_the_checking_Savings_Button() {
 	    payment.clickCheckingBtn();
 	}
+	
+	//viks
+	  
+	  @When("^select accounts option for Catholic Health East$")
+	  public void select_accounts_option_for_Catholic_Health_East() {
+
+		  account.selectFacility("Catholic Health East (New Jersey)");
+
+	  }
+	  
+	  @When("^user runs the query  to fetch \"([^\"]*)\" for PaymentPosting$")
+	  public void user_runs_the_query_to_fetch_for_PaymentPosting(String querykey) throws ClassNotFoundException, FileNotFoundException, SQLException, IOException {
+	      
+		  R1ContactCommonMethods.runQuery(querykey);
+	      account.fetchAccountNumber(querykey, "LLNJKEY");
+	      DatabaseConn.resultSet.next();
+	      paymentAccount = DatabaseConn.resultSet.getString("AccountNum");
+	    
+	  }
+
+	  @When("^user enters the fetched account number in Account Number textbox & user clicks on the search icon$")
+	  public void user_enters_the_fetched_account_number_in_Account_Number_textbox_user_clicks_on_the_search_icon() {
+	      account.searchAccount(paymentAccount);
+	     
+	  }
+
+	  @When("^user selects the payment account by clicking on the arrow button$")
+	  public void user_selects_the_payment_account_by_clicking_on_the_arrow_button() throws FileNotFoundException, IOException {
+	      account.clickOnAccount(paymentAccount);
+	 }
+	  
+	  @When("^user enters amount equal or less than balance,checks check box then and user clicks on Summary button$")
+	  public void user_enters_amount_equal_or_less_than_balance_checks_check_box_then_and_user_clicks_on_Summary_button() {
+	         payment.enterAndCheck(paymentAccount);
+	  }
+	  
+	  @Then("^User land on the payment Information tab And user clicks on the Agent input radio button$")
+	  public void user_land_on_the_payment_Information_tab_And_user_clicks_on_the_Agent_input_radio_button() {
+	      payment.verifiyPaymentInformation();
+	      payment.agentInputRadioBtn();
+	  }
+	  
+	  @When("^user selects the reason as PIF$")
+	  public void user_selects_the_reason_as_PIF() throws InterruptedException {
+	      payment.selectReasonForPaySummary();
+	  }
+	  
+	  @Then("^user should be able to view the iFrame screen for revspring$")
+	  public void user_should_be_able_to_view_the_iFrame_screen_for_revspring() {
+
+	      payment.revspringFrame();
+	      
+	  }
+	  
+	  @Then("^user is able fill all detail in revSpring frame$")
+	  public void user_is_able_fill_all_detail_in_revSpring_frame() throws InterruptedException {
+	      payment.fillRevSpringCardDetails();
+	  }
+	  
+	  @Then("^user is able to view the confirmation message 'Your payment profile has been saved'$")
+	  public void user_is_able_to_view_the_confirmation_message_Your_payment_profile_has_been_saved() {
+	      payment.veryfyReVspringSuccesMsg();
+	  }
+
+	  @Then("^user is able to view Profile ID with the Profile info$")
+	  public void user_is_able_to_view_Profile_ID_with_the_Profile_info() {
+	     payment.veryfyReVspringProfileID();
+	  }
+
+	  @When("^user selects and copy profile id$")
+	  public void user_selects_and_copy_profile_id() {
+	     payment.revSpringcopyProfileID();
+	  }
+
+	  @When("^user pastes the profile id into the profile text box$")
+	  public void user_pastes_the_profile_id_into_the_profile_text_box() throws InterruptedException {
+	     payment.sendrevSpringProfileID();
+	  }
+
+	  @When("^user clicks on the revspring submit button$")
+	  public void user_clicks_on_the_revspring_submit_button() {
+	      payment.clickOnLastSubmitBtnForRecSpring();
+	  }
+	  
+	  @When("^user is able to see the green check with submitted text on the Process tab for revspring$")
+	  public void user_is_able_to_see_the_green_check_with_submitted_text_on_the_Process_tab_for_revspring() {
+		  payment.verifySubmittedMsgForRevSpring();
+	  }
+	  
+	  @When("^user selects check box of the for revspring account$")
+	  public void user_selects_check_box_of_the_for_revspring_account() throws InterruptedException {
+	      payment.dovetailCheck(paymentAccount);
+	  }
+	  
+	  @When("^user selects EMI period from the revspring drop down$")
+	  public void user_selects_EMI_period_from_the_revspring_drop_down() {
+	      payment.randEMI();
+	  }
+	  
+	  @Then("^user is able to view the total Installments balance field should show the adjusted balance revSpring$")
+	  public void user_is_able_to_view_the_total_Installments_balance_field_should_show_the_adjusted_balance_revSpring() {
+	      payment.verifyInstallmentsBal(paymentAccount);
+	  }
+	  
+	  @Then("^user is able to view the start date as next month date same as today date$")
+	  public void user_is_able_to_view_the_start_date_as_next_month_date_same_as_today_date() {
+	      payment.verifyStartInstallmentDate();
+	  }
+
+	  @Then("^user is able to see the green check with submitted text on the Process tab for all installment$")
+	  public void user_is_able_to_see_the_green_check_with_submitted_text_on_the_Process_tab_for_all_installment() {
+	      payment.verifySuccessSubmitList();
+	  }
+		
 }

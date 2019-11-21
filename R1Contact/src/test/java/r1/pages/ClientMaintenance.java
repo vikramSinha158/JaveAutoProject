@@ -11,8 +11,6 @@ public class ClientMaintenance extends PageObject {
 	R1ContactCommonMethods r1ComMethod;
 	CommonMethod com;
 	String selectClentMaintenance = "//span[text()='select']";
-	//String selectMaintenanceList = "//select[@id='aDbxid']";
-	
 	String selectMaintenanceList = "aDbxid";
 	
 	@FindBy(xpath = "//select[@id='aDbxid']")
@@ -39,8 +37,7 @@ public class ClientMaintenance extends PageObject {
 	String clientMaintenanceHeader = "//div[contains(text(),' Client Maintenance ')]";
 
 	public void selectClientMaintenanceList(String linkClick) throws InterruptedException {
-	//r1ComMethod.clickdropdown(selectClentMaintenance, selectClentMaintenanceList, linkClick);
-		
+	
 		com.selectListWithElement(selectMaintenanceList, linkClick);
 		Thread.sleep(2000);
 	}

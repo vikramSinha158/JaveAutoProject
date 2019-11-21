@@ -69,8 +69,9 @@ public class CampaignPage extends PageObject {
 	@FindBy(xpath = "//label[text()='Name']")
 	private WebElementFacade labelName;
 
-	@FindBy(xpath = "//div[@class='t-dropdown-wrap t-state-default']")
-	private List<WebElementFacade> dropDownOnEditPopUp;
+    @FindBy(xpath = "//div[@id='CampaignConfigPopUp']//div[@class='editor-field editor-field-widthText']/select") //new
+    private List<WebElementFacade> dropDownOnEditPopUp;
+
 
 	@FindBy(xpath = "//a[text()='Update']")
 	private WebElementFacade btnUpdate;
@@ -186,4 +187,5 @@ public class CampaignPage extends PageObject {
 		com.isDisplayListItem(DeleteIconOnFltTblList);
 	}
 
+	
 }

@@ -100,6 +100,7 @@ public class ReminderPage extends BasePage {
 
 	public void FillreminderDate() throws FileNotFoundException, IOException {
 		dateField.clear();
+		//String reminderDate = ReminderPage.reminderDateToFill("DATE_REMINDER");
 		String reminderDate = reminderDateToFill("DATE_REMINDER");
 		dateField.sendKeys(reminderDate);
 		TimeField.clear();

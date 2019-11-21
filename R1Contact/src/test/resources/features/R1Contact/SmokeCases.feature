@@ -1,7 +1,6 @@
 Feature: Smoke Test Cases of R1contact
 Background: user is able to naviagate to R1C home page
 Given user is on R1 contact login page
-
 @428404
 Scenario: Verify the R1 Contact home page
 Given user is on R1 contact login page
@@ -9,19 +8,16 @@ When user Land on the R1Contact application home page
 Then user should be able to view Agent information
 And user should be able  view Reminder list 
 And user should be able to view R1 Contact logo
-
 @428405
 Scenario: Verify all links available on the home page are accessible
 Given user is on the R1C home page
 When user accessing all links available on header 
 Then user should be able to access all the links
-
 @428406
 Scenario: Verify 'Search' functionality
 Given user is on R1 contact login page
 When user mouse hover on search dropdown and clicks on the Account
 Then user should be able to view the account search page with search criterias PhoneNumber MRN Account NumberAddress State Fname LastName Zip 
-
 @428407
 Scenario: Verify the 'Account Info' page
 Given user is on R1 contact login page
@@ -30,7 +26,6 @@ Then user should be able to view the account search page with search criterias P
 When User fetch the "Account" for search and click search button
 Then User select the account by clicking on arrow button
 Then user should be able to see the account info page with the following details present on the screen Guarantor Patient Balances Account Information  
-
 @428408
 Scenario: Verify the tabs available on the account information page
 Given user is on R1 contact login page
@@ -41,7 +36,6 @@ Then Then user should see the search results populated with number of retrieved 
 When user clicks "arrow" given at the end of the row for the account
 Then Then user should be land on the account info page
 And user should be able to see the below tabs InsuranceNotes Transactions Payment History Letter Sent Encounter Information Account Activity
-
 @428411
 Scenario: Set a Reminder from account page
 Given user is on R1Contact home page
@@ -57,7 +51,6 @@ When Click on the 'Set a reminder' icon
 Then A pop up window should be displayed and user would be able to submit Reminder by filling required details
 And Save reminder by hitting 'Save reminder' button
 Then user should be navigate back to the account page
-
 @428412
 Scenario: Submit a request from Account page
 Given user is on R1Contact home page
