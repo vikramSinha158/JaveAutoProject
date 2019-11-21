@@ -549,13 +549,11 @@ public class PaymentPage extends BasePage {
         try {
             Thread.sleep(3000);
      } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
      }
 		if (instalmentEMI == revSpringfinalSubmitMsgList.size()) {
 			for (int i = 1; i <= revSpringfinalSubmitMsgList.size(); i++) {
 				String xpathSubmit = revSpringfinalSubmitMsgListbefore + i + revSpringfinalSubmitMsgListAfter;
-
 				com.waitForControl(xpathSubmit);
 				CommonMethod.isDisplayedMethod(
 						element(By.xpath(revSpringfinalSubmitMsgListbefore + i + revSpringfinalSubmitMsgListAfter)));
@@ -643,7 +641,6 @@ public class PaymentPage extends BasePage {
 	public void revspringFrame() {
 		contactMethod.waitForControl("//iframe[@id='PaymentIFrame']");
 		getDriver().switchTo().frame(revSpringFrame);
-
 		com.verifyElement(revSpringFrameHeader);
 		com.highLightSteps(revSpringFrameHeader);
 	}
