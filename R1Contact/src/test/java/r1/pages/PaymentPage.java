@@ -53,6 +53,9 @@ public class PaymentPage extends BasePage {
 
 	@FindBy(id = "DovetailSummary")
 	private WebElementFacade doveTailSummaryButton;
+	
+	@FindBy(id = "btnDovetailIntSummary")
+	private WebElementFacade doveTailButton;
 
 	@FindBy(xpath = "//input[@value='Enter Payment']")
 	private WebElementFacade paymentbtn;
@@ -345,10 +348,18 @@ public class PaymentPage extends BasePage {
 		WebElementFacade includeCheck = element(
 				xpath + "//following-sibling::td/div[@class='checkbox-margin']/div/input[contains(@id,'DoInitial')]");
 		includeCheck.click();
-		summaryButton.click();
-
+	
 	}
-
+	
+	// Click summary button
+	public void clickSummaryBtn() {
+		summaryButton.click();
+	}
+	
+	// Click dovetail button
+	public void clickDovetailBtn() {
+		doveTailButton.click();
+	}
 	/* Regular payment arrangement page adjusted balance */
 	public String regularPaymentAdjstBal(String accountNumber) {
 		int rowNum = readRealtiveColumn(paymentAccountRow, paymentAccountCol, "Account", accountNumber);

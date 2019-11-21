@@ -453,13 +453,25 @@ public class SmokeCasesStepDef extends BasePage {
 	public void user_should_be_land_on_the_payment_initial_page() {
 		payment.verifiyInitialPage();
 		
-	   
 	}
 
-	@When("^user enter amount,checks check box then and user clicks on Summary button$")
-	public void user_enter_amount_checks_check_box_then_and_user_clicks_on_Summary_button() {
-	    payment.enterAndCheck(newPaymentAccount);
-	   
+	@When("^user enter amount,checks check box$")
+	public void user_enter_amount_checks_check_box() {
+		payment.enterAndCheck(newPaymentAccount);
+	}
+	@Then("^user enter amount,checks check box,select emi period$")
+	public void user_enter_amount_checks_check_box_select_emi_period() throws InterruptedException {
+		 payment.dovetailCheck(newPaymentAccount);
+		 payment.randEMI();
+	}
+
+	@Then("^user clicks on Summary button$")
+	public void user_clicks_on_Summary_button() {
+		payment.clickSummaryBtn();
+	}
+	@Then("^user clicks on Dovetail button$")
+	public void user_clicks_on_Dovetail_button() {
+		payment.clickDovetailBtn();
 	}
 
 	@Then("^User land on the Summary tab$")
@@ -568,12 +580,12 @@ public class SmokeCasesStepDef extends BasePage {
 	}
 
 
-	@Then("^user enter amount,checks check box,select emi period then and user clicks on Summary button$")
+/*	@Then("^user enter amount,checks check box,select emi period then and user clicks on Summary button$")
 	public void user_enter_amount_checks_check_box_select_emi_period_then_and_user_clicks_on_Summary_button() throws InterruptedException {
 		 payment.dovetailCheck(newPaymentAccount);
 		 payment.randEMI();
 		 payment.clickDoveTailSummary();
-	}
+	}*/
 
 	@Then("^user should be able to view the Summary tab$")
 	public void user_should_be_able_to_view_the_Summary_tab() {

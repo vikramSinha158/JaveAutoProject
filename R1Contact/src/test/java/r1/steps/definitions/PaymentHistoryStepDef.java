@@ -98,12 +98,11 @@ public class PaymentHistoryStepDef {
 	public void user_is_able_to_view_Payment_per_installment_field_should_show_the_installment_amount() {
 			payment.verifyPayPerInstallments();
 	}
-
-	@Then("^user is able to view the start date as current date$")
-	public void user_is_able_to_view_the_start_date_as_current_date() {
+	
+	@Then("^user is able to view the start as one month after of current date$")
+	public void user_is_able_to_view_the_start_as_one_month_after_of_current_date() {
 		payment.verifyStartInstallmentDate();
 	}
-
 	@When("^user clicks on the Summary button$")
 	public void user_clicks_on_the_Summary_button() {
 		payment.clickDoveTailSummary();
@@ -153,6 +152,7 @@ public class PaymentHistoryStepDef {
 	  @When("^user enters amount equal or less than balance,checks check box then and user clicks on Summary button$")
 	  public void user_enters_amount_equal_or_less_than_balance_checks_check_box_then_and_user_clicks_on_Summary_button() {
 	         payment.enterAndCheck(paymentAccount);
+	         payment.clickSummaryBtn();
 	  }
 	  
 	  @Then("^User land on the payment Information tab And user clicks on the Agent input radio button$")

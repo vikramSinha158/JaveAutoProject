@@ -172,7 +172,8 @@ And user fetch the "NewPaymentAccount" for payment posting and search for it
 When user selects the New payment account by clicking on the arrow button
 And user Click on "Payment history" tab and pick one option from the drop down "Single credit card payment"
 Then User should be land on the payment initial page.
-When user enter amount,checks check box then and user clicks on Summary button
+When user enter amount,checks check box
+And user clicks on Summary button
 Then User land on the Summary tab 
 When user Click on Enter payment button
 Then User land on the payment Information tab 
@@ -189,7 +190,8 @@ And user fetch the "NewPaymentAccount" for payment posting and search for it
 When user selects the New payment account by clicking on the arrow button
 And user Click on "Payment history" tab and pick one option from the drop down "Check payment arrangment"
 Then User should be land on the payment initial page.
-When user enter amount,checks check box then and user clicks on Summary button
+When user enter amount,checks check box 
+And user clicks on Summary button
 And user Click on Enter payment button
 Then User land on the payment Information tab 
 And  user clicks on the Agent input radio button
@@ -210,7 +212,8 @@ And user fetch the "NewPaymentAccount" for payment posting and search for it
 When user selects the New payment account by clicking on the arrow button
 And user Click on "Payment history" tab and pick one option from the drop down "Credit card payment arrangment"
 Then User should be land on the payment initial page.
-When user enter amount,checks check box then and user clicks on Summary button
+When user enter amount,checks check box
+And user clicks on Summary button
 And user Click on Enter payment button
 Then User land on the payment Information tab 
 And  user clicks on the Agent input radio button
@@ -231,7 +234,8 @@ And user fetch the "NewPaymentAccount" for payment posting and search for it
 When user selects the New payment account by clicking on the arrow button
 And user Click on "Payment history" tab and pick one option from the drop down "Regular payment arrangment"
 Then user should be land on the payment dovetail page.
-And user enter amount,checks check box,select emi period then and user clicks on Summary button
+And user enter amount,checks check box,select emi period
+And user clicks on Summary button
 Then user should be able to view the Summary tab 
 And user Click on Enter payment button
 Then user should be able to view the payment Information tab
