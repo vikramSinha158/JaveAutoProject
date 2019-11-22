@@ -21,6 +21,7 @@ public class ReminderPage extends BasePage {
 
 	final String containCheck = "already exists";
 	static String noteText = "Please check!";
+	String remDate="DATE_REMINDER";
 
 	@FindBy(xpath = "//span[@id='Reminder']")
 	private WebElementFacade ReminderIcon;
@@ -85,9 +86,9 @@ public class ReminderPage extends BasePage {
 		Assert.assertTrue("Reminder container is not coming", ReminderContainer.isDisplayed());
 
 	}
-
-	public static String reminderDateToFill() throws FileNotFoundException, IOException {
-		String DATE_REMINDER = CommonMethod.readProperties("DATE_REMINDER");
+	
+	public static String reminderDateToFill(String remDate) throws FileNotFoundException, IOException {
+		String DATE_REMINDER = CommonMethod.readProperties(remDate);
 		int integerDate = Integer.parseInt(DATE_REMINDER);
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.DAY_OF_MONTH, integerDate);
@@ -99,7 +100,8 @@ public class ReminderPage extends BasePage {
 
 	public void FillreminderDate() throws FileNotFoundException, IOException {
 		dateField.clear();
-		String reminderDate = reminderDateToFill();
+		String reminderDate = ReminderPage.reminderDateToFill("DATE_REMINDER");
+		//String reminderDate = reminderDateToFill("DATE_REMINDER");
 		dateField.sendKeys(reminderDate);
 		TimeField.clear();
 		TimeField.sendKeys(CommonMethod.readProperties("ReminderTime"));
@@ -108,12 +110,18 @@ public class ReminderPage extends BasePage {
 	
 	public void FillOnlyDateOnReminder() throws FileNotFoundException, IOException {
 		dateField.clear();
-		String reminderDate = reminderDateToFill();
+		String reminderDate = reminderDateToFill("DATE_REMINDER");
 		dateField.sendKeys(reminderDate);
 		
 
 	}
 	
+	public void fillTomorrowReminder() throws FileNotFoundException, IOException {
+		dateField.clear();
+		String reminderDate = reminderDateToFill("Tomorrow_REMINDER");
+		dateField.sendKeys(reminderDate);
+		
+	}
 	public void FillOnlyTimeOnReminder() throws FileNotFoundException, IOException {
 	
 		TimeField.clear();
@@ -175,7 +183,7 @@ public class ReminderPage extends BasePage {
 		if (dateField.isDisplayed()) {
 			common.highLightSteps(dateField);
 			dateField.clear();
-			dateField.sendKeys(reminderDateToFill());
+			dateField.sendKeys(ReminderPage.reminderDateToFill("DATE_REMINDER"));
 			dateField.clear();
 		} else {
 			Assert.assertTrue("Date Field is not displayed!", false);

@@ -4,12 +4,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 import java.util.Random;
 import java.util.Set;
-
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.encryption.InvalidPasswordException;
 import org.apache.pdfbox.text.PDFTextStripper;
@@ -17,7 +19,6 @@ import org.junit.Assert;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchFrameException;
-import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -54,26 +55,24 @@ public class CommonMethod extends BasePage {
 		}
 		return selectDropdown.getFirstSelectedOption().getText();
 	}
-	
+
 	public void selectListWithElement(String element, String text) throws InterruptedException {
-		
-	
-		WebElementFacade dropdownEle=element(By.id(element));
+
+		WebElementFacade dropdownEle = element(By.id(element));
 		dropdownEle.click();
-		
-			Select selectDropdown = new Select(dropdownEle);
-			List<WebElement> listOptionDropdown = selectDropdown.getOptions();
-			for (int i = 0; i < listOptionDropdown.size(); i++) {
-				if (listOptionDropdown.get(i).getText().equalsIgnoreCase(text)) {
-										
-						selectDropdown.selectByVisibleText(text);
-										
-						break;
-					} 
-					
-				}
+
+		Select selectDropdown = new Select(dropdownEle);
+		List<WebElement> listOptionDropdown = selectDropdown.getOptions();
+		for (int i = 0; i < listOptionDropdown.size(); i++) {
+			if (listOptionDropdown.get(i).getText().equalsIgnoreCase(text)) {
+
+				selectDropdown.selectByVisibleText(text);
+
+				break;
 			}
-		
+
+		}
+	}
 
 	public static int dropDownSize(WebElementFacade list) {
 		Select drpList = new Select(list);
@@ -195,8 +194,7 @@ public class CommonMethod extends BasePage {
 		try {
 			prop.load(new FileInputStream("src/test/resources/TestData/Config.properties"));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		e.printStackTrace();
 		}
 		return prop.getProperty(input);
 	}
@@ -228,8 +226,6 @@ public class CommonMethod extends BasePage {
 		js.executeScript("arguments[0].setAttribute('style', 'background: yellow; border: 2px solid red;');", element);
 
 	}
-	
-
 
 	/*
 	 * Bootstrap dropDownHandling
@@ -280,121 +276,130 @@ public class CommonMethod extends BasePage {
 		je.executeScript("arguments[0].scrollIntoView(true);", element);
 
 	}
-	/*Random number*/
+
+	/* Random number */
 	public static int random(int num) {
-		int randomNumber=0;
-	Random objGenerator = new Random();
-    for (int iCount = 0; iCount< 10; iCount++){
-    	randomNumber  = objGenerator.nextInt(num)+1;
-    	
-    }
-	return randomNumber;
-    }
-	
+		int randomNumber = 0;
+		Random objGenerator = new Random();
+		for (int iCount = 0; iCount < 10; iCount++) {
+			randomNumber = objGenerator.nextInt(num) + 1;
+
+		}
+		return randomNumber;
+	}
+
 	public void verifyElement(WebElementFacade element) {
 		Assert.assertTrue("Element is not displayed!", element.isDisplayed());
 	}
-	
+
 	public void verifyCheckBox(WebElementFacade element) {
 		Assert.assertTrue("CheckBox is not selected!", element.isSelected());
 	}
-/*	
- * Extracting text from pdf and read it
-*/
+
+	/*
+	 * Extracting text from pdf and read it
+	 */
 	public void readPdf(String pdfpath) throws InvalidPasswordException, IOException {
-		//load existing pdf document
+		// load existing pdf document
 		File file = new File(pdfpath);
-		PDDocument doc =PDDocument.load(file);
-		//Instantiating PDFTextStripper class
+		PDDocument doc = PDDocument.load(file);
+		// Instantiating PDFTextStripper class
 		PDFTextStripper pdfStripper = new PDFTextStripper();
-		String ss=pdfStripper.getText(doc);
-		
-	}
-	
-	 /*check the display of list of element*/
-		public void isDisplayListItem(List<WebElementFacade> elements)
-		{
-			boolean itemDispay=false;
-			
-			for (int i = 0; i < elements.size(); i++) {
+		pdfStripper.getText(doc);
 
-				
-				if (elements.get(i).isDisplayed()) {
-					//scrollInView(elements.get(i));
-					highLightSteps(elements.get(i));
-					itemDispay=true;
-				}
-				else
-				{
-					itemDispay=false;
-					Assert.assertTrue(elements.get(i).getText() + " not displayed", itemDispay);
-				}
-			}
-		}
-		
-		
-		/* Method to click element from list of item */
-		public void clickListTabs(List<WebElementFacade> elementList,String elementTobeName) {
-
-			boolean tabcheck = false;
-
-			for (int i = 0; i < elementList.size(); i++) {
-				
-				if (elementList.get(i).getText().toUpperCase().contains(elementTobeName.trim().toUpperCase())) {
-
-				
-					clickOn(elementList.get(i));
-					tabcheck = true;
-					break;
-				}
-			}
-
-			Assert.assertTrue(elementTobeName + " Element Not found ", tabcheck);
-
-		}
-		
-		/* Method to wait control */
-		public void waitForControl(String waitElement)
-		{
-			WebDriverWait wait = new WebDriverWait(getDriver(),100);
-	        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(waitElement))); 
-		}
-		
-		/* Method to dismiss alert */
-		public void dimissAlert()
-		{
-			boolean alerFlag=false;
-			Alert alt = null;
-				try {
-
-					 alt=getDriver().switchTo().alert();
-					alerFlag=true;
-				} catch (Exception e) {
-					alerFlag= false;
-					Assert.assertTrue("No alert found after click ", alerFlag);
-				}
-			if(alerFlag==true)
-			{
-				Assert.assertTrue(alerFlag);
-				alt.dismiss();
-			}
-		}
-		
-		/* Method to check all letters are in caps or not in string */
-		public boolean isUpperCaseCheck(String s)
-		{
-			String str = s.replaceAll("\\s", ""); 
-		    for (int i=0; i<str.length(); i++)
-		    {
-		        if (!Character.isUpperCase(str.charAt(i)))
-		        {
-		            return false;
-		        }
-		    }
-		    return true;
-		}
-		
-		
 	}
 
+	/* check the display of list of element */
+	public void isDisplayListItem(List<WebElementFacade> elements) {
+		boolean itemDispay = false;
 
+		for (int i = 0; i < elements.size(); i++) {
+
+			if (elements.get(i).isDisplayed()) {
+				// scrollInView(elements.get(i));
+				highLightSteps(elements.get(i));
+				itemDispay = true;
+			} else {
+				itemDispay = false;
+				Assert.assertTrue(elements.get(i).getText() + " not displayed", itemDispay);
+			}
+		}
+	}
+
+	/* Method to click element from list of item */
+	public void clickListTabs(List<WebElementFacade> elementList, String elementTobeName) {
+
+		boolean tabcheck = false;
+
+		for (int i = 0; i < elementList.size(); i++) {
+
+			if (elementList.get(i).getText().toUpperCase().contains(elementTobeName.trim().toUpperCase())) {
+
+				clickOn(elementList.get(i));
+				tabcheck = true;
+				break;
+			}
+		}
+
+		Assert.assertTrue(elementTobeName + " Element Not found ", tabcheck);
+
+	}
+
+	/* Method to wait control */
+	public void waitForControl(String waitElement) {
+		WebDriverWait wait = new WebDriverWait(getDriver(), 100);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(waitElement)));
+	}
+
+	/* Method to wait control */
+	public void waitToClickable(String waitElement) {
+		WebDriverWait wait = new WebDriverWait(getDriver(), 100);
+		wait.until(ExpectedConditions.elementToBeClickable(By.xpath(waitElement)));
+	}
+
+	/* Method to dismiss alert */
+	public void dimissAlert() {
+		boolean alerFlag = false;
+		Alert alt = null;
+		try {
+
+			alt = getDriver().switchTo().alert();
+			alerFlag = true;
+		} catch (Exception e) {
+			alerFlag = false;
+			Assert.assertTrue("No alert found after click ", alerFlag);
+		}
+		if (alerFlag == true) {
+			Assert.assertTrue(alerFlag);
+			alt.dismiss();
+		}
+	}
+
+	/* Method to check all letters are in caps or not in string */
+	public boolean isUpperCaseCheck(String s) {
+		String str = s.replaceAll("\\s", "");
+		for (int i = 0; i < str.length(); i++) {
+			if (!Character.isUpperCase(str.charAt(i))) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/* Divide two nummber */
+	public double divideTwoNumber(int firstNum, int secondNum) {
+		double result = (double) firstNum / secondNum;
+		double roundoffresult = Math.round(result * 100.0) / 100.0;
+		return roundoffresult;
+	}
+
+	// next month date
+	public String nextMonthDate() {
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.MONTH, 1);
+		Date date = cal.getTime();
+		SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+		String nextMonthDate = formatter.format(date);
+		return nextMonthDate;
+	}
+}

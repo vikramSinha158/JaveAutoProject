@@ -13,7 +13,7 @@ import r1.commons.R1ContactCommonMethods;
 import r1.commons.utilities.CommonMethod;
 
 public class AccountPage extends BasePage {
-	private int counter = 0;
+
 	R1ContactCommonMethods contactCommon;
 	CommonMethod common;
 	CommonMethod comMethod;
@@ -25,6 +25,7 @@ public class AccountPage extends BasePage {
 	private String arrowLink = "//a//div";
 	private String inboundLink = "//a//img[@alt='Example inbound']";
 	private String outboundLink = "//a//img[@alt='Example outbound']";
+	private int counter = 0;
 
 	@FindBy(xpath = "//button[@id='NameSubmit']")
 	private WebElementFacade lastNameSearchclk;
@@ -55,14 +56,15 @@ public class AccountPage extends BasePage {
 
 	@FindBy(xpath = "//button[@id='AccountNumberSubmit']")
 	private WebElementFacade clkaccNumSearch;
-	
-	@FindBy(id="Facility") private WebElementFacade facilityDrpDown;
-	
+
+	@FindBy(id = "Facility")
+	private WebElementFacade facilityDrpDown;
 
 	/*
 	 * Clicks the the account passed by property file
 	 */
-	public void selectAndClickAccount(String clickItem, String AccountNumber) throws FileNotFoundException, IOException {
+	public void selectAndClickAccount(String clickItem, String AccountNumber)
+			throws FileNotFoundException, IOException {
 
 		if (clickItem.equalsIgnoreCase("inbound")) {
 			contactCommon.clickOnMatchingColValue(accountRows, colNum, CommonMethod.readProperties(AccountNumber),
@@ -173,37 +175,36 @@ public class AccountPage extends BasePage {
 	public void clickForAccSearch() {
 		clkaccNumSearch.click();
 	}
-	
-/*	Select facility from dropdown*/
-	
+
+	/* Select facility from dropdown */
+
 	public void selectFacility(String facilityName) {
 		CommonMethod.DrpVisibleTxt(facilityDrpDown, facilityName);
 	}
-	
-	public void JhouseOwnerAccountNum(String queryName, String facilityKey) throws ClassNotFoundException, FileNotFoundException, SQLException, IOException {
+
+	public void JhouseOwnerAccountNum(String queryName, String facilityKey)
+			throws ClassNotFoundException, FileNotFoundException, SQLException, IOException {
 		contactCommon.runQuery(queryName, facilityKey);
 	}
-	
-	/*fetch account from db*/
-	
+
+	/* fetch account from db */
+
 	public void fetchAccountNumber(String queryName, String facilityKey)
 			throws ClassNotFoundException, FileNotFoundException, SQLException, IOException {
 		contactCommon.runQuery(queryName, facilityKey);
-		
+
 	}
-	
-	/*enter account and click on search button*/
-	
+
+	/* enter account and click on search button */
+
 	public void searchAccount(String accountNumber) {
 		enterAccNumForSearch(accountNumber);
 		clickForAccSearch();
 	}
-	
-	/*click on wheatonNonZeroAccountNum arrow*/
+
+	/* click on wheatonNonZeroAccountNum arrow */
 	public void clickOnAccount(String accountNumber) throws FileNotFoundException, IOException {
 		clickOnArrowWithDbAccNum(accountNumber);
 	}
 
-
-	
 }

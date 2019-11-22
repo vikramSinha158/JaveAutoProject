@@ -25,9 +25,6 @@ public class AccountDetailsPage extends PageObject {
 	AccountPage account;
 	String agentPatientPageEmail;
 	private String accNumberxpath = "//div[@class='account-number']";
-	private String payment = "//span[text()='--New Payment--']";
-	private String newPaymentDropDown = "//ul[@class='t-reset']/li";
-
 	@FindBy(xpath = "//div[@class='pull-left right-item']/a")
 	private List<WebElementFacade> patientAndGuarntName;
 
@@ -96,6 +93,12 @@ public class AccountDetailsPage extends PageObject {
 
 	@FindBy(xpath = "//table[@ng-table='tableParams']//tbody//tr[1]//td[@data-title-text='Notes']//span")
 	private WebElementFacade noteTextCellvalue;
+
+	@FindBy(id = "aMode")
+	private WebElementFacade paymentDropDown;
+
+	@FindBy(xpath = "//iframe[@id='iframepdf1571320266191']")
+	private WebElementFacade pdfFrame;
 
 	int PatientDtlTabs = Integer.parseInt(CommonMethod.readProperties("patientDetailtabs"));
 
@@ -237,7 +240,7 @@ public class AccountDetailsPage extends PageObject {
 
 	/* payment dropdown */
 	public void paymentDropdown(String value) throws InterruptedException {
-		contactCommon.clickdropdown(payment, newPaymentDropDown, value);
+		CommonMethod.DrpVisibleTxt(paymentDropDown, value);
 	}
 
 	/* Enter text for notes */
@@ -278,9 +281,6 @@ public class AccountDetailsPage extends PageObject {
 	public void clickShowPDF() {
 		showAnyPDF.click();
 	}
-
-	@FindBy(xpath = "//iframe[@id='iframepdf1571320266191']")
-	private WebElementFacade pdfFrame;
 
 	public void verifyPDF() throws InvalidPasswordException, IOException {
 		String Url = "http://uatccc.accretivehealth.com/Account/GetBillingStatementPdf?aAccountNumber=fab2ccd0-7880-e911-80e5-0050569a120c&aFac=ASWI&aPatId=";

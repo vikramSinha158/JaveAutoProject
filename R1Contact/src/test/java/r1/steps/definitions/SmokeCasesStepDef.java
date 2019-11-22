@@ -453,13 +453,25 @@ public class SmokeCasesStepDef extends BasePage {
 	public void user_should_be_land_on_the_payment_initial_page() {
 		payment.verifiyInitialPage();
 		
-	   
 	}
 
-	@When("^user enter amount,checks check box then and user clicks on Summary button$")
-	public void user_enter_amount_checks_check_box_then_and_user_clicks_on_Summary_button() {
-	    payment.enterAndCheck(newPaymentAccount);
-	   
+	@When("^user enter amount,checks check box$")
+	public void user_enter_amount_checks_check_box() {
+		payment.enterAndCheck(newPaymentAccount);
+	}
+	@Then("^user enter amount,checks check box,select emi period$")
+	public void user_enter_amount_checks_check_box_select_emi_period() throws InterruptedException {
+		 payment.dovetailCheck(newPaymentAccount);
+		 payment.randEMI();
+	}
+
+	@Then("^user clicks on Summary button$")
+	public void user_clicks_on_Summary_button() {
+		payment.clickSummaryBtn();
+	}
+	@Then("^user clicks on Dovetail button$")
+	public void user_clicks_on_Dovetail_button() {
+		payment.clickDovetailBtn();
 	}
 
 	@Then("^User land on the Summary tab$")
@@ -474,11 +486,9 @@ public class SmokeCasesStepDef extends BasePage {
 	   
 	}
 
-	@Then("^User land on the payment Information tab And user is able to see secure payment radio button enabled$")
-	public void user_land_on_the_payment_Information_tab_And_user_is_able_to_see_secure_payment_radio_button_enabled() {
-	    payment.verifiyPaymentInformation();
-	    payment.checkIncludeCheckBox();
-	    
+	@Then("^user should be able to view the payment Information tab$")
+	public void user_should_be_able_to_view_the_payment_Information_tab() {
+		payment.verifiyPaymentInformation();
 	   
 	}
 
@@ -501,12 +511,15 @@ public class SmokeCasesStepDef extends BasePage {
 	}
 	
 	/*Test Case 428495:Verify the payment posting using Agent input with revspring*/
-	
-	@Then("^User land on the payment Information tab And user is able to see agent input radio button enabled$")
-	public void user_land_on_the_payment_Information_tab_And_user_is_able_to_see_agent_input_radio_button_enabled() {
-		  payment.verifiyPaymentInformation();
-		  payment.agentInputCheckBox();
-	    
+
+	@Then("^User land on the payment Information tab$")
+	public void user_land_on_the_payment_Information_tab() {
+		 payment.verifiyPaymentInformation();
+	}
+
+	@Then("^user clicks on the Agent input radio button$")
+	public void user_clicks_on_the_Agent_input_radio_button() {
+		 payment.agentInputCheckBox();
 	}
 
 	@Then("^Then iFrame screen should be displayed$")
@@ -522,7 +535,7 @@ public class SmokeCasesStepDef extends BasePage {
 	}
 
 	@When("^click on submit button$")
-	public void click_on_submit_button() {
+	public void click_on_submit_button() throws InterruptedException {
 	    payment.submitProfile();
 	    
 	}
@@ -567,15 +580,16 @@ public class SmokeCasesStepDef extends BasePage {
 	}
 
 
-	@Then("^user enter amount,checks check box,select emi perion then and user clicks on Summary button$")
-	public void user_enter_amount_checks_check_box_select_emi_perion_then_and_user_clicks_on_Summary_button() throws InterruptedException {
-		 payment.dovetailCheck();
+/*	@Then("^user enter amount,checks check box,select emi period then and user clicks on Summary button$")
+	public void user_enter_amount_checks_check_box_select_emi_period_then_and_user_clicks_on_Summary_button() throws InterruptedException {
+		 payment.dovetailCheck(newPaymentAccount);
+		 payment.randEMI();
+		 payment.clickDoveTailSummary();
+	}*/
 
-	}
-
-	@Then("^Then user should be land on the summary tab$")
-	public void then_user_should_be_land_on_the_summary_tab() {
-	   payment.verifiySummaryPage();
+	@Then("^user should be able to view the Summary tab$")
+	public void user_should_be_able_to_view_the_Summary_tab() {
+		payment.verifiySummaryPage();
 	}
 
 	@Then("^user should be land on the payment information tab$")
@@ -902,5 +916,4 @@ public class SmokeCasesStepDef extends BasePage {
         }
 
 
-	
 }

@@ -26,7 +26,7 @@ public class ApiConfigurationPage extends PageObject {
 	@FindBy(xpath = "//div[@id='ApiVendorSettingPopUp']")
 	private WebElementFacade addRecordApiConfigPopUp;
 
-	@FindBy(xpath = "//table[@cellspacing='0']/tbody/tr[1]/td[10]/a[contains(text(),'Edit')]")
+	@FindBy(xpath = "//table[@cellspacing='0']/tbody/tr[1]/td[11]/a[contains(text(),'Edit')]")
 	private WebElementFacade firstRowEditBtnApiConfig;
 
 	@FindBy(xpath = "//table[@cellspacing='0']/tbody/tr")

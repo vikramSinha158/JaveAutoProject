@@ -1,7 +1,6 @@
 Feature: Smoke Test Cases of R1contact
 Background: user is able to naviagate to R1C home page
 Given user is on R1 contact login page
-
 @428404
 Scenario: Verify the R1 Contact home page
 Given user is on R1 contact login page
@@ -9,19 +8,16 @@ When user Land on the R1Contact application home page
 Then user should be able to view Agent information
 And user should be able  view Reminder list 
 And user should be able to view R1 Contact logo
-
 @428405
 Scenario: Verify all links available on the home page are accessible
 Given user is on the R1C home page
 When user accessing all links available on header 
 Then user should be able to access all the links
-
 @428406
 Scenario: Verify 'Search' functionality
 Given user is on R1 contact login page
 When user mouse hover on search dropdown and clicks on the Account
 Then user should be able to view the account search page with search criterias PhoneNumber MRN Account NumberAddress State Fname LastName Zip 
-
 @428407
 Scenario: Verify the 'Account Info' page
 Given user is on R1 contact login page
@@ -30,7 +26,6 @@ Then user should be able to view the account search page with search criterias P
 When User fetch the "Account" for search and click search button
 Then User select the account by clicking on arrow button
 Then user should be able to see the account info page with the following details present on the screen Guarantor Patient Balances Account Information  
-
 @428408
 Scenario: Verify the tabs available on the account information page
 Given user is on R1 contact login page
@@ -41,7 +36,6 @@ Then Then user should see the search results populated with number of retrieved 
 When user clicks "arrow" given at the end of the row for the account
 Then Then user should be land on the account info page
 And user should be able to see the below tabs InsuranceNotes Transactions Payment History Letter Sent Encounter Information Account Activity
-
 @428411
 Scenario: Set a Reminder from account page
 Given user is on R1Contact home page
@@ -57,7 +51,6 @@ When Click on the 'Set a reminder' icon
 Then A pop up window should be displayed and user would be able to submit Reminder by filling required details
 And Save reminder by hitting 'Save reminder' button
 Then user should be navigate back to the account page
-
 @428412
 Scenario: Submit a request from Account page
 Given user is on R1Contact home page
@@ -179,10 +172,12 @@ And user fetch the "NewPaymentAccount" for payment posting and search for it
 When user selects the New payment account by clicking on the arrow button
 And user Click on "Payment history" tab and pick one option from the drop down "Single credit card payment"
 Then User should be land on the payment initial page.
-When user enter amount,checks check box then and user clicks on Summary button
+When user enter amount,checks check box
+And user clicks on Summary button
 Then User land on the Summary tab 
 When user Click on Enter payment button
-Then User land on the payment Information tab And user is able to see secure payment radio button enabled 
+Then User land on the payment Information tab 
+And  user clicks on the Agent input radio button
 And user is able to see guarantor info
 When user clicks on the submit button
 Then Payment should be submitted successfully
@@ -195,9 +190,11 @@ And user fetch the "NewPaymentAccount" for payment posting and search for it
 When user selects the New payment account by clicking on the arrow button
 And user Click on "Payment history" tab and pick one option from the drop down "Check payment arrangment"
 Then User should be land on the payment initial page.
-When user enter amount,checks check box then and user clicks on Summary button
+When user enter amount,checks check box 
+And user clicks on Summary button
 And user Click on Enter payment button
-Then User land on the payment Information tab And user is able to see agent input radio button enabled
+Then User land on the payment Information tab 
+And  user clicks on the Agent input radio button
 And Then iFrame screen should be displayed
 When user add payment information 
 And click on submit button
@@ -207,7 +204,7 @@ And user paste the profile id into the profile text box
 And user clicks on the submit button on payment information page
 Then Payment should be submitted successfully for check payment arrangement
 
-@428496
+@428496 @Test
 Scenario: Verify the payment posting using Agent input with Emerge
 When user Click on 'Search' account link
 And select accounts option for WHEATON PHYSICIAN SERVICES
@@ -215,9 +212,11 @@ And user fetch the "NewPaymentAccount" for payment posting and search for it
 When user selects the New payment account by clicking on the arrow button
 And user Click on "Payment history" tab and pick one option from the drop down "Credit card payment arrangment"
 Then User should be land on the payment initial page.
-When user enter amount,checks check box then and user clicks on Summary button
+When user enter amount,checks check box
+And user clicks on Summary button
 And user Click on Enter payment button
-Then User land on the payment Information tab And user is able to see agent input radio button enabled
+Then User land on the payment Information tab 
+And  user clicks on the Agent input radio button
 And Then iFrame screen should be displayed
 When user add payment information 
 And click on submit button
@@ -227,7 +226,7 @@ And user paste the profile id into the profile text box
 And user clicks on the submit button on payment information page
 Then Payment should be submitted successfully for check payment arrangement 
 
-@428497 
+@428497 @Test
 Scenario: Verify the Regular payment posting
 When user Click on 'Search' account link
 And select accounts option for WHEATON PHYSICIAN SERVICES
@@ -235,14 +234,13 @@ And user fetch the "NewPaymentAccount" for payment posting and search for it
 When user selects the New payment account by clicking on the arrow button
 And user Click on "Payment history" tab and pick one option from the drop down "Regular payment arrangment"
 Then user should be land on the payment dovetail page.
-And user enter amount,checks check box,select emi perion then and user clicks on Summary button
-Then Then user should be land on the summary tab
+And user enter amount,checks check box,select emi period
+And user clicks on Summary button
+Then user should be able to view the Summary tab 
 And user Click on Enter payment button
-Then user should be land on the payment information tab
+Then user should be able to view the payment Information tab
 When user clicks on the submit button on payment information
 Then Payment should be processed successfully
-
-
 
 @428498
 Scenario: Verify 'the my queue tab under the my tabs'

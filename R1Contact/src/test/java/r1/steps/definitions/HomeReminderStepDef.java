@@ -3,10 +3,14 @@ package r1.steps.definitions;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.ParseException;
+
+import org.junit.Assert;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import r1.commons.R1ContactCommonMethods;
 import r1.commons.databaseconnection.DatabaseConn;
 import r1.commons.utilities.CommonMethod;
 import r1.pages.AccountDetailsPage;
@@ -20,13 +24,13 @@ public class HomeReminderStepDef {
 	ReminderPage rem;
 	AccountPage accountPage;
 	AccountDetailsPage account;
-	String AccountNum="AccountNumber";
-	String reminderAccount="";
+	String AccountNum = "AccountNumber";
+	String reminderAccount = "";
 	String defaultTime = "12:00 AM"; // It will remain constant
-	//String setTimeInReminder="";
-	
-	String setTimeInReminder=CommonMethod.readProperties("TimeToCreateReminder");
-	
+	// String setTimeInReminder="";
+
+	String setTimeInReminder = CommonMethod.readProperties("TimeToCreateReminder");
+
 	@Then("^user should be able to see Agent Information$")
 	public void user_should_be_able_to_see_Agent_Information() throws InterruptedException {
 
@@ -129,16 +133,15 @@ public class HomeReminderStepDef {
 		home.verifyReminderSearch();
 	}
 
-    @Then("^Verify the type of Search box$")
-    public void verify_the_type_of_Search_box() throws NoSuchFieldException, FileNotFoundException, IOException {
-           home.checkContainHometable("DateSearch", "Date");
-           home.checkContainHometable("TimeSearch", "Time");
-           home.checkContainHometable("FacilitySearch", "Facility");
-           home.checkContainHometable("AccountSearch", "Account Number");
-           home.checkContainHometable("NotesSearch", "Notes");
-           home.checkContainHometable("BalanceSearch", "Balance");           
-    }
-
+	@Then("^Verify the type of Search box$")
+	public void verify_the_type_of_Search_box() throws NoSuchFieldException, FileNotFoundException, IOException {
+		home.checkContainHometable("DateSearch", "Date");
+		home.checkContainHometable("TimeSearch", "Time");
+		home.checkContainHometable("FacilitySearch", "Facility");
+		home.checkContainHometable("AccountSearch", "Account Number");
+		home.checkContainHometable("NotesSearch", "Notes");
+		home.checkContainHometable("BalanceSearch", "Balance");
+	}
 
 	/***********************************************
 	 * Test Case 408191*:Reminder_Verify the sort option in 'Reminder' home screen
@@ -147,14 +150,20 @@ public class HomeReminderStepDef {
 	@Given("^Verify the Ascending sort function to sort reminder list$")
 	public void verify_the_Ascending_sort_function_to_sort_reminder_list() {
 
-		home.sortingAscColumnHead();
+		home.sortingAscColumnHead("Account Number");
+		home.sortingAscColumnHead("Facility");
+		// home.sortingAscColumnHead("Notes");
+		// home.sortingAscColumnHead("Balance");
 
 	}
 
 	@Given("^Verify the Descending sort function to sort reminder list$")
 	public void verify_the_Descending_sort_function_to_sort_reminder_list() {
 
-		home.sortingDescColumnHeader();
+		home.sortingDescColumnHeader("Account Number");
+		home.sortingDescColumnHeader("Facility");
+		// home.sortingDescColumnHeader("Notes");
+		// home.sortingDescColumnHeader("Balance");
 	}
 
 	/***************************************************
@@ -205,14 +214,13 @@ public class HomeReminderStepDef {
 
 		home.todayTabColor("rgba(11, 92, 207, 1)");
 	}
-	
+
 	@When("^user mouse hover on SEARCH link and clicks on the account button$")
 	public void user_mouse_hover_on_SEARCH_link_and_clicks_on_the_account_button() {
-		
-		home.clickForSerachAccount();
-	   
-	}
 
+		home.clickForSerachAccount();
+
+	}
 
 	@Then("^user should be navigate to account search page$")
 	public void user_should_be_navigate_to_account_search_page() {
@@ -220,30 +228,29 @@ public class HomeReminderStepDef {
 	}
 
 	@When("^User fetch the \"([^\"]*)\" for search and click for search button$")
-	public void user_fetch_the_for_search_and_click_for_search_button(String queryKey) throws ClassNotFoundException, FileNotFoundException, SQLException, IOException {
-		
-		accountPage.fetchAccountNumber(queryKey, "BOMCKEY");
-         DatabaseConn.resultSet.next();
-         reminderAccount = DatabaseConn.resultSet.getString("AccountNum");
-         accountPage.searchAccount(reminderAccount);
-	    
-	}
+	public void user_fetch_the_for_search_and_click_for_search_button(String queryKey)
+			throws ClassNotFoundException, FileNotFoundException, SQLException, IOException {
 
+		accountPage.fetchAccountNumber(queryKey, "BOMCKEY");
+		DatabaseConn.resultSet.next();
+		reminderAccount = DatabaseConn.resultSet.getString("AccountNum");
+		accountPage.searchAccount(reminderAccount);
+
+	}
 
 	@Then("^User select the account by clicking on arrow button from account table$")
 	public void user_select_the_account_by_clicking_on_arrow_button_from_account_table() {
 		try {
-            accountPage.clickOnAccount(reminderAccount);
-      } catch (FileNotFoundException e) {
+			accountPage.clickOnAccount(reminderAccount);
+		} catch (FileNotFoundException e) {
 
-            e.printStackTrace();
-      } catch (IOException e) {
-            
-            e.printStackTrace();
-      }
+			e.printStackTrace();
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		}
 	}
-	
-	
+
 	@Then("^user should be navigate to account info page$")
 	public void user_should_be_navigate_to_account_info_page() {
 		account.verifyAccountInfoSection();
@@ -267,51 +274,103 @@ public class HomeReminderStepDef {
 
 	@When("^time as default$")
 	public void time_as_default() {
-	  System.out.println("");
+		System.out.println("");
 	}
-	
+
 	@When("^select time \"([^\"]*)\" from the dropdown$")
 	public void select_time_from_the_dropdown(String timetoSelect) throws InterruptedException {
-	   rem.selectTimeFromReminder(timetoSelect);
-	  
+		rem.selectTimeFromReminder(timetoSelect);
+
 	}
 
 	@When("^enter note in the notes text box$")
 	public void enter_note_in_the_notes_text_box() {
 		rem.setReminderNote("Make Remindar!");
-		
+
 	}
 
-	
 	@When("^user clicks on the reminder save button$")
 	public void user_clicks_on_the_reminder_save_button() {
 		rem.submitReminder();
 	}
-
 
 	@When("^user navigate to home page$")
 	public void user_navigate_to_home_page() {
 		home.clicOnHome();
 		home.switchHeaderFrame();
 		home.changeVisibleDate();
-		
+
 	}
 
 	@Then("^verify the reminder created and user should see the reminder with default time (\\d+):(\\d+)$")
-	public void verify_the_reminder_created_and_user_should_see_the_reminder_with_default_time(int arg1, int arg2) throws FileNotFoundException, IOException, InterruptedException {
-		home.verifyReminderTimeInHome(reminderAccount,defaultTime);
+	public void verify_the_reminder_created_and_user_should_see_the_reminder_with_default_time(int arg1, int arg2)
+			throws FileNotFoundException, IOException, InterruptedException {
+		home.verifyReminderTimeInHome(reminderAccount, defaultTime);
 	}
-	
+
 	@Then("^verify the reminder created time and reminder time should be same as it was created for$")
-	public void verify_the_reminder_created_time_and_reminder_time_should_be_same_as_it_was_created_for() throws FileNotFoundException, IOException, InterruptedException {
-		home.verifyReminderTimeInHome(reminderAccount,setTimeInReminder);
+	public void verify_the_reminder_created_time_and_reminder_time_should_be_same_as_it_was_created_for()
+			throws FileNotFoundException, IOException, InterruptedException {
+		home.verifyReminderTimeInHome(reminderAccount, setTimeInReminder);
 	}
-	
+
 	@Given("^header should be in Caps$")
 	public void header_should_be_in_Caps() {
-	  home.verifyReminderHeaderCaps();
+		home.verifyReminderHeaderCaps();
+	}
+
+	@Then("^user click on Delete Icon and particular row should be deleted from the Reminder section$")
+	public void user_click_on_Delete_Icon_and_particular_row_should_be_deleted_from_the_Reminder_section()
+			throws FileNotFoundException, IOException, InterruptedException {
+		home.verifyDeleteReminderHome(reminderAccount, setTimeInReminder);
+	}
+
+	/*
+	 * verify_the_reminder_created_time_and_reminder_time_should_be_same_as_it_was_created_for
+	 * 
+	 */
+
+	@When("^user select tomorrow date$")
+	public void user_select_tomorrow_date() throws FileNotFoundException, IOException {
+		rem.fillTomorrowReminder();
+	}
+
+	@Then("^verify the tomorrow reminder color$")
+	public void verify_the_tomorrow_reminder_color() {
+		home.searchremByAccNUm(reminderAccount);
+		home.verifyTomRemCol();
+	}
+
+	/*
+	 * Home_Reminder_Verify background color for expired Reminder
+	 */
+	@Then("^verify the expired reminder color$")
+	public void verify_the_expired_reminder_color()
+			throws ClassNotFoundException, FileNotFoundException, SQLException, IOException {
+		R1ContactCommonMethods.runQuery("ExpiredReminder");
+		DatabaseConn.resultSet.next();
+		reminderAccount = DatabaseConn.resultSet.getString("remAccountNum");
+		if (reminderAccount == null) {
+			Assert.assertTrue("No Expired reminder is present for this user!", false);
+		}
+		home.searchremByAccNUm(reminderAccount);
+		home.verifyExpiredRem();
+
+	}
+
+	/*
+	 * Home_Verify Agent Information as per Role provided
+	 */
+	@When("^user verifies user profile information display below the Reminder panel$")
+	public void user_verifies_user_profile_information_display_below_the_Reminder_panel() {
+		home.verifyAgentHeader();
 	}
 
 
+	@Then("^user should be able to view all column names should populating with values$")
+	public void user_should_be_able_to_view_all_column_names_should_populating_with_values() throws ClassNotFoundException, FileNotFoundException, SQLException, IOException, ParseException {
+		home.verifyAgentInformation();
 
+	}
+	
 }
