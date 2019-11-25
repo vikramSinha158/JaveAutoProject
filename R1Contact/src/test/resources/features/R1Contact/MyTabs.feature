@@ -23,3 +23,11 @@ Then user should be able to view the account information page after clicking arr
 Scenario: Verify the Order of columns in records list
 And user clicks on the "My Requests" fouth tab
 Then user should be able to view the order of columns
+
+@419583
+Scenario: Verify the input value accept by the MM section in Date search
+When User clicks the "My Queue" first tab on tab page
+And When user clicks on the Status Date filter box
+And user enters values in "MM" section out of 01 to 12 range
+Then Then user should be able to view entered inputs out of 01 to 12 only
+

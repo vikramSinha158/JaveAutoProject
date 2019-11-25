@@ -3,9 +3,6 @@ package r1.steps.definitions;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import r1.commons.R1ContactCommonMethods;
@@ -19,6 +16,8 @@ public class MyTabsStepDef {
 	String myQueueAccount="";
 	MyQueuePage myQueue;
 	MyRequestsPage myMyrequest;
+	String date_label = "Status Date";
+	String mmSearchElment ="01";
 	
 	@When("^user should be able to view list of owned accounts$")
 	public void user_should_be_able_to_view_list_of_owned_accounts() throws ClassNotFoundException, FileNotFoundException, SQLException, IOException {
@@ -56,9 +55,19 @@ public class MyTabsStepDef {
 	public void user_should_be_able_to_view_the_order_of_columns() {
 		myMyrequest.verifyHeaderOrder();
 	}
-	
+	@When("^When user clicks on the Status Date filter box$")
+	public void when_user_clicks_on_the_Status_Date_filter_box() {
+		myQueue.clickStatusMonth();
+	}
 
-	   
 
+	@When("^user enters values in \"([^\"]*)\" section out of (\\d+) to (\\d+) range$")
+	public void user_enters_values_in_section_out_of_to_range(String search, int arg2, int arg3) throws FileNotFoundException, IOException {
+		myQueue.checkContainInMyQueue(search, date_label,mmSearchElment);
+	}
 
+	@Then("^Then user should be able to view entered inputs out of (\\d+) to (\\d+) only$")
+	public void then_user_should_be_able_to_view_entered_inputs_out_of_to_only(int arg1, int arg2) {
+	    
+	}
 }
