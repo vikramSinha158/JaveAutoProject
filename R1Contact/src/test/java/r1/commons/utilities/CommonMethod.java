@@ -316,8 +316,6 @@ public class CommonMethod extends BasePage {
 		for (int i = 0; i < elements.size(); i++) {
 
 			if (elements.get(i).isDisplayed()) {
-				// scrollInView(elements.get(i));
-				highLightSteps(elements.get(i));
 				itemDispay = true;
 			} else {
 				itemDispay = false;
