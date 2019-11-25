@@ -236,5 +236,43 @@ public class R1ContactCommonMethods extends BasePage {
 		WebDriverWait wait = new WebDriverWait(getDriver(), 65);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(waitElement)));
 	}
+	
+	//Checking element is hyperlink or not then clicking
+	public boolean clickOnCheckingHyperlink(String rowLocator, String colLocator, String accountName, String clickEvt)
+			throws FileNotFoundException, IOException {
+		boolean clckStatus=false;
+		int rowSize = findAll(By.xpath(rowLocator)).size();
+		int colSize = findAll(By.xpath(colLocator)).size();
+		for (int i = 1; i <= rowSize; i++) {
+			String rowlocator1 = rowLocator + "[" + i + "]";
+			for (int j = 1; j < colSize; j++) {
+				String colLocator1 = rowlocator1 + "/td[" + j + "]";
+				String accountNumber = element(By.xpath(colLocator1)).getText();
+				if (accountNumber.contentEquals(accountName)) {
+					//comMethod.scrollInView(element(By.xpath(colLocator1)));
+					
+					if(element(rowlocator1 + clickEvt).getAttribute("href").contains("Account"))
+					{
+						element(rowlocator1 + clickEvt).click();
+						clckStatus = true;
+						break;
+						
+					}
+					else {
+						Assert.assertTrue("Element does not contain yperlink ", element(rowlocator1 + clickEvt).getAttribute("href").contains("Account"));
+					}
+				
+
+				} else {
+					clckStatus = false;
+				}
+
+			}
+			if (clckStatus == true) {
+				break;
+			}
+		}
+		return clckStatus;
+	}
 
 }

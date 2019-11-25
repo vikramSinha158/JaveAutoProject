@@ -402,4 +402,20 @@ public class CommonMethod extends BasePage {
 		String nextMonthDate = formatter.format(date);
 		return nextMonthDate;
 	}
+
+	
+	
+	//Splite the string on th ebasis of pipeline
+	public List<String> dataAfterPipeSeperation(String input){
+		List<String> headerList=new ArrayList<String>();
+
+		String headerData= CommonMethod.readProperties(input);
+		String[] headerText = headerData.split("\\|");
+		for (String txt : headerText) {
+			headerList.add(txt);
+		}
+		 
+		 return headerList;
+	}
 }
+

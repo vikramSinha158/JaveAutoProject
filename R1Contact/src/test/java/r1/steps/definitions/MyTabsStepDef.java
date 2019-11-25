@@ -11,12 +11,14 @@ import cucumber.api.java.en.When;
 import r1.commons.R1ContactCommonMethods;
 import r1.commons.databaseconnection.DatabaseConn;
 import r1.pages.MyQueuePage;
+import r1.pages.MyRequestsPage;
 
 
 public class MyTabsStepDef {
 	
 	String myQueueAccount="";
 	MyQueuePage myQueue;
+	MyRequestsPage myMyrequest;
 	
 	@When("^user should be able to view list of owned accounts$")
 	public void user_should_be_able_to_view_list_of_owned_accounts() throws ClassNotFoundException, FileNotFoundException, SQLException, IOException {
@@ -43,6 +45,16 @@ public class MyTabsStepDef {
 	public void user_should_be_able_to_view_the_account_information_page_after_clicking_arroe_in_myqueuePage() {
 		myQueue.verifyAccountInfoPage(myQueueAccount);
 	    
+	}
+	
+	@Then("^user should be able to view an account number as a hyperlink and click on account Number$")
+	public void user_should_be_able_to_view_an_account_number_as_a_hyperlink_and_click_on_account_Number() throws FileNotFoundException, IOException {
+		myQueue.checkHyperLinkForAccount(myQueueAccount);
+	}
+	
+	@Then("^user should be able to view the order of columns$")
+	public void user_should_be_able_to_view_the_order_of_columns() {
+		myMyrequest.verifyHeaderOrder();
 	}
 	
 
