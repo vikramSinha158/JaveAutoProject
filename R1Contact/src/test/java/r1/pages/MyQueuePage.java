@@ -2,16 +2,13 @@ package r1.pages;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-
 import org.junit.Assert;
 import org.openqa.selenium.support.FindBy;
-
 import net.serenitybdd.core.pages.WebElementFacade;
 import r1.commons.BasePage;
 import r1.commons.R1ContactCommonMethods;
-import r1.commons.utilities.CommonMethod;
+
 
 public class MyQueuePage extends BasePage{
 	R1ContactCommonMethods r1ComMethod;
