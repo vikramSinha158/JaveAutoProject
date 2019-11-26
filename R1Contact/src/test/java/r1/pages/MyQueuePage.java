@@ -45,24 +45,41 @@ public class MyQueuePage extends BasePage{
 		statusMonth.clear();
 		statusMonth.sendKeys(month);
 	}
+	
+	//Check records in My Queue
+	public void checkQueuePresence() {
+		if(listOfMyQueue.size()==0) {
+			Assert.assertTrue("There is no queue present in My Queue to do further testing!!", false);
+		}
+	}
 		
 	//
 	
 	public void checkContainInMyQueue(String search, String headerName, String searchElement) throws FileNotFoundException, IOException {
-		if (search.equalsIgnoreCase(search)) {
+		// If date search is for MM
+		if (search.equalsIgnoreCase("MM")) {
 			statusMonth.sendKeys(searchElement);
+			String validMonth = searchElement.substring(0, 1);
+			// If searchElement is out of month range
+			if(statusMonth.getAttribute("value").equals(validMonth)) {
+				listOfMyQueueCount = listOfMyQueue.size();
+				searchEleRow = r1ComMethod.checkElementcontain(listOfQueue, homeReminderInfoCol, headerName,
+						validMonth);
+				}else {
 			listOfMyQueueCount = listOfMyQueue.size();
 			searchEleRow = r1ComMethod.checkElementcontain(listOfQueue, homeReminderInfoCol, headerName,
 					
 					searchElement);
+			}
 			statusMonth.clear();
-		} /*else if (headerName.equalsIgnoreCase("Date")) {
-			txtSearchDate.sendKeys(searchElement);
-			homeRiminderRowCount = checkCountofTablerRow();
-			searchEleRow = r1ComMethod.checkElementcontain(homeReminderInfoRow, homeReminderInfoCol, headerName,
+			// Else if date search is for DD
+		} else if (search.equalsIgnoreCase("DD")) {
+			statusDay.sendKeys(searchElement);
+			listOfMyQueueCount = listOfMyQueue.size();
+			searchEleRow = r1ComMethod.checkElementcontain(listOfQueue, homeReminderInfoCol, headerName,
 					searchElement);
-			txtSearchDate.clear();
-		} else if (headerName.equalsIgnoreCase("Time")) {
+			statusDay.clear();
+		} /* else if (headerName.equalsIgnoreCase("Time")) {
 			txtSearchTime.sendKeys(searchElement);
 			homeRiminderRowCount = checkCountofTablerRow();
 			searchEleRow = r1ComMethod.checkElementcontain(homeReminderInfoRow, homeReminderInfoCol, headerName,
@@ -88,7 +105,12 @@ public class MyQueuePage extends BasePage{
 			txtSearchBalance.clear();*
 		
 		}*/
-	Assert.assertEquals("Row for search element not match", listOfMyQueueCount, searchEleRow);
+		Assert.assertEquals("Row for search element not match", listOfMyQueueCount, searchEleRow);
+	}
+	
+	// Verifying outputs with desired outcomes
+	public void verifyOutput() {
+		
 	}
 
 }
