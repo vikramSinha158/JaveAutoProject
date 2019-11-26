@@ -251,9 +251,9 @@ public class R1ContactCommonMethods extends BasePage {
 				if (accountNumber.contentEquals(accountName)) {
 					//comMethod.scrollInView(element(By.xpath(colLocator1)));
 					
-					if(element(rowlocator1 + clickEvt).getAttribute("href").contains("Account"))
+					if(element(colLocator1 + clickEvt).getAttribute("href").contains("Account"))
 					{
-						element(rowlocator1 + clickEvt).click();
+						element(colLocator1 + clickEvt).click();
 						clckStatus = true;
 						break;
 						

@@ -52,17 +52,26 @@ public class MyQueuePage extends BasePage {
 	/* verify Owned Accounts */
 	public void verifyOwnedAccounts() throws SQLException, ClassNotFoundException, FileNotFoundException, IOException {
 
-		R1ContactCommonMethods.runQuery("MyQueueAccountList");
 		List<String> listOfMyQueueAcc = new ArrayList<String>();
+		List<String> listOfAccFromGui = new ArrayList<String>();
+		
+		R1ContactCommonMethods.runQuery("MyQueueAccountList");
+		
 
 		while (DatabaseConn.resultSet.next()) {
 			listOfMyQueueAcc.add(DatabaseConn.resultSet.getString("aqAccountNum"));
 		}
+        		
+		for (int i = 0; i < myQueueTblPage.size(); i++) {
+			clickOn(myQueueTblPage.get(i));
+			List<String> listOfAccPerPage = r1ComMethod.getColValue(myQuerytblRow, myQuerytblCol, accountHeader);
+			listOfAccFromGui.addAll(listOfAccPerPage);
+	
+		}
 
-		List<String> listOfAccFromGui = r1ComMethod.getColValue(myQuerytblRow, myQuerytblCol, accountHeader);
-
-		Collections.sort(listOfMyQueueAcc);
-		Collections.sort(listOfAccFromGui);
+		System.out.println(listOfAccFromGui.size());
+		System.out.println(listOfMyQueueAcc.size());
+	
 
 		Assert.assertTrue(
 				"Owned account does not match db account  " + listOfMyQueueAcc.size()
@@ -150,6 +159,18 @@ public class MyQueuePage extends BasePage {
 		 * }
 		 */
 		Assert.assertEquals("Row for search element not match", listOfMyQueueCount, searchEleRow);
+	}
+	
+	//press tab in date MM section 
+	public void pressTabInDateTxtField()
+	{
+		comm.pressTab(statusMonth);
+	}
+	
+	//verify tab press in date status section
+	public void verifyTabInDateStatus() {
+		
+		Assert.assertTrue("Tab press failed for date section ", comm.verifyTabPressInNextSection(statusDay));
 	}
 
 }

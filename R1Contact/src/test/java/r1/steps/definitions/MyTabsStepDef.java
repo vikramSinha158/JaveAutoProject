@@ -70,4 +70,15 @@ public class MyTabsStepDef {
 	public void then_user_should_be_able_to_view_entered_inputs_out_of_to_only(int arg1, int arg2) {
 	    
 	}
+	
+	@When("^user press tab button on the keyboard over the Status Date search option$")
+	public void user_press_tab_button_on_the_keyboard_over_the_Status_Date_search_option() {
+		myQueue.pressTabInDateTxtField();
+	}
+
+
+	@Then("^user should be able to view the move from one section to the next$")
+	public void user_should_be_able_to_view_the_move_from_one_section_to_the_next() {
+		myQueue.verifyTabInDateStatus();
+	}
 }

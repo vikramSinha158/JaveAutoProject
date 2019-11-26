@@ -18,6 +18,7 @@ import org.apache.pdfbox.text.PDFTextStripper;
 import org.junit.Assert;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchFrameException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -414,6 +415,26 @@ public class CommonMethod extends BasePage {
 		}
 		 
 		 return headerList;
+	}
+	
+	// press tab
+	public void pressTab(WebElementFacade textbox)
+	{
+		textbox.sendKeys("");
+		textbox.sendKeys(Keys.TAB);		
+	}
+	
+	//veriFy tab movement in next section
+	public boolean verifyTabPressInNextSection(WebElementFacade nextSection)
+	{
+		if(nextSection.equals(getDriver().switchTo().activeElement())){
+			
+			highLightSteps(nextSection);
+			return true;
+		}
+		
+		return false;
+			
 	}
 }
 
