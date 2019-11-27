@@ -54,7 +54,7 @@ When user double clicks on any of the column under owned account list except acc
 Then user should be able to view the account information page after double click
 
 @419579
-Scenario: Validate that double click on any column line should navigate to the Account page
+Scenario: Validate that Single clicking on any of the records line should not navigate to the search Account Information page except account number column
 When User clicks the "My Queue" first tab on tab page
 And user runs the query  to fetch facility "MyQueueFacility" Page
 When user clicks single time on any of the column under owned account list apart from account number
