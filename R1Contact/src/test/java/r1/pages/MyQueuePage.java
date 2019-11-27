@@ -1,6 +1,8 @@
 package r1.pages;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+
 import org.junit.Assert;
 import org.openqa.selenium.support.FindBy;
 import net.serenitybdd.core.pages.WebElementFacade;
@@ -55,6 +57,7 @@ public class MyQueuePage extends BasePage {
 		List<String> listOfMyQueueAcc = new ArrayList<String>();
 		List<String> listOfAccFromGui = new ArrayList<String>();
 		
+		
 		R1ContactCommonMethods.runQuery("MyQueueAccountList");
 		
 
@@ -62,16 +65,23 @@ public class MyQueuePage extends BasePage {
 			listOfMyQueueAcc.add(DatabaseConn.resultSet.getString("aqAccountNum"));
 		}
         		
-		for (int i = 0; i < myQueueTblPage.size(); i++) {
-			clickOn(myQueueTblPage.get(i));
-			List<String> listOfAccPerPage = r1ComMethod.getColValue(myQuerytblRow, myQuerytblCol, accountHeader);
-			listOfAccFromGui.addAll(listOfAccPerPage);
-	
+		try {
+			for (int i = 0; i < myQueueTblPage.size(); i++) {
+				clickOn(myQueueTblPage.get(i));
+				List<String> listOfAccPerPage = r1ComMethod.getColValue(myQuerytblRow, myQuerytblCol, accountHeader);
+				listOfAccFromGui.addAll(listOfAccPerPage);
+
+			}
+		} catch (NoSuchElementException e) {
+
+		}
+		if(listOfAccFromGui.size()<1)
+		{
+			Assert.assertTrue("No record Data found in MyQueue Table ", false);
 		}
 
-		System.out.println(listOfAccFromGui.size());
-		System.out.println(listOfMyQueueAcc.size());
-	
+	    Collections.sort(listOfAccFromGui);
+	    Collections.sort(listOfMyQueueAcc);
 
 		Assert.assertTrue(
 				"Owned account does not match db account  " + listOfMyQueueAcc.size()
@@ -170,7 +180,33 @@ public class MyQueuePage extends BasePage {
 	//verify tab press in date status section
 	public void verifyTabInDateStatus() {
 		
-		Assert.assertTrue("Tab press failed for date section ", comm.verifyTabPressInNextSection(statusDay));
+		Assert.assertTrue("Tab press failed for date section ", comm.verifyTabPressInNextSection(statusMonth,statusDay,"15"));
 	}
+	
+	//Double click on facility
+	public void DoubleclickOnFacilityMyQueueTbl(String dbFacility) throws FileNotFoundException, IOException {
+		r1ComMethod.DoubleclickOnMatchingColValue(myQuerytblRow, myQuerytblCol, dbFacility);
+		
+	}
+	
+	//Veryfying account inf page after double click on nay column other than account
+	public void verifyAccountInfoPageHeader()
+	{
+		Assert.assertTrue("Not landed on Account Info Page", accoundel.verifyAccountInfoSectionWithReturn());
+	}
+	
+	//Single click on facility
+	public void singleClickOnFacilityMyQueueTbl(String dbFacility) throws FileNotFoundException, IOException {
+		r1ComMethod.SingleClickOnMatchingColValue(myQuerytblRow, myQuerytblCol, dbFacility);
+		
+	}
+	
+	//Veryfying account inf page after double click on nay column other than account
+	public void verifyAccountInfoPageNotVisible()
+	{
+		Assert.assertFalse("Not landed on Account Info Page", accoundel.verifyAccountInfoSectionWithReturn());
+	}
+	
+	
 
 }

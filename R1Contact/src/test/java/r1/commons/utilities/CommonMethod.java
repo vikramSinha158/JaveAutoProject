@@ -21,6 +21,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchFrameException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -421,13 +422,19 @@ public class CommonMethod extends BasePage {
 	public void pressTab(WebElementFacade textbox)
 	{
 		textbox.sendKeys("");
-		textbox.sendKeys(Keys.TAB);		
+		textbox.sendKeys(Keys.TAB);	
+		
 	}
-	
+
 	//veriFy tab movement in next section
-	public boolean verifyTabPressInNextSection(WebElementFacade nextSection)
+	public boolean verifyTabPressInNextSection(WebElementFacade firstElement,WebElementFacade nextSection,String sendData)
 	{
-		if(nextSection.equals(getDriver().switchTo().activeElement())){
+	
+		firstElement.sendKeys("");
+		firstElement.sendKeys(Keys.TAB,sendData);
+		
+		
+		if(nextSection.getAttribute("value").equalsIgnoreCase(sendData)){
 			
 			highLightSteps(nextSection);
 			return true;

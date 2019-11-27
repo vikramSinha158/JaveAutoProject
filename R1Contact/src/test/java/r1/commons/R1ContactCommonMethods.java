@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import org.junit.Assert;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -26,7 +27,7 @@ public class R1ContactCommonMethods extends BasePage {
 	private String facilityFile = "Facilities";
 	CommonMethod comMethod;
 	/*
-	 * ................................... Get TABLE COLUMN VALUE
+	 * ................................... click On Arrow Matching Col Value(
 	 * .........................................
 	 */
 
@@ -255,18 +256,15 @@ public class R1ContactCommonMethods extends BasePage {
 					{
 						element(colLocator1 + clickEvt).click();
 						clckStatus = true;
-						break;
-						
+						break;						
 					}
 					else {
 						Assert.assertTrue("Element does not contain yperlink ", element(rowlocator1 + clickEvt).getAttribute("href").contains("Account"));
 					}
 				
-
 				} else {
 					clckStatus = false;
 				}
-
 			}
 			if (clckStatus == true) {
 				break;
@@ -274,5 +272,71 @@ public class R1ContactCommonMethods extends BasePage {
 		}
 		return clckStatus;
 	}
+	
+	/*
+	 * ................................... Double Click on matching column
+	 * .........................................
+	 */
+
+	public void DoubleclickOnMatchingColValue(String rowLocator, String colLocator, String matchingElement)
+			throws FileNotFoundException, IOException {
+		boolean doubleClickStaus=false;
+		int rowSize = findAll(By.xpath(rowLocator)).size();
+		int colSize = findAll(By.xpath(colLocator)).size();
+		for (int i = 1; i <= rowSize; i++) {
+			String rowlocator1 = rowLocator + "[" + i + "]";
+			for (int j = 1; j < colSize; j++) {
+				String colLocator1 = rowlocator1 + "/td[" + j + "]";
+				String colData = element(By.xpath(colLocator1)).getText();
+				if (colData.contentEquals(matchingElement)) {					
+					Actions actions = new Actions(getDriver());				
+					actions.doubleClick(element(colLocator1)).perform();
+					doubleClickStaus = true;
+					break;
+
+				} else {
+					doubleClickStaus = false;
+				}
+			}
+			if (doubleClickStaus == true) {
+				break;
+			}
+		}
+		
+		Assert.assertTrue("Element not found to click " + matchingElement, doubleClickStaus);
+	}
+
+	
+	/*
+	 * ................................... click On Arrow Matching Col Value
+	 * .........................................
+	 */
+			public void SingleClickOnMatchingColValue(String rowLocator, String colLocator, String ColData)
+					throws FileNotFoundException, IOException {
+				boolean singleClickStaus=false;
+				int rowSize = findAll(By.xpath(rowLocator)).size();
+				int colSize = findAll(By.xpath(colLocator)).size();
+				for (int i = 1; i <= rowSize; i++) {
+					String rowlocator1 = rowLocator + "[" + i + "]";
+					for (int j = 1; j < colSize; j++) {
+						String colLocator1 = rowlocator1 + "/td[" + j + "]";
+						String colValue = element(By.xpath(colLocator1)).getText();
+						if (colValue.contentEquals(ColData)) {
+							element(colLocator1).click();
+							singleClickStaus = true;
+							break;		
+						} else {
+							singleClickStaus = false;
+						}		
+					}
+					if (singleClickStaus == true) {
+						break;
+					}
+				}
+				
+				Assert.assertTrue("Element not found to click " + ColData, singleClickStaus);
+			}
+
 
 }
+

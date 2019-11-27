@@ -14,7 +14,7 @@ When user clicks on the account arrow button myQueue
 Then user should be able to view the account information page after clicking arroe in myqueuePage
 
 @419577
-Scenario: Verify the enter Arrow functionality
+Scenario: Validate the functionality of Agent Queue screen that account number should work as a clickable hyperlink
 When User clicks the "My Queue" first tab on tab page
 And user runs the query  to fetch "MyQueueAccount" Page 
 Then user should be able to view an account number as a hyperlink and click on account Number
@@ -35,8 +35,32 @@ Then Then user should be able to view entered inputs out of 01 to 12 only
 @419582
 Scenario: Verify the TAB option on the Status Date filter box 
 When User clicks the "My Queue" first tab on tab page
-When user press tab button on the keyboard over the Status Date search option
 Then user should be able to view the move from one section to the next
 
+@419605
+Scenario: Verify My Request tab
+And user clicks on the "My Requests" fouth tab
 
+@419598
+Scenario: Verify the TAB option on the Due Date filter box in Payement
+And user clicks the "My Payments" second tab
+Then user should be able to view the move from one section to the next in Payement
+
+@419578
+Scenario: Validate that double click on any column line should navigate to the Account page
+When User clicks the "My Queue" first tab on tab page
+And user runs the query  to fetch facility "MyQueueFacility" Page
+When user double clicks on any of the column under owned account list except account number link
+Then user should be able to view the account information page after double click
+
+@419579
+Scenario: Validate that double click on any column line should navigate to the Account page
+When User clicks the "My Queue" first tab on tab page
+And user runs the query  to fetch facility "MyQueueFacility" Page
+When user clicks single time on any of the column under owned account list apart from account number
+Then user should not be able to view the account information page
+
+@419606
+Scenario: Verify My Account History tab
+And user clicks on the "My Account History" fith tab
 
