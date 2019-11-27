@@ -64,9 +64,6 @@ Then user should not be able to view the account information page
 Scenario: Verify My Account History tab
 And user clicks on the "My Account History" fith tab
 
-And user enters values in "MM" section out of 01 to 12 range with <month> and user should be able to view entered inputs
-	|13|
-	|22| 
 
 @419584
  Scenario: Verify the input value accept by the DD section in Date search
