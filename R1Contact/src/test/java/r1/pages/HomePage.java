@@ -731,7 +731,7 @@ public class HomePage extends BasePage {
 		R1ContactCommonMethods.runQuery("AgentInfo");
 		DatabaseConn.resultSet.next();
 
-		for (@SuppressWarnings("unused") Map.Entry<String, String> entry : agentInformation.entrySet()) {
+		for (Map.Entry<String, String> entry : agentInformation.entrySet()) {
 
 			if (Header.equalsIgnoreCase("PRINT NAME")) {
 
