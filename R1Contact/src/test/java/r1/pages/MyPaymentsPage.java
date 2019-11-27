@@ -3,6 +3,7 @@ import java.util.List;
 import org.openqa.selenium.support.FindBy;
 import net.serenitybdd.core.pages.WebElementFacade;
 import r1.commons.BasePage;
+import r1.commons.utilities.CommonMethod;
 
 
 public class MyPaymentsPage extends BasePage {
