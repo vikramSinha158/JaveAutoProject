@@ -9,7 +9,6 @@ import java.util.NoSuchElementException;
 import org.junit.Assert;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 import net.serenitybdd.core.annotations.findby.By;
 import r1.commons.databaseconnection.DatabaseConn;
 import r1.commons.databaseconnection.QueryExecutor;
@@ -133,6 +132,7 @@ public class R1ContactCommonMethods extends BasePage {
 				Assert.assertTrue("sorting failed", flag);
 			}
 		}
+
 	}
 
 	/*

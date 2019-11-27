@@ -4,7 +4,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 import cucumber.api.DataTable;
-import java.io.IOException;
 import java.sql.SQLException;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -60,19 +59,12 @@ public class MyTabsStepDef {
 	}
 	@When("^When user clicks on the Status Date filter box$")
 	public void when_user_clicks_on_the_Status_Date_filter_box() {
-		myQueue.clickStatusMonth();
+		myQueue.clickDateStatus();
 	}
-
-
-/*	@When("^user enters values in \"([^\"]*)\" section out of (\\d+) to (\\d+) range$")
-	public void user_enters_values_in_section_out_of_to_range(String search, int arg2, int arg3) throws FileNotFoundException, IOException {
-<<<<<<< HEAD
-		queue.checkQueuePresence();
-		queue.checkContainInMyQueue(search, date_label,mmSearchElment);
-	}*/
 
 	@When("^user enters values in \"([^\"]*)\" section out of (\\d+) to (\\d+) range with (.*) and user should be able to view entered inputs$")
 	public void user_enters_values_in_section_out_of_to_range_with_and_user_should_be_able_to_view_entered_inputs(String search, int arg2, int arg3, String month, DataTable data) throws FileNotFoundException, IOException {
+		myQueue.checkQueuePresence();
 		List<List<String>> data1 =data.raw();
 		for(int i=0;i<data1.size();i++) {
 			myQueue.checkContainInMyQueue(search, date_label, data1.get(i).get(0));
@@ -89,12 +81,51 @@ public class MyTabsStepDef {
 		}
 	}
 
-
-	@Then("^user should be able to view entered inputs out of (\\d+) to (\\d+) range only$")
-	public void user_should_be_able_to_view_entered_inputs_out_of_to_range_only(int arg1, int arg2) {
-	    
+	@When("^user enters single digit into the \"([^\"]*)\" section and user should be able to view records filtered on the basis of entered digit$")
+	public void user_enters_single_digit_into_the_section_and_user_should_be_able_to_view_records_filtered_on_the_basis_of_entered_digit(String search, DataTable data) {
+		List<List<String>> rawData = data.raw();
+		for(int i=0;i<rawData.size();i++) {
+			try {
+				myQueue.checkContainInMyQueue(search, date_label, rawData.get(i).get(0));
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	@When("^user enters double digits into the \"([^\"]*)\" section and user should be able to view records filtered on the basis of entered digits$")
+	public void user_enters_double_digits_into_the_section_and_user_should_be_able_to_view_records_filtered_on_the_basis_of_entered_digits(String search, DataTable data) {
+		List<List<String>> data1 =data.raw();
+		for(int i=0;i<data1.size();i++) {
+			try {
+				myQueue.checkContainInMyQueue(search, date_label, data1.get(i).get(0));
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	@When("^user enters first digit in the \"([^\"]*)\" section and user should be able to view records filtered on the basis of the first digit\\.$")
+	public void user_enters_first_digit_in_the_section_and_user_should_be_able_to_view_records_filtered_on_the_basis_of_the_first_digit(String search, DataTable data) {
+		List<List<String>> data1 =data.raw();
+		for(int i=0;i<data1.size();i++) {
+			try {
+				myQueue.checkContainInMyQueue(search, date_label, data1.get(i).get(0));
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
-
+	@When("^user enters value in MM/DD/YYYY section and user should be able to view records in the descending order$")
+	public void user_enters_value_in_MM_DD_YYYY_section_and_user_should_be_able_to_view_records_in_the_descending_order() {
+	  myQueue.verifySearchDateOrder();
+	}
 }
 

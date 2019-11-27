@@ -11,18 +11,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.sql.SQLException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import org.junit.Assert;
 import net.serenitybdd.core.annotations.findby.By;
 import net.serenitybdd.core.annotations.findby.FindBy;
@@ -509,7 +498,7 @@ public class HomePage extends BasePage {
 			r1ComMethod.verifyDescSorting(homeReminderInfoRow, homeReminderInfoCol, colHeaderdsc);
 		} else {
 			chkDescStatus = false;
-			Assert.assertTrue("Element for Assending is not visible", chkDescStatus);
+			Assert.assertTrue("Element for Descending is not visible", chkDescStatus);
 		}
 	}
 

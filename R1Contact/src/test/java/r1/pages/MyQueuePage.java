@@ -18,6 +18,7 @@ public class MyQueuePage extends BasePage {
 	R1ContactCommonMethods r1ComMethod;
 	AccountPage account;
 	CommonMethod comm;
+	HomePage home;
 	AccountDetailsPage accoundel;
 	@FindBy(xpath = "//input[@name='StatusMonth']")
 	private WebElementFacade statusMonth;
@@ -33,18 +34,26 @@ public class MyQueuePage extends BasePage {
 
 	@FindBy(xpath = "//tr[@class='ng-scope']")
 	private List<WebElementFacade> listOfMyQueue;
+	
+	@FindBy(xpath="//th[@data-title-text='Status Date']")
+	private WebElementFacade statusDate;
 
 	@FindBy(xpath = "//table[@ng-table='tableParams']//thead//tr[@class='ng-table-sort-header']//th")
 	private List<WebElementFacade> homeReminderInfoColPath;
+	
+	@FindBy(xpath = "//table[@id='queueTable']//thead//tr[@class='ng-table-sort-header']//th")
+	private List<WebElementFacade> headerList;
 
 	int listOfMyQueueCount;
 	int searchEleRow;
 	String homeReminderInfoCol = "//table[@ng-table='tableParams']//thead//tr[@class='ng-table-sort-header']//th";
-	String listOfQueue = "//tr[@class='ng-scope']";
+	String listOfQueueString = "//tr[@class='ng-scope']";
 	String myQuerytblCol = "//table[@id='queueTable']//thead//tr[@class='ng-table-sort-header']//th";
 	String myQuerytblRow = "//table[@id='queueTable']/tbody/tr[@class='ng-scope']";
 	String myQueueArrowLink = "//a";
 	String accountHeader = "Account Number";
+	String statusDateHeader = "STATUS DATE";
+	String headerListString = "//table[@id='queueTable']//thead//tr[@class='ng-table-sort-header']//th";
 	@FindBy(xpath = "//div[@class='ng-table-pager ng-scope']/ul/li/a/span")
 	private List<WebElementFacade> myQueueTblPage;
 
@@ -100,6 +109,11 @@ public class MyQueuePage extends BasePage {
 	public void clickStatusMonth() {
 		statusMonth.click();
 	}
+	
+	// Click on Date Status
+	public void clickDateStatus() {
+		statusDate.click();
+	}
 
 	// send in status month filter
 	public void sendInStatusMonth(String month) {
@@ -117,11 +131,11 @@ public class MyQueuePage extends BasePage {
 			// If searchElement is out of month range
 			if(statusMonth.getAttribute("value").equals(validMonth)) {
 				listOfMyQueueCount = listOfMyQueue.size();
-				searchEleRow = r1ComMethod.checkElementcontain(listOfQueue, homeReminderInfoCol, headerName,
+				searchEleRow = r1ComMethod.checkElementcontain(listOfQueueString, homeReminderInfoCol, headerName,
 						validMonth);
 				}else {
 			listOfMyQueueCount = listOfMyQueue.size();
-			searchEleRow = r1ComMethod.checkElementcontain(listOfQueue, homeReminderInfoCol, headerName,
+			searchEleRow = r1ComMethod.checkElementcontain(listOfQueueString, homeReminderInfoCol, headerName,
 					
 					searchElement);
 			}
@@ -129,36 +143,27 @@ public class MyQueuePage extends BasePage {
 			// Else if date search is for DD
 		} else if (search.equalsIgnoreCase("DD")) {
 			statusDay.sendKeys(searchElement);
-			listOfMyQueueCount = listOfMyQueue.size();
-			searchEleRow = r1ComMethod.checkElementcontain(listOfQueue, homeReminderInfoCol, headerName,
-					searchElement);
+			String validDate = searchElement.substring(0, 1);
+			// If searchElement is out of month range
+			if(statusDay.getAttribute("value").equals(validDate)) {
+				listOfMyQueueCount = listOfMyQueue.size();
+				searchEleRow = r1ComMethod.checkElementcontain(listOfQueueString, homeReminderInfoCol, headerName,
+						validDate);
+				} else {
+					listOfMyQueueCount = listOfMyQueue.size();
+					searchEleRow = r1ComMethod.checkElementcontain(listOfQueueString, homeReminderInfoCol, headerName,
+							
+							searchElement);
+					}
 			statusDay.clear();
-		} /* else if (headerName.equalsIgnoreCase("Time")) {
-			txtSearchTime.sendKeys(searchElement);
-			homeRiminderRowCount = checkCountofTablerRow();
-			searchEleRow = r1ComMethod.checkElementcontain(homeReminderInfoRow, homeReminderInfoCol, headerName,
+			
+		}  else if (search.equalsIgnoreCase("YYYY")) {
+			statusYear.sendKeys(searchElement);
+			listOfMyQueueCount = listOfMyQueue.size();
+			searchEleRow = r1ComMethod.checkElementcontain(listOfQueueString, homeReminderInfoCol, headerName,
 					searchElement);
-			txtSearchTime.clear();
-		} else if (headerName.equalsIgnoreCase("Facility")) {
-			txtSearchFacility.sendKeys(searchElement);
-			homeRiminderRowCount = checkCountofTablerRow();
-			searchEleRow = r1ComMethod.checkElementcontain(homeReminderInfoRow, homeReminderInfoCol, headerName,
-					searchElement);
-			txtSearchFacility.clear();
-		} else if (headerName.equalsIgnoreCase("Notes")) {
-			txtSearchNote.sendKeys(searchElement);
-			homeRiminderRowCount = checkCountofTablerRow();
-			searchEleRow = r1ComMethod.checkElementcontain(homeReminderInfoRow, homeReminderInfoCol, headerName,
-					searchElement);
-			txtSearchNote.clear();
-		} else if (headerName.equalsIgnoreCase("Balance")) {
-			txtSearchBalance.sendKeys(searchElement);
-			homeRiminderRowCount = checkCountofTablerRow();
-			searchEleRow = r1ComMethod.checkElementcontain(homeReminderInfoRow, homeReminderInfoCol, headerName,
-					searchElement);
-			txtSearchBalance.clear();*
-		
-		}*/
+			statusYear.clear();
+		} 
 		Assert.assertEquals("Row for search element not match", listOfMyQueueCount, searchEleRow);
 	
 }
@@ -168,6 +173,11 @@ public class MyQueuePage extends BasePage {
 		if(listOfMyQueue.size()==0) {
 			Assert.assertTrue("There is no queue present in My Queue to do further testing!!", false);
 		}
+	}
+	
+	// Verify dates are in descending order not 
+	public void verifySearchDateOrder() {
+		r1ComMethod.verifyDescSorting(listOfQueueString, headerListString, statusDateHeader);
 	}
 }
 
