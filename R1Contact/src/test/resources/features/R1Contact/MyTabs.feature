@@ -1,4 +1,4 @@
-Feature: Home and Reminder Verfication
+Feature: My Tabs scenarios
 Background: user navigates to account home page
 Given user is on R1Contact home page
 When user click on My tabs link
@@ -64,3 +64,35 @@ Then user should not be able to view the account information page
 Scenario: Verify My Account History tab
 And user clicks on the "My Account History" fith tab
 
+And user enters values in "MM" section out of 01 to 12 range with <month> and user should be able to view entered inputs
+	|13|
+	|22| 
+
+@419584
+ Scenario: Verify the input value accept by the DD section in Date search
+When User clicks the "My Queue" first tab on tab page
+And When user clicks on the Status Date filter box
+And user enters value in "DD" section out of 01 to 31 range with <Day> and user should be able to view entered inputs 
+	|20|
+	|13|
+	|25|
+
+
+@419586
+Scenario: Verify single digit search in MM section
+When User clicks the "My Queue" first tab on tab page
+And When user clicks on the Status Date filter box
+And user enters values in "MM" section out of 01 to 12 range with <month> and user should be able to view entered inputs
+	|1|
+	|8|
+	|3|
+
+@419587
+Scenario: Verify two digits search in MM section
+When User clicks the "My Queue" first tab on tab page
+And When user clicks on the Status Date filter box
+And user enters values in "MM" section out of 01 to 12 range with <month> and user should be able to view entered inputs
+	|01|
+	|11|
+	|12| 
+	

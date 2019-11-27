@@ -1,5 +1,4 @@
 package r1.pages;
-
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -109,7 +108,6 @@ public class MyQueuePage extends BasePage {
 			clickOn(myQueueTblPage.get(i));
 
 			if (r1ComMethod.clickOnCheckingHyperlink(myQuerytblRow, myQuerytblCol, dbAcc, "//a") == true)
-				;
 			{
 				break;
 			}
@@ -130,44 +128,56 @@ public class MyQueuePage extends BasePage {
 
 	//
 
-	public void checkContainInMyQueue(String search, String headerName, String searchElement)
-			throws FileNotFoundException, IOException {
-		if (search.equalsIgnoreCase(search)) {
+	public void checkContainInMyQueue(String search, String headerName, String searchElement) throws FileNotFoundException, IOException {
+		// If date search is for MM
+		if (search.equalsIgnoreCase("MM")) {
 			statusMonth.sendKeys(searchElement);
+			String validMonth = searchElement.substring(0, 1);
+			// If searchElement is out of month range
+			if(statusMonth.getAttribute("value").equals(validMonth)) {
+				listOfMyQueueCount = listOfMyQueue.size();
+				searchEleRow = r1ComMethod.checkElementcontain(listOfQueue, homeReminderInfoCol, headerName,
+						validMonth);
+				}else {
 			listOfMyQueueCount = listOfMyQueue.size();
 			searchEleRow = r1ComMethod.checkElementcontain(listOfQueue, homeReminderInfoCol, headerName,
-
+					
 					searchElement);
+			}
 			statusMonth.clear();
-		} /*
-		 * else if (headerName.equalsIgnoreCase("Date")) {
-		 * txtSearchDate.sendKeys(searchElement); homeRiminderRowCount =
-		 * checkCountofTablerRow(); searchEleRow =
-		 * r1ComMethod.checkElementcontain(homeReminderInfoRow, homeReminderInfoCol,
-		 * headerName, searchElement); txtSearchDate.clear(); } else if
-		 * (headerName.equalsIgnoreCase("Time")) {
-		 * txtSearchTime.sendKeys(searchElement); homeRiminderRowCount =
-		 * checkCountofTablerRow(); searchEleRow =
-		 * r1ComMethod.checkElementcontain(homeReminderInfoRow, homeReminderInfoCol,
-		 * headerName, searchElement); txtSearchTime.clear(); } else if
-		 * (headerName.equalsIgnoreCase("Facility")) {
-		 * txtSearchFacility.sendKeys(searchElement); homeRiminderRowCount =
-		 * checkCountofTablerRow(); searchEleRow =
-		 * r1ComMethod.checkElementcontain(homeReminderInfoRow, homeReminderInfoCol,
-		 * headerName, searchElement); txtSearchFacility.clear(); } else if
-		 * (headerName.equalsIgnoreCase("Notes")) {
-		 * txtSearchNote.sendKeys(searchElement); homeRiminderRowCount =
-		 * checkCountofTablerRow(); searchEleRow =
-		 * r1ComMethod.checkElementcontain(homeReminderInfoRow, homeReminderInfoCol,
-		 * headerName, searchElement); txtSearchNote.clear(); } else if
-		 * (headerName.equalsIgnoreCase("Balance")) {
-		 * txtSearchBalance.sendKeys(searchElement); homeRiminderRowCount =
-		 * checkCountofTablerRow(); searchEleRow =
-		 * r1ComMethod.checkElementcontain(homeReminderInfoRow, homeReminderInfoCol,
-		 * headerName, searchElement); txtSearchBalance.clear();*
-		 * 
-		 * }
-		 */
+			// Else if date search is for DD
+		} else if (search.equalsIgnoreCase("DD")) {
+			statusDay.sendKeys(searchElement);
+			listOfMyQueueCount = listOfMyQueue.size();
+			searchEleRow = r1ComMethod.checkElementcontain(listOfQueue, homeReminderInfoCol, headerName,
+					searchElement);
+			statusDay.clear();
+		} /* else if (headerName.equalsIgnoreCase("Time")) {
+			txtSearchTime.sendKeys(searchElement);
+			homeRiminderRowCount = checkCountofTablerRow();
+			searchEleRow = r1ComMethod.checkElementcontain(homeReminderInfoRow, homeReminderInfoCol, headerName,
+					searchElement);
+			txtSearchTime.clear();
+		} else if (headerName.equalsIgnoreCase("Facility")) {
+			txtSearchFacility.sendKeys(searchElement);
+			homeRiminderRowCount = checkCountofTablerRow();
+			searchEleRow = r1ComMethod.checkElementcontain(homeReminderInfoRow, homeReminderInfoCol, headerName,
+					searchElement);
+			txtSearchFacility.clear();
+		} else if (headerName.equalsIgnoreCase("Notes")) {
+			txtSearchNote.sendKeys(searchElement);
+			homeRiminderRowCount = checkCountofTablerRow();
+			searchEleRow = r1ComMethod.checkElementcontain(homeReminderInfoRow, homeReminderInfoCol, headerName,
+					searchElement);
+			txtSearchNote.clear();
+		} else if (headerName.equalsIgnoreCase("Balance")) {
+			txtSearchBalance.sendKeys(searchElement);
+			homeRiminderRowCount = checkCountofTablerRow();
+			searchEleRow = r1ComMethod.checkElementcontain(homeReminderInfoRow, homeReminderInfoCol, headerName,
+					searchElement);
+			txtSearchBalance.clear();*
+		
+		}*/
 		Assert.assertEquals("Row for search element not match", listOfMyQueueCount, searchEleRow);
 	}
 	
@@ -207,6 +217,13 @@ public class MyQueuePage extends BasePage {
 		Assert.assertFalse("Not landed on Account Info Page", accoundel.verifyAccountInfoSectionWithReturn());
 	}
 	
-	
+
+	//Check records in My Queue
+	public void checkQueuePresence() {
+		if(listOfMyQueue.size()==0) {
+			Assert.assertTrue("There is no queue present in My Queue to do further testing!!", false);
+		}
+	}
 
 }
+

@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
+import java.util.NoSuchElementException;
+
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.encryption.InvalidPasswordException;
 import org.apache.pdfbox.text.PDFTextStripper;
@@ -292,5 +294,27 @@ public class AccountDetailsPage extends PageObject {
 		PDFTextStripper pdfContent = new PDFTextStripper();
 		pdfContent.getText(doc);
 
+	}
+	
+	/* verify account information section displayed or not with boolean  return */
+	public boolean verifyAccountInfoSectionWithReturn() {
+			
+		try {
+			if(accountInfoSection.size()<1)
+			{
+				return false;
+			}else {
+				for (int i = 0; i < accountInfoSection.size(); i++) {
+					accountInfoSection.get(i).isDisplayed();
+					comMethod.highLightSteps(accountInfoSection.get(i));
+				}
+				
+			}
+		} catch (NoSuchElementException e) {
+			return false;
+		}
+		
+		return true;
+	
 	}
 }
