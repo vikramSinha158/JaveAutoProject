@@ -1,5 +1,7 @@
 package r1.pages;
 import java.util.List;
+import java.util.NoSuchElementException;
+
 import org.junit.Assert;
 import org.openqa.selenium.support.FindBy;
 import net.serenitybdd.core.pages.WebElementFacade;
@@ -60,17 +62,34 @@ public class MyQueuePage extends BasePage {
 	/* verify Owned Accounts */
 	public void verifyOwnedAccounts() throws SQLException, ClassNotFoundException, FileNotFoundException, IOException {
 
-		R1ContactCommonMethods.runQuery("MyQueueAccountList");
 		List<String> listOfMyQueueAcc = new ArrayList<String>();
+		List<String> listOfAccFromGui = new ArrayList<String>();
+		
+		
+		R1ContactCommonMethods.runQuery("MyQueueAccountList");
+		
 
 		while (DatabaseConn.resultSet.next()) {
 			listOfMyQueueAcc.add(DatabaseConn.resultSet.getString("aqAccountNum"));
 		}
+        		
+		try {
+			for (int i = 0; i < myQueueTblPage.size(); i++) {
+				clickOn(myQueueTblPage.get(i));
+				List<String> listOfAccPerPage = r1ComMethod.getColValue(myQuerytblRow, myQuerytblCol, accountHeader);
+				listOfAccFromGui.addAll(listOfAccPerPage);
 
-		List<String> listOfAccFromGui = r1ComMethod.getColValue(myQuerytblRow, myQuerytblCol, accountHeader);
+			}
+		} catch (NoSuchElementException e) {
 
-		Collections.sort(listOfMyQueueAcc);
-		Collections.sort(listOfAccFromGui);
+		}
+		if(listOfAccFromGui.size()<1)
+		{
+			Assert.assertTrue("No record Data found in MyQueue Table ", false);
+		}
+
+	    Collections.sort(listOfAccFromGui);
+	    Collections.sort(listOfMyQueueAcc);
 
 		Assert.assertTrue(
 				"Owned account does not match db account  " + listOfMyQueueAcc.size()
@@ -165,8 +184,44 @@ public class MyQueuePage extends BasePage {
 			statusYear.clear();
 		} 
 		Assert.assertEquals("Row for search element not match", listOfMyQueueCount, searchEleRow);
+	}
 	
-}
+	//press tab in date MM section 
+	public void pressTabInDateTxtField()
+	{
+		comm.pressTab(statusMonth);
+	}
+	
+	//verify tab press in date status section
+	public void verifyTabInDateStatus() {
+		
+		Assert.assertTrue("Tab press failed for date section ", comm.verifyTabPressInNextSection(statusMonth,statusDay,"15"));
+	}
+	
+	//Double click on facility
+	public void DoubleclickOnFacilityMyQueueTbl(String dbFacility) throws FileNotFoundException, IOException {
+		r1ComMethod.DoubleclickOnMatchingColValue(myQuerytblRow, myQuerytblCol, dbFacility);
+		
+	}
+	
+	//Veryfying account inf page after double click on nay column other than account
+	public void verifyAccountInfoPageHeader()
+	{
+		Assert.assertTrue("Not landed on Account Info Page", accoundel.verifyAccountInfoSectionWithReturn());
+	}
+	
+	//Single click on facility
+	public void singleClickOnFacilityMyQueueTbl(String dbFacility) throws FileNotFoundException, IOException {
+		r1ComMethod.SingleClickOnMatchingColValue(myQuerytblRow, myQuerytblCol, dbFacility);
+		
+	}
+	
+	//Veryfying account inf page after double click on nay column other than account
+	public void verifyAccountInfoPageNotVisible()
+	{
+		Assert.assertFalse("Not landed on Account Info Page", accoundel.verifyAccountInfoSectionWithReturn());
+	}
+	
 
 	//Check records in My Queue
 	public void checkQueuePresence() {
@@ -179,5 +234,6 @@ public class MyQueuePage extends BasePage {
 	public void verifySearchDateOrder() {
 		r1ComMethod.verifyDescSorting(listOfQueueString, headerListString, statusDateHeader);
 	}
+
 }
 

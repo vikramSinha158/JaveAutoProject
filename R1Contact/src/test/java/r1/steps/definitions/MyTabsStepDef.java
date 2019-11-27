@@ -9,6 +9,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import r1.commons.R1ContactCommonMethods;
 import r1.commons.databaseconnection.DatabaseConn;
+import r1.pages.MyPaymentsPage;
 import r1.pages.MyQueuePage;
 import r1.pages.MyRequestsPage;
 
@@ -19,7 +20,9 @@ public class MyTabsStepDef {
 	MyQueuePage myQueue;
 	MyRequestsPage myMyrequest;
 	String date_label = "Status Date";
-	
+	String mmSearchElment ="01";
+	MyPaymentsPage myPayment;
+	String myQueueFacility="";
 	
 	@When("^user should be able to view list of owned accounts$")
 	public void user_should_be_able_to_view_list_of_owned_accounts() throws ClassNotFoundException, FileNotFoundException, SQLException, IOException {
@@ -81,6 +84,7 @@ public class MyTabsStepDef {
 		}
 	}
 
+
 	@When("^user enters single digit into the \"([^\"]*)\" section and user should be able to view records filtered on the basis of entered digit$")
 	public void user_enters_single_digit_into_the_section_and_user_should_be_able_to_view_records_filtered_on_the_basis_of_entered_digit(String search, DataTable data) {
 		List<List<String>> rawData = data.raw();
@@ -127,5 +131,55 @@ public class MyTabsStepDef {
 	public void user_enters_value_in_MM_DD_YYYY_section_and_user_should_be_able_to_view_records_in_the_descending_order() {
 	  myQueue.verifySearchDateOrder();
 	}
-}
 
+	@Then("^user should be able to view entered inputs out of (\\d+) to (\\d+) range only$")
+	public void user_should_be_able_to_view_entered_inputs_out_of_to_range_only(int arg1, int arg2) {
+	    
+	}
+	
+	@When("^user press tab button on the keyboard over the Status Date search option$")
+	public void user_press_tab_button_on_the_keyboard_over_the_Status_Date_search_option() {
+		myQueue.pressTabInDateTxtField();
+	}
+
+
+	@Then("^user should be able to view the move from one section to the next$")
+	public void user_should_be_able_to_view_the_move_from_one_section_to_the_next() {
+		myQueue.verifyTabInDateStatus();
+	}
+	
+
+	@Then("^user should be able to view the move from one section to the next in Payement$")
+	public void user_should_be_able_to_view_the_move_from_one_section_to_the_next_in_Payement() {
+		myPayment.veryfyTabInDuedate();
+	    
+	}
+	
+	@When("^user runs the query  to fetch facility \"([^\"]*)\" Page$")
+	public void user_runs_the_query_to_fetch_facility_Page(String queryKey) throws ClassNotFoundException, FileNotFoundException, SQLException, IOException {
+		R1ContactCommonMethods.runQuery(queryKey);
+		DatabaseConn.resultSet.next();
+		myQueueFacility=DatabaseConn.resultSet.getString("aqFacility");
+	}
+	
+	@When("^user double clicks on any of the column under owned account list except account number link$")
+	public void user_double_clicks_on_any_of_the_column_under_owned_account_list_except_account_number_link() throws FileNotFoundException, IOException {
+		myQueue.DoubleclickOnFacilityMyQueueTbl(myQueueFacility);
+	}
+	
+	@Then("^user should be able to view the account information page after double click$")
+	public void user_should_be_able_to_view_the_account_information_page_after_double_click() {
+	   myQueue.verifyAccountInfoPageHeader();
+	}
+	
+	@When("^user clicks single time on any of the column under owned account list apart from account number$")
+	public void user_clicks_single_time_on_any_of_the_column_under_owned_account_list_apart_from_account_number() throws FileNotFoundException, IOException {
+		myQueue.singleClickOnFacilityMyQueueTbl(myQueueFacility);
+	}
+
+	@Then("^user should not be able to view the account information page$")
+	public void user_should_not_be_able_to_view_the_account_information_page() {
+		myQueue.verifyAccountInfoPageNotVisible();
+	}
+	
+}

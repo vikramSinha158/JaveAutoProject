@@ -24,20 +24,15 @@ public class MyRequestsPage extends BasePage {
 		
 		List<String> headerList=new ArrayList<String>();
 		
-	   for(int i=1;i<myRequestTblheaderName.size();i++) {
+	   for(int i=0;i<myRequestTblheaderName.size();i++) {
 		   String x= myRequestTblheaderName.get(i).getText();
-		   System.out.println(x);
-		   //if(myRequestTblheaderName.get(i).getText()!=null)
-		   //{
+		   if(!(myRequestTblheaderName.get(i).getText().equals(" ")))
+		   {
 			   headerList.add(myRequestTblheaderName.get(i).getText());
-		   //}
+		   }
 	   }
 	   
-	   System.out.println(headerList.size());
-	   
-	   System.out.println(headerList);
 	   List<String> guiHeaderList=com.dataAfterPipeSeperation("myQueueHeader");
-	   System.out.println(guiHeaderList);
 	   Assert.assertTrue("expected valuse does not match with actaul value", headerList.equals(guiHeaderList));
 		
 		
