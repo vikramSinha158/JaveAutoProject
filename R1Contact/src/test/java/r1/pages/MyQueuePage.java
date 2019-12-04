@@ -1,4 +1,5 @@
 package r1.pages;
+
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -36,13 +37,13 @@ public class MyQueuePage extends BasePage {
 
 	@FindBy(xpath = "//tr[@class='ng-scope']")
 	private List<WebElementFacade> listOfMyQueue;
-	
-	@FindBy(xpath="//th[@data-title-text='Status Date']")
+
+	@FindBy(xpath = "//th[@data-title-text='Status Date']")
 	private WebElementFacade statusDate;
 
 	@FindBy(xpath = "//table[@ng-table='tableParams']//thead//tr[@class='ng-table-sort-header']//th")
 	private List<WebElementFacade> homeReminderInfoColPath;
-	
+
 	@FindBy(xpath = "//table[@id='queueTable']//thead//tr[@class='ng-table-sort-header']//th")
 	private List<WebElementFacade> headerList;
 
@@ -64,15 +65,13 @@ public class MyQueuePage extends BasePage {
 
 		List<String> listOfMyQueueAcc = new ArrayList<String>();
 		List<String> listOfAccFromGui = new ArrayList<String>();
-		
-		
+
 		R1ContactCommonMethods.runQuery("MyQueueAccountList");
-		
 
 		while (DatabaseConn.resultSet.next()) {
 			listOfMyQueueAcc.add(DatabaseConn.resultSet.getString("aqAccountNum"));
 		}
-        		
+
 		try {
 			for (int i = 0; i < myQueueTblPage.size(); i++) {
 				clickOn(myQueueTblPage.get(i));
@@ -83,17 +82,16 @@ public class MyQueuePage extends BasePage {
 		} catch (NoSuchElementException e) {
 
 		}
-		if(listOfAccFromGui.size()<1)
-		{
+		if (listOfAccFromGui.size() < 1) {
 			Assert.assertTrue("No record Data found in MyQueue Table ", false);
 		}
 
-	    Collections.sort(listOfAccFromGui);
-	    Collections.sort(listOfMyQueueAcc);
+		Collections.sort(listOfAccFromGui);
+		Collections.sort(listOfMyQueueAcc);
 
 		Assert.assertTrue(
 				"Owned account does not match db account  " + listOfMyQueueAcc.size()
-				+ " with the view account on table,GUI account " + listOfAccFromGui.size(),
+						+ " with the view account on table,GUI account " + listOfAccFromGui.size(),
 				listOfAccFromGui.equals(listOfMyQueueAcc));
 
 	}
@@ -116,8 +114,7 @@ public class MyQueuePage extends BasePage {
 		for (int i = 0; i < myQueueTblPage.size(); i++) {
 			clickOn(myQueueTblPage.get(i));
 
-			if (r1ComMethod.clickOnCheckingHyperlink(myQuerytblRow, myQuerytblCol, dbAcc, "//a") == true)
-			{
+			if (r1ComMethod.clickOnCheckingHyperlink(myQuerytblRow, myQuerytblCol, dbAcc, "//a") == true) {
 				break;
 			}
 
@@ -128,7 +125,7 @@ public class MyQueuePage extends BasePage {
 	public void clickStatusMonth() {
 		statusMonth.click();
 	}
-	
+
 	// Click on Date Status
 	public void clickDateStatus() {
 		statusDate.click();
@@ -142,21 +139,22 @@ public class MyQueuePage extends BasePage {
 
 	//
 
-	public void checkContainInMyQueue(String search, String headerName, String searchElement) throws FileNotFoundException, IOException {
+	public void checkContainInMyQueue(String search, String headerName, String searchElement)
+			throws FileNotFoundException, IOException {
 		// If date search is for MM
 		if (search.equalsIgnoreCase("MM")) {
 			statusMonth.sendKeys(searchElement);
 			String validMonth = searchElement.substring(0, 1);
 			// If searchElement is out of month range
-			if(statusMonth.getAttribute("value").equals(validMonth)) {
+			if (statusMonth.getAttribute("value").equals(validMonth)) {
 				listOfMyQueueCount = listOfMyQueue.size();
 				searchEleRow = r1ComMethod.checkElementcontain(listOfQueueString, homeReminderInfoCol, headerName,
 						validMonth);
-				}else {
-			listOfMyQueueCount = listOfMyQueue.size();
-			searchEleRow = r1ComMethod.checkElementcontain(listOfQueueString, homeReminderInfoCol, headerName,
-					
-					searchElement);
+			} else {
+				listOfMyQueueCount = listOfMyQueue.size();
+				searchEleRow = r1ComMethod.checkElementcontain(listOfQueueString, homeReminderInfoCol, headerName,
+
+						searchElement);
 			}
 			statusMonth.clear();
 			// Else if date search is for DD
@@ -164,79 +162,77 @@ public class MyQueuePage extends BasePage {
 			statusDay.sendKeys(searchElement);
 			String validDate = searchElement.substring(0, 1);
 			// If searchElement is out of month range
-			if(statusDay.getAttribute("value").equals(validDate)) {
+			if (statusDay.getAttribute("value").equals(validDate)) {
 				listOfMyQueueCount = listOfMyQueue.size();
 				searchEleRow = r1ComMethod.checkElementcontain(listOfQueueString, homeReminderInfoCol, headerName,
 						validDate);
-				} else {
-					listOfMyQueueCount = listOfMyQueue.size();
-					searchEleRow = r1ComMethod.checkElementcontain(listOfQueueString, homeReminderInfoCol, headerName,
-							
-							searchElement);
-					}
+			} else {
+				listOfMyQueueCount = listOfMyQueue.size();
+				searchEleRow = r1ComMethod.checkElementcontain(listOfQueueString, homeReminderInfoCol, headerName,
+
+						searchElement);
+			}
 			statusDay.clear();
-			
-		}  else if (search.equalsIgnoreCase("YYYY")) {
+
+		} else if (search.equalsIgnoreCase("YYYY")) {
 			statusYear.sendKeys(searchElement);
 			listOfMyQueueCount = listOfMyQueue.size();
 			searchEleRow = r1ComMethod.checkElementcontain(listOfQueueString, homeReminderInfoCol, headerName,
 					searchElement);
 			statusYear.clear();
-		} 
+		}
 		Assert.assertEquals("Row for search element not match", listOfMyQueueCount, searchEleRow);
 	}
-	
-	//press tab in date MM section 
-	public void pressTabInDateTxtField()
-	{
+
+	// press tab in date MM section
+	public void pressTabInDateTxtField() {
 		comm.pressTab(statusMonth);
 	}
-	
-	//verify tab press in date status section
+
+	// verify tab press in date status section
 	public void verifyTabInDateStatus() {
-		
-		Assert.assertTrue("Tab press failed for date section ", comm.verifyTabPressInNextSection(statusMonth,statusDay,"15"));
+
+		Assert.assertTrue("Tab press failed for date section ",
+				comm.verifyTabPressInNextSection(statusMonth, statusDay, "15"));
 	}
-	
-	//Double click on facility
+
+	// Double click on facility
 	public void DoubleclickOnFacilityMyQueueTbl(String dbFacility) throws FileNotFoundException, IOException {
 		r1ComMethod.DoubleclickOnMatchingColValue(myQuerytblRow, myQuerytblCol, dbFacility);
-		
+
 	}
-	
-	//Veryfying account inf page after double click on nay column other than account
-	public void verifyAccountInfoPageHeader()
-	{
+
+	// Veryfying account inf page after double click on nay column other than
+	// account
+	public void verifyAccountInfoPageHeader() {
 		Assert.assertTrue("Not landed on Account Info Page", accoundel.verifyAccountInfoSectionWithReturn());
 	}
-	
-	//Single click on facility
+
+	// Single click on facility
 	public void singleClickOnFacilityMyQueueTbl(String dbFacility) throws FileNotFoundException, IOException {
 		r1ComMethod.SingleClickOnMatchingColValue(myQuerytblRow, myQuerytblCol, dbFacility);
-		
+
 	}
-	
-	//Veryfying account inf page after double click on nay column other than account
-	public void verifyAccountInfoPageNotVisible()
-	{
+
+	// Veryfying account inf page after double click on nay column other than
+	// account
+	public void verifyAccountInfoPageNotVisible() {
 		Assert.assertFalse("Not landed on Account Info Page", accoundel.verifyAccountInfoSectionWithReturn());
 	}
-	
 
-	//Check records in My Queue
+	// Check records in My Queue
 	public void checkQueuePresence() {
-		if(listOfMyQueue.size()==0) {
+		if (listOfMyQueue.size() == 0) {
 			Assert.assertTrue("There is no queue present in My Queue to do further testing!!", false);
 		}
 	}
-	
-	// Verify dates are in descending order not 
+
+	// Verify dates are in descending order not
 	public void verifySearchDateOrder() {
 		r1ComMethod.verifyDescSorting(listOfQueueString, headerListString, statusDateHeader);
 	}
 
-	public void sendInStatusDate( ) {
+	public void sendInStatusDate() {
 		statusYear.sendKeys("2019");
 	}
 }
-
