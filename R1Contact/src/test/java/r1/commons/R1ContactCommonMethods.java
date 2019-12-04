@@ -11,6 +11,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import net.serenitybdd.core.annotations.findby.By;
+import net.serenitybdd.core.pages.WebElementFacade;
 import r1.commons.databaseconnection.DatabaseConn;
 import r1.commons.databaseconnection.QueryExecutor;
 import r1.commons.utilities.CommonMethod;
@@ -83,9 +84,11 @@ public class R1ContactCommonMethods extends BasePage {
 		for (int col = 1; col <= colSize; col++) {
 			String colLocator1 = colLocator + "[" + col + "]";
 			try {
+		
 				if (element(By.xpath(colLocator1)).getText().equalsIgnoreCase(colName)) {
 					for (int row = 1; row <= rowSize; row++) {
 						String rowLocator2 = rowLocator + "[" + row + "]/td[" + col + "]";
+						comMethod.highLightSteps(element(By.xpath(rowLocator2)));
 						colValues.add(element(By.xpath(rowLocator2)).getText());
 					}
 					break;
@@ -249,9 +252,7 @@ public class R1ContactCommonMethods extends BasePage {
 			for (int j = 1; j < colSize; j++) {
 				String colLocator1 = rowlocator1 + "/td[" + j + "]";
 				String accountNumber = element(By.xpath(colLocator1)).getText();
-				if (accountNumber.contentEquals(accountName)) {
-					//comMethod.scrollInView(element(By.xpath(colLocator1)));
-					
+				if (accountNumber.contentEquals(accountName)) {		
 					if(element(colLocator1 + clickEvt).getAttribute("href").contains("Account"))
 					{
 						element(colLocator1 + clickEvt).click();
@@ -337,6 +338,43 @@ public class R1ContactCommonMethods extends BasePage {
 				Assert.assertTrue("Element not found to click " + ColData, singleClickStaus);
 			}
 
-
+			//tr[@ng-repeat="row in $data"]/td[2]
+			public ArrayList<String> getColValue( List<WebElementFacade>colHeader,String rowscol,String columnName) {
+				List<String> valueList = new ArrayList<String> ();
+				System.out.println(colHeader);
+				for(int i=0;i<colHeader.size();i++) {
+					String colheader = colHeader.get(i).getText();
+					try {
+						if(colheader.equals(columnName)) {
+						String Collector = rowscol +"[" + i +"]";
+						List<WebElementFacade> findAll = findAll (By.xpath(Collector));
+						for(WebElementFacade fc : findAll ) {
+							valueList.add(fc.getText());
+						}
+					}
+				
+				} catch (NoSuchElementException e) {
+					break;
+				}
+			}
+				return colValues;
 }
-
+ 
+			// 	check element contain when tr td has angular attributes
+			public int checkElementcontain( String rowscol, List<WebElementFacade> colHeader,String columnName,
+					String searchElement) {
+				int searchEleCount = 0;
+				ArrayList<String> homeTablecolData = getColValue(colHeader, rowscol, columnName);
+				try {
+					for (int i = 0; i < homeTablecolData.size(); i++) {
+						if (homeTablecolData.get(i).contains(searchElement)) {
+							searchEleCount++;
+						}
+					}
+				} catch (NoSuchElementException e) {
+					e.printStackTrace();
+				}
+				return searchEleCount;
+			}		
+			
+}

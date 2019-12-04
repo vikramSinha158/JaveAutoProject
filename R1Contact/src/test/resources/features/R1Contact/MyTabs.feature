@@ -130,5 +130,13 @@ And user enters first digit in the "YYYY" section and user should be able to vie
 Scenario: Verify the records display order
 When User clicks the "My Queue" first tab on tab page
 And When user clicks on the Status Date filter box
-And user enters value in MM/DD/YYYY section and user should be able to view records in the descending order
+And user enters value in section and user should be able to view records in the descending order
+
+@419596
+Scenario: Verify the filter box on the My payments
+When User clicks on the "My Payments" tab on tap page
+Then user should be able to view columns with headers
+Then user should be able to view list of payment records
+When user enters value as inputs to the columns of My Payments page and should be able to view records filtered on the basis of values entered
+
 

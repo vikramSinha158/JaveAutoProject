@@ -235,5 +235,8 @@ public class MyQueuePage extends BasePage {
 		r1ComMethod.verifyDescSorting(listOfQueueString, headerListString, statusDateHeader);
 	}
 
+	public void sendInStatusDate( ) {
+		statusYear.sendKeys("2019");
+	}
 }
 
