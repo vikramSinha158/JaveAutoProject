@@ -112,10 +112,16 @@ public class AccountDetailsPage extends PageObject {
 	/* verify account information section displayed or not */
 	public void verifyAccountInfoSection() {
 		int size = accountInfoSection.size();
+		if(size>1) {
 		for (int i = 0; i < size; i++) {
-			accountInfoSection.get(i).isDisplayed();
-
+			//accountInfoSection.get(i).isDisplayed();
+			CommonMethod.isDisplayedMethod(accountInfoSection.get(i));
+		   }
+		}else {
+			
+			Assert.assertTrue("Header not found in patient page ", false);
 		}
+		
 	}
 
 	/*-------HOME--  Click on patient detail tabs  ------*/

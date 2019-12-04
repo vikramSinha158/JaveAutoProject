@@ -88,7 +88,7 @@ public class R1ContactCommonMethods extends BasePage {
 				if (element(By.xpath(colLocator1)).getText().equalsIgnoreCase(colName)) {
 					for (int row = 1; row <= rowSize; row++) {
 						String rowLocator2 = rowLocator + "[" + row + "]/td[" + col + "]";
-						comMethod.highLightSteps(element(By.xpath(rowLocator2)));
+						//comMethod.highLightSteps(element(By.xpath(rowLocator2)));
 						colValues.add(element(By.xpath(rowLocator2)).getText());
 					}
 					break;

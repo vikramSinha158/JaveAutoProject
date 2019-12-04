@@ -1,7 +1,6 @@
 package r1.pages;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import org.junit.Assert;
 import org.openqa.selenium.support.FindBy;
@@ -15,6 +14,8 @@ import r1.commons.R1ContactCommonMethods;
 import r1.commons.databaseconnection.DatabaseConn;
 import r1.commons.utilities.CommonMethod;
 import java.util.Collections;
+import org.junit.Assert;
+import net.serenitybdd.core.annotations.findby.By;
 
 public class MyQueuePage extends BasePage {
 
@@ -72,16 +73,19 @@ public class MyQueuePage extends BasePage {
 			listOfMyQueueAcc.add(DatabaseConn.resultSet.getString("aqAccountNum"));
 		}
 
-		try {
+		if(myQueueTblPage.size()>0) {
 			for (int i = 0; i < myQueueTblPage.size(); i++) {
 				clickOn(myQueueTblPage.get(i));
 				List<String> listOfAccPerPage = r1ComMethod.getColValue(myQuerytblRow, myQuerytblCol, accountHeader);
 				listOfAccFromGui.addAll(listOfAccPerPage);
 
 			}
-		} catch (NoSuchElementException e) {
+		}else {
+			List<String> listOfAccPerPage = r1ComMethod.getColValue(myQuerytblRow, myQuerytblCol, accountHeader);
+			listOfAccFromGui.addAll(listOfAccPerPage);
 
 		}
+
 		if (listOfAccFromGui.size() < 1) {
 			Assert.assertTrue("No record Data found in MyQueue Table ", false);
 		}
@@ -110,7 +114,13 @@ public class MyQueuePage extends BasePage {
 	}
 
 	public void checkHyperLinkForAccount(String dbAcc) throws FileNotFoundException, IOException {
+		
+		if(findAll(By.xpath(myQuerytblRow)).size()<1)
+		{
+			Assert.assertTrue("No record Data found in MyQueue Table ", false);
+		}
 
+		if(myQueueTblPage.size()>0) {
 		for (int i = 0; i < myQueueTblPage.size(); i++) {
 			clickOn(myQueueTblPage.get(i));
 
@@ -119,6 +129,9 @@ public class MyQueuePage extends BasePage {
 			}
 
 		}
+	  }else {
+		  r1ComMethod.clickOnCheckingHyperlink(myQuerytblRow, myQuerytblCol, dbAcc, "//a");
+	  }
 	}
 
 	// Click status month filter
