@@ -7,10 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import org.junit.Assert;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 import net.serenitybdd.core.annotations.findby.By;
+import net.serenitybdd.core.pages.WebElementFacade;
 import r1.commons.databaseconnection.DatabaseConn;
 import r1.commons.databaseconnection.QueryExecutor;
 import r1.commons.utilities.CommonMethod;
@@ -26,7 +27,7 @@ public class R1ContactCommonMethods extends BasePage {
 	private String facilityFile = "Facilities";
 	CommonMethod comMethod;
 	/*
-	 * ................................... Get TABLE COLUMN VALUE
+	 * ................................... click On Arrow Matching Col Value(
 	 * .........................................
 	 */
 
@@ -83,9 +84,11 @@ public class R1ContactCommonMethods extends BasePage {
 		for (int col = 1; col <= colSize; col++) {
 			String colLocator1 = colLocator + "[" + col + "]";
 			try {
+
 				if (element(By.xpath(colLocator1)).getText().equalsIgnoreCase(colName)) {
 					for (int row = 1; row <= rowSize; row++) {
 						String rowLocator2 = rowLocator + "[" + row + "]/td[" + col + "]";
+						//comMethod.highLightSteps(element(By.xpath(rowLocator2)));
 						colValues.add(element(By.xpath(rowLocator2)).getText());
 					}
 					break;
@@ -133,6 +136,7 @@ public class R1ContactCommonMethods extends BasePage {
 				Assert.assertTrue("sorting failed", flag);
 			}
 		}
+
 	}
 
 	/*
@@ -235,6 +239,122 @@ public class R1ContactCommonMethods extends BasePage {
 	public void waitForControl(String waitElement) {
 		WebDriverWait wait = new WebDriverWait(getDriver(), 65);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(waitElement)));
+	}
+
+	// Checking element is hyperlink or not then clicking
+	public boolean clickOnCheckingHyperlink(String rowLocator, String colLocator, String accountName, String clickEvt)
+			throws FileNotFoundException, IOException {
+		boolean clckStatus = false;
+		int rowSize = findAll(By.xpath(rowLocator)).size();
+		int colSize = findAll(By.xpath(colLocator)).size();
+		for (int i = 1; i <= rowSize; i++) {
+			String rowlocator1 = rowLocator + "[" + i + "]";
+			for (int j = 1; j < colSize; j++) {
+				String colLocator1 = rowlocator1 + "/td[" + j + "]";
+				String accountNumber = element(By.xpath(colLocator1)).getText();
+				if (accountNumber.contentEquals(accountName)) {
+					if (element(colLocator1 + clickEvt).getAttribute("href").contains("Account")) {
+						element(colLocator1 + clickEvt).click();
+						clckStatus = true;
+						break;
+					} else {
+						Assert.assertTrue("Element does not contain yperlink ",
+								element(rowlocator1 + clickEvt).getAttribute("href").contains("Account"));
+					}
+
+				} else {
+					clckStatus = false;
+				}
+			}
+			if (clckStatus == true) {
+				break;
+			}
+		}
+		return clckStatus;
+	}
+
+	/*
+	 * ................................... Double Click on matching column
+	 * .........................................
+	 */
+
+	public void DoubleclickOnMatchingColValue(String rowLocator, String colLocator, String matchingElement)
+			throws FileNotFoundException, IOException {
+		boolean doubleClickStaus = false;
+		int rowSize = findAll(By.xpath(rowLocator)).size();
+		int colSize = findAll(By.xpath(colLocator)).size();
+		for (int i = 1; i <= rowSize; i++) {
+			String rowlocator1 = rowLocator + "[" + i + "]";
+			for (int j = 1; j < colSize; j++) {
+				String colLocator1 = rowlocator1 + "/td[" + j + "]";
+				String colData = element(By.xpath(colLocator1)).getText();
+				if (colData.contentEquals(matchingElement)) {
+					Actions actions = new Actions(getDriver());
+					actions.doubleClick(element(colLocator1)).perform();
+					doubleClickStaus = true;
+					break;
+
+				} else {
+					doubleClickStaus = false;
+				}
+			}
+			if (doubleClickStaus == true) {
+				break;
+			}
+		}
+
+		Assert.assertTrue("Element not found to click " + matchingElement, doubleClickStaus);
+	}
+
+	/*
+	 * ................................... click On Arrow Matching Col Value
+	 * .........................................
+	 */
+	public void SingleClickOnMatchingColValue(String rowLocator, String colLocator, String ColData)
+			throws FileNotFoundException, IOException {
+		boolean singleClickStaus = false;
+		int rowSize = findAll(By.xpath(rowLocator)).size();
+		int colSize = findAll(By.xpath(colLocator)).size();
+		for (int i = 1; i <= rowSize; i++) {
+			String rowlocator1 = rowLocator + "[" + i + "]";
+			for (int j = 1; j < colSize; j++) {
+				String colLocator1 = rowlocator1 + "/td[" + j + "]";
+				String colValue = element(By.xpath(colLocator1)).getText();
+				if (colValue.contentEquals(ColData)) {
+					element(colLocator1).click();
+					singleClickStaus = true;
+					break;
+				} else {
+					singleClickStaus = false;
+				}
+			}
+			if (singleClickStaus == true) {
+				break;
+			}
+		}
+
+		Assert.assertTrue("Element not found to click " + ColData, singleClickStaus);
+	}
+
+	public ArrayList<String> getColValue(List<WebElementFacade> colHeader, String rowscol, String columnName) {
+		List<String> valueList = new ArrayList<String>();
+		System.out.println(colHeader);
+		for (int i = 0; i < colHeader.size(); i++) {
+			String colheader = colHeader.get(i).getText();
+			try {
+				if (colheader.equals(columnName)) {
+					String Collector = rowscol + "[" + i + "]";
+					List<WebElementFacade> findAll = findAll(By.xpath(Collector));
+					for (WebElementFacade fc : findAll) {
+						valueList.add(fc.getText());
+					}
+				}
+
+			} catch (NoSuchElementException e) {
+				break;
+			}
+		}
+		return colValues;
 	}
 
 }

@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
+import java.util.NoSuchElementException;
+
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.encryption.InvalidPasswordException;
 import org.apache.pdfbox.text.PDFTextStripper;
@@ -110,10 +112,16 @@ public class AccountDetailsPage extends PageObject {
 	/* verify account information section displayed or not */
 	public void verifyAccountInfoSection() {
 		int size = accountInfoSection.size();
+		if(size>1) {
 		for (int i = 0; i < size; i++) {
-			accountInfoSection.get(i).isDisplayed();
-
+			//accountInfoSection.get(i).isDisplayed();
+			CommonMethod.isDisplayedMethod(accountInfoSection.get(i));
+		   }
+		}else {
+			
+			Assert.assertTrue("Header not found in patient page ", false);
 		}
+		
 	}
 
 	/*-------HOME--  Click on patient detail tabs  ------*/
@@ -292,5 +300,27 @@ public class AccountDetailsPage extends PageObject {
 		PDFTextStripper pdfContent = new PDFTextStripper();
 		pdfContent.getText(doc);
 
+	}
+	
+	/* verify account information section displayed or not with boolean  return */
+	public boolean verifyAccountInfoSectionWithReturn() {
+			
+		try {
+			if(accountInfoSection.size()<1)
+			{
+				return false;
+			}else {
+				for (int i = 0; i < accountInfoSection.size(); i++) {
+					accountInfoSection.get(i).isDisplayed();
+					comMethod.highLightSteps(accountInfoSection.get(i));
+				}
+				
+			}
+		} catch (NoSuchElementException e) {
+			return false;
+		}
+		
+		return true;
+	
 	}
 }
