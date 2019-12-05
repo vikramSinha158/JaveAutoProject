@@ -138,5 +138,5 @@ When User clicks on the "My Payments" tab on tap page
 Then user should be able to view columns with headers
 Then user should be able to view list of payment records
 When user enters value as inputs to the columns of My Payments page and should be able to view records filtered on the basis of values entered
-
+Then sdsmd
 
