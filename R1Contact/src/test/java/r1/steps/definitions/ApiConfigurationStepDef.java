@@ -44,6 +44,28 @@ public class ApiConfigurationStepDef {
 		apiConfig.verifyAddNewVendor();
 	}
 	
+	@When("^user clicks on Add New Vendor$")
+	public void user_clicks_on_Add_New_Vendor() {
+		apiConfig.clickOnAddnewVendoe();
+	}
+
+
+	@Then("^user should be able to view Add New Vendor pop up$")
+	public void user_should_be_able_to_view_Add_New_Vendor_pop_up() {
+		apiConfig.verifyBackBtnInAddnewVendor();
+	}
+	
+	@When("^clicks on Cancel button on Add New Record pop up$")
+	public void clicks_on_Cancel_button_on_Add_New_Record_pop_up() {
+		apiConfig.clickOnAddrecordCabcelBtn();
+	}
+
+
+	@Then("^user shold successfully close the popup window$")
+	public void user_shold_successfully_close_the_popup_window() {
+		apiConfig.verifyApiConfigPage();
+	}
+	
 	
 
 

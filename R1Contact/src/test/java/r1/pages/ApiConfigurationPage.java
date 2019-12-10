@@ -77,6 +77,10 @@ public class ApiConfigurationPage extends PageObject {
 	@FindBy(xpath = "//a[text()='Add New Vendor']")
 	private WebElementFacade addNewVendorBtn;
 	
+	
+	@FindBy(xpath = "//a[text()='Back To Vendor']")
+	private WebElementFacade backVendorBtn;
+	
 	public void verifyApiConfigPage() {
 
 		CommonMethod.isDisplayedMethod(ApiConfigPageHeader);
@@ -175,6 +179,8 @@ public class ApiConfigurationPage extends PageObject {
 		Assert.assertTrue("expected valuse does not match with actaul value", ParameterDrpDnList.equals(com.dataAfterPipeSeperation("ParameterName")));		
 	}
 	
+	
+	/*verify the Label of add Vendor of API configuration */
 	public void verifyAddNewVendor()
 	{
 		clickOn(addNewVendorBtn);
@@ -186,11 +192,35 @@ public class ApiConfigurationPage extends PageObject {
 		addNewVendorLabelList.add(apiToken.getText());
 		addNewVendorLabelList.add(apiRefreshToken.getText());
 		addNewVendorLabelList.add(apiTokenExpiry.getText());
+
+		Assert.assertTrue("expected value does not match with actaul value in Add new vendor", addNewVendorLabelList.equals(com.dataAfterPipeSeperation("AddNewVendorLabelList")));	
+	}
+	
+	/*Click On Add new vendor button  */
+	public void clickOnAddnewVendoe()
+	{
+		clickOn(addNewVendorBtn);
+	}
+	
+	/*Click On Cancel Add record pop up */
+	public void clickOnAddrecordCabcelBtn() {
+		clickOn(addRecordPopCancelBtnApiConfig);
+	}
+	
+	/*Verify the back button in add new vendor  */
+	public void verifyBackBtnInAddnewVendor()
+	{
+
+		if(backVendorBtn.isDisplayed())
+		{
+			clickOn(backVendorBtn);
+			verifyAddRecordLabel();
+		}
+		else {
+			Assert.assertTrue("Back button is not visible ", false);
+		}
 		
 		
-		System.out.println(addNewVendorLabelList);
-		System.out.println(com.dataAfterPipeSeperation("AddNewVendorLabelList"));
-		Assert.assertTrue("expected valuse does not match with actaul value", addNewVendorLabelList.equals(com.dataAfterPipeSeperation("AddNewVendorLabelList")));	
 	}
 
 }

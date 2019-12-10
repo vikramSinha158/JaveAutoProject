@@ -23,3 +23,18 @@ Then user user clicks on the dropdown of ParameterName and should able to view t
 Scenario: APIConfig_Verify the Add New Vendor setting window
 When user clicks on Add New Record button
 Then user should be able to view Add New Vendor pop up with below textboxes
+
+@451885
+Scenario: APIConfig_Verify the functionality of Back button on Add New Record pop up
+When user clicks on Add New Record button
+When user clicks on Add New Vendor
+Then user should be able to view Add New Vendor pop up
+
+@451948
+Scenario: APIConfig_Verify the functionality of Cancel button on Add New Record pop up
+When user clicks on Add New Record button
+And clicks on Cancel button on Add New Record pop up
+Then user shold successfully close the popup window
+
+
+
