@@ -66,6 +66,11 @@ public class ApiConfigurationStepDef {
 		apiConfig.verifyApiConfigPage();
 	}
 	
+	@When("^user match the UI configuration value from the excelsheet \"([^\"]*)\",if not match update the cell$")
+	public void user_match_the_UI_configuration_value_from_the_excelsheet_if_not_match_update_the_cell(String sheetName) {
+		apiConfig.verifyApiConfigurationTable(sheetName);
+	}
+	
 	
 
 

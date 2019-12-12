@@ -9,13 +9,20 @@ import org.junit.Assert;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
+import net.serenitybdd.core.annotations.findby.By;
 import net.serenitybdd.core.annotations.findby.FindBy;
 import net.serenitybdd.core.pages.WebElementFacade;
+import r1.commons.R1ContactCommonMethods;
 import r1.commons.utilities.CommonMethod;
+import r1.commons.utilities.ReadExcelData;
 
 public class ApiConfigurationPage extends PageObject {
 
 	CommonMethod com;
+	R1ContactCommonMethods r1ComMethod;
+	
+	String rowCollector="//table[@cellspacing='0']/tbody/tr";
+	String colCollector="//table[@cellspacing='0']/thead/tr/th";
 
 	@FindBy(xpath = "//div[contains(text(),'API Configuration')]")
 	private WebElementFacade ApiConfigPageHeader;
@@ -76,7 +83,9 @@ public class ApiConfigurationPage extends PageObject {
 		
 	@FindBy(xpath = "//a[text()='Add New Vendor']")
 	private WebElementFacade addNewVendorBtn;
-	
+		
+	@FindBy(xpath = "//div[@id='ApiVendorSetting']//table[@cellspacing='0']/thead/tr/th")
+	private List<WebElementFacade> apiTableHeaderList;
 	
 	@FindBy(xpath = "//a[text()='Back To Vendor']")
 	private WebElementFacade backVendorBtn;
@@ -204,6 +213,7 @@ public class ApiConfigurationPage extends PageObject {
 	
 	/*Click On Cancel Add record pop up */
 	public void clickOnAddrecordCabcelBtn() {
+		
 		clickOn(addRecordPopCancelBtnApiConfig);
 	}
 	
@@ -218,9 +228,34 @@ public class ApiConfigurationPage extends PageObject {
 		}
 		else {
 			Assert.assertTrue("Back button is not visible ", false);
-		}
-		
-		
+		}		
 	}
-
+	
+	public void verifyApiConfigurationTable(String sheetName) 
+	{	
+		ReadExcelData readExcel=new ReadExcelData("src/test/resources/TestData/ApiConfigutationData.xlsx");
+		int rowSize = findAll(By.xpath(rowCollector)).size();
+		for(int rowNum=1;rowNum<=rowSize;rowNum++)
+		{
+			System.out.println("*********************** "+ rowNum +"  ******************************" );
+			System.out.println("Excel cell value  "+readExcel.getRowData("WHEATON FRANCISCAN HEALTHCARE", rowNum));
+			System.out.println("Webta cell value  "+r1ComMethod.getRowValue(rowCollector, colCollector, rowNum));
+			List<String> excelRowList=readExcel.getRowData("WHEATON FRANCISCAN HEALTHCARE", rowNum);
+			List<String> guiRowList=r1ComMethod.getRowValue(rowCollector, colCollector, rowNum);
+						
+			for(int colNum=0;colNum<guiRowList.size()-1;colNum++)
+			{
+				
+				System.out.println("Excel cell value  "+excelRowList.get(colNum));
+				System.out.println("Webta cell value  "+ guiRowList.get(colNum));
+				if(!(guiRowList.get(colNum).equalsIgnoreCase(excelRowList.get(colNum))))
+				{ 	
+				    String header=apiTableHeaderList.get(colNum).getText();
+				    
+					System.out.println("Excel cell value not matach  "+excelRowList.get(colNum));
+				    System.out.println("Webta cell value not matach  "+ guiRowList.get(colNum) + " rowid " +rowNum +" colid "+ colNum + " Header = "+ header);					
+				}				
+			}			
+		}		
+	}
 }
