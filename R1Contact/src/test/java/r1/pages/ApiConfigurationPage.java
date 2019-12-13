@@ -23,6 +23,10 @@ public class ApiConfigurationPage extends PageObject {
 	
 	String rowCollector="//table[@cellspacing='0']/tbody/tr";
 	String colCollector="//table[@cellspacing='0']/thead/tr/th";
+	String beforeEditPath="//table[@cellspacing='0']/tbody/tr[";
+	String afterEditPath="]/td[11]/a[text()='Edit']";
+	String parameterDropDwn="'ParameterName";
+	
 
 	@FindBy(xpath = "//div[contains(text(),'API Configuration')]")
 	private WebElementFacade ApiConfigPageHeader;
@@ -89,6 +93,30 @@ public class ApiConfigurationPage extends PageObject {
 	
 	@FindBy(xpath = "//a[text()='Back To Vendor']")
 	private WebElementFacade backVendorBtn;
+	
+	@FindBy(xpath = "//div[@id='ApiVendorSettingPopUp']//input[@id='BestBillConnector']")
+	private WebElementFacade editConnector;
+	
+	@FindBy(xpath = "//div[@id='ApiVendorSettingPopUp']//input[@id='apiVendorUrl']")
+	private WebElementFacade editApiVendorUrl;
+	
+	@FindBy(xpath = "//div[@id='ApiVendorSettingPopUp']//input[@id='apiClientId']")
+	private WebElementFacade editApiClientId;
+		
+	@FindBy(xpath = "//div[@id='ApiVendorSettingPopUp']//input[@id='apiClientSecret']")
+	private WebElementFacade editApiClientSecret;
+		
+	@FindBy(xpath = "//div[@id='ApiVendorSettingPopUp']//input[@id='apiToken']")
+	private WebElementFacade editApiToken;
+		
+	@FindBy(xpath = "//div[@id='ApiVendorSettingPopUp']//input[@id='apiRefreshToken']")
+	private WebElementFacade editApiRefreshToken;
+		
+	@FindBy(xpath = "//div[@id='ApiVendorSettingPopUp']//input[@id='apiTokenExpiry']")
+	private WebElementFacade editApiTokenExpiry;
+		
+	@FindBy(xpath = "//div[@id='ApiVendorSettingPopUp']//a[text()='Update']")
+	private WebElementFacade editPopUpdateBtnApiConfig;
 	
 	public void verifyApiConfigPage() {
 
@@ -231,7 +259,9 @@ public class ApiConfigurationPage extends PageObject {
 		}		
 	}
 	
-	public void verifyApiConfigurationTable(String sheetName) 
+	
+	/*Verify the content of API configuration table */
+	public void verifyApiConfigurationTable(String sheetName) throws InterruptedException 
 	{	
 		ReadExcelData readExcel=new ReadExcelData("src/test/resources/TestData/ApiConfigutationData.xlsx");
 		int rowSize = findAll(By.xpath(rowCollector)).size();
@@ -245,17 +275,74 @@ public class ApiConfigurationPage extends PageObject {
 						
 			for(int colNum=0;colNum<guiRowList.size()-1;colNum++)
 			{
+				 
 				
 				System.out.println("Excel cell value  "+excelRowList.get(colNum));
 				System.out.println("Webta cell value  "+ guiRowList.get(colNum));
 				if(!(guiRowList.get(colNum).equalsIgnoreCase(excelRowList.get(colNum))))
-				{ 	
-				    String header=apiTableHeaderList.get(colNum).getText();
-				    
+				{ 	String header=apiTableHeaderList.get(colNum).getText();
+			   
+				     updateEditPopUp(header,excelRowList.get(colNum),rowNum);
 					System.out.println("Excel cell value not matach  "+excelRowList.get(colNum));
 				    System.out.println("Webta cell value not matach  "+ guiRowList.get(colNum) + " rowid " +rowNum +" colid "+ colNum + " Header = "+ header);					
 				}				
 			}			
 		}		
 	}
+	
+	
+
+	
+		public void updateEditPopUp(String tableheader,String updateData,int rowID) throws InterruptedException
+		{
+			element(By.xpath(beforeEditPath+rowID+afterEditPath)).click();
+			
+			  switch (tableheader)  
+	          { 
+	          case "VENDOR":
+	        	  System.out.println("VENDOR"); 
+	              break;
+	          case "FACILITY": 
+	              System.out.println("FACILITY"); 
+	              break; 
+	          case "API CLIENT": 
+	        	  editApiClientId.clear();
+	        	  editApiClientId.sendKeys(updateData); 
+	              break;
+	          case "API VENDOR URL": 
+	        	  editApiVendorUrl.clear();
+	        	  editApiVendorUrl.sendKeys(updateData);
+	              break;
+	          case "API CLIENT SECRET": 
+	        	  editApiClientSecret.clear();
+	        	  editApiClientSecret.sendKeys(updateData);
+	              break;
+	          case "API TOKEN": 
+	        	  editApiToken.clear();
+	        	  editApiToken.sendKeys(updateData); 
+	              break;
+	          case "API REFRESH TOKEN": 
+	        	  editApiRefreshToken.clear();
+	        	  editApiRefreshToken.sendKeys(updateData);
+	              break;
+	          case "API TOKEN EXPIRY": 
+	        	  editApiTokenExpiry.clear();
+	        	  editApiTokenExpiry.sendKeys(updateData); 
+	              break;
+	          case "CONNECTOR": 
+	        	  editConnector.clear();
+	        	  editConnector.sendKeys(updateData);
+	              break;
+	          case "PARAMETER": 
+	              com.selectListWithElement(parameterDropDwn, updateData);
+	              break;
+	
+	          default: 
+	              System.out.println("Elective courses : Optimization"); 
+	          } 
+			  
+			  //clickOn(editPopUpdateBtnApiConfig);
+		}
+	
+	
 }
