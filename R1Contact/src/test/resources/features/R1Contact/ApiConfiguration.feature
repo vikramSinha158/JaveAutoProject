@@ -49,10 +49,31 @@ When user clicks on Add New Record button
 And clicks on Cancel button on Add New Record pop up
 Then user shold successfully close the popup window
 
-@451978
+@451978 @Test
 Scenario: Validate the configuration setting against client facility group: WHEATON FRANCISCAN HEALTHCARE and Edit the config setting once find difference into the UI
 And user select client "Wheaton Franciscan Healthcare (Wisconsin)"
 When user click on APIconfiguration link
 Then user should be able to view click on APIconfiguration screen
 When user match the UI configuration value from the excelsheet "WHEATON FRANCISCAN HEALTHCARE",if not match update the cell  
+
+@451979 @Test
+Scenario: Validate the configuration setting against client facility group: VIA CHRISTI HEALTH (KANSAS) and Edit the config setting once find difference into the UI
+And user select client "Via Christi Health (Kansas)"
+When user click on APIconfiguration link
+Then user should be able to view click on APIconfiguration screen
+When user match the UI configuration value from the excelsheet "VIA CHRISTI HEALTH",if not match update the cell 
+
+@451980 @Test
+Scenario: Validate the configuration setting against client facility group:BORGESS HEALTH (MICHIGAN) and Edit the config setting once find difference into the UI
+And user select client "Borgess Health (Michigan)"
+When user click on APIconfiguration link
+Then user should be able to view click on APIconfiguration screen
+When user match the UI configuration value from the excelsheet "BORGESS HEALTH",if not match update the cell 
+
+@451981 @Test
+Scenario: Validate the configuration setting against client facility group:CATHOLIC HEALTH EAST (NEW JERSEY) and Edit the config setting once find difference into the UI
+And user select client "Catholic Health East (New Jersey)"
+When user click on APIconfiguration link
+Then user should be able to view click on APIconfiguration screen
+When user match the UI configuration value from the excelsheet "CATHOLIC HEALTH EAST",if not match update the cell 
 

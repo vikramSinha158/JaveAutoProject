@@ -37,11 +37,11 @@ public class ReadExcelData {
 		exlSheet=wb.getSheet(sheetName);
 		
 		int maxCell=  exlSheet.getRow(row).getLastCellNum();
-		System.out.println("Last col number " + maxCell);
 		
 		for(int i=0;i<maxCell;i++)
 		{
-			exlRowDataList.add(exlSheet.getRow(row).getCell(i).getStringCellValue());
+			//exlRowDataList.add(exlSheet.getRow(row).getCell(i).getStringCellValue());
+			exlRowDataList.add(exlSheet.getRow(row).getCell(i).toString());
 
 		}
 		return exlRowDataList;

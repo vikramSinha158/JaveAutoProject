@@ -1,5 +1,7 @@
 package r1.steps.definitions;
 
+import java.text.ParseException;
+
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import r1.pages.ApiConfigurationPage;
@@ -67,7 +69,7 @@ public class ApiConfigurationStepDef {
 	}
 	
 	@When("^user match the UI configuration value from the excelsheet \"([^\"]*)\",if not match update the cell$")
-	public void user_match_the_UI_configuration_value_from_the_excelsheet_if_not_match_update_the_cell(String sheetName) {
+	public void user_match_the_UI_configuration_value_from_the_excelsheet_if_not_match_update_the_cell(String sheetName) throws InterruptedException, ParseException {
 		apiConfig.verifyApiConfigurationTable(sheetName);
 	}
 	
