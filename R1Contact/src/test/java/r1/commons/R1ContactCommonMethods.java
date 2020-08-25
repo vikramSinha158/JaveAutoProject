@@ -356,5 +356,33 @@ public class R1ContactCommonMethods extends BasePage {
 		}
 		return colValues;
 	}
+	
+	
+	/* ................................... Get TABLE Row  VALUE*/
+
+	public ArrayList<String> getRowValue(String rowLocator, String colLocator,int rowId) {
+		boolean rowDataStatus=false;
+		ArrayList<String> rowValues = new ArrayList<String>();
+		rowSize = findAll(By.xpath(rowLocator)).size();
+		colSize = findAll(By.xpath(colLocator)).size();
+		
+		System.out.println("GIU col size  " + colSize );
+		for(int row = 1; row <= rowSize; row++) {
+			if(row==rowId)
+			{
+				for(int col = 1; col <= colSize; col++) {
+					String rowdata = rowLocator + "[" + row + "]/td[" + col + "]";					
+					rowValues.add(element(By.xpath(rowdata)).getText());
+				}
+				rowDataStatus=true;
+			}
+			if(rowDataStatus==true)
+			{
+				break;
+			}
+				
+		}
+		return rowValues;		
+	}
 
 }

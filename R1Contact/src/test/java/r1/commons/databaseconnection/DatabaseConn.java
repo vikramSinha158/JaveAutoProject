@@ -7,6 +7,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.junit.Assert;
+
+import com.microsoft.sqlserver.jdbc.SQLServerException;
+
 public class DatabaseConn {
 
 	public static ResultSet resultSet;
@@ -117,9 +121,10 @@ public class DatabaseConn {
 			Connection conn = DriverManager.getConnection(dbUrl);
 			Statement stmt = conn.createStatement();
 			resultSet = stmt.executeQuery(query);
+	
 
 		} catch (Exception e) {
-
+			
 		}
 	}
 	

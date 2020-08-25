@@ -2,7 +2,10 @@ package r1.pages;
 
 import net.serenitybdd.core.pages.PageObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Assert;
@@ -21,10 +24,10 @@ public class ApiConfigurationPage extends PageObject {
 	CommonMethod com;
 	R1ContactCommonMethods r1ComMethod;
 	
-	String rowCollector="//table[@cellspacing='0']/tbody/tr";
-	String colCollector="//table[@cellspacing='0']/thead/tr/th";
+	String rowCollector="//div[@id='ApiVendorSetting']//table[@cellspacing='0']/tbody/tr";
+	String colCollector="//div[@id='ApiVendorSetting']//table[@cellspacing='0']/thead/tr/th";
 	String beforeEditPath="//table[@cellspacing='0']/tbody/tr[";
-	String afterEditPath="]/td[11]/a[text()='Edit']";
+	String afterEditPath="]/td[11]/a[text()='Edit']/span";
 	String parameterDropDwn="'ParameterName";
 	
 
@@ -115,7 +118,7 @@ public class ApiConfigurationPage extends PageObject {
 	@FindBy(xpath = "//div[@id='ApiVendorSettingPopUp']//input[@id='apiTokenExpiry']")
 	private WebElementFacade editApiTokenExpiry;
 		
-	@FindBy(xpath = "//div[@id='ApiVendorSettingPopUp']//a[text()='Update']")
+	@FindBy(xpath = "//a[text()='Update']")
 	private WebElementFacade editPopUpdateBtnApiConfig;
 	
 	public void verifyApiConfigPage() {
@@ -124,16 +127,20 @@ public class ApiConfigurationPage extends PageObject {
 		com.highLightSteps(ApiConfigPageHeader);
 	}
 
+	
+	/*verify on add record btn */
 	public void verifyAddRecordApiConfigPopUp() {
 		clickOnApiConfignAddRecord();
 		CommonMethod.isDisplayedMethod(addRecordApiConfigPopUp);
 		clickOn(addRecordPopCancelBtnApiConfig);
 	}
 
+	/*Click on add record btn */
 	public void clickOnApiConfignAddRecord() {
 		clickOn(ApiConfigThirdPatyConBtn);
 	}
 
+	/*verify first row edit */
 	public void clickOnApiConfigEdit() {
 		if (ApiConfigTblrow.size() > 0) {
 			clickOn(firstRowEditBtnApiConfig);
@@ -143,6 +150,7 @@ public class ApiConfigurationPage extends PageObject {
 		}
 	}
 
+	/*verify edit pop up*/
 	public void verifyApiConfigTblEdit() {
 		clickOnApiConfigEdit();
 		CommonMethod.isDisplayedMethod(dialogApiConfigEdit);
@@ -261,40 +269,50 @@ public class ApiConfigurationPage extends PageObject {
 	
 	
 	/*Verify the content of API configuration table */
-	public void verifyApiConfigurationTable(String sheetName) throws InterruptedException 
-	{	
+	public void verifyApiConfigurationTable(String sheetName) throws InterruptedException, ParseException 
+	{
 		ReadExcelData readExcel=new ReadExcelData("src/test/resources/TestData/ApiConfigutationData.xlsx");
 		int rowSize = findAll(By.xpath(rowCollector)).size();
 		for(int rowNum=1;rowNum<=rowSize;rowNum++)
-		{
-			System.out.println("*********************** "+ rowNum +"  ******************************" );
-			System.out.println("Excel cell value  "+readExcel.getRowData("WHEATON FRANCISCAN HEALTHCARE", rowNum));
-			System.out.println("Webta cell value  "+r1ComMethod.getRowValue(rowCollector, colCollector, rowNum));
-			List<String> excelRowList=readExcel.getRowData("WHEATON FRANCISCAN HEALTHCARE", rowNum);
-			List<String> guiRowList=r1ComMethod.getRowValue(rowCollector, colCollector, rowNum);
+		{			
+			List<String> excelRowList=readExcel.getRowData(sheetName, rowNum);
+			List<String> guiRowList=r1ComMethod.getRowValue(rowCollector, colCollector, rowNum);		
+			System.out.println("Webta cell value  "+ guiRowList);
 						
 			for(int colNum=0;colNum<guiRowList.size()-1;colNum++)
 			{
-				 
-				
-				System.out.println("Excel cell value  "+excelRowList.get(colNum));
-				System.out.println("Webta cell value  "+ guiRowList.get(colNum));
 				if(!(guiRowList.get(colNum).equalsIgnoreCase(excelRowList.get(colNum))))
-				{ 	String header=apiTableHeaderList.get(colNum).getText();
-			   
-				     updateEditPopUp(header,excelRowList.get(colNum),rowNum);
-					System.out.println("Excel cell value not matach  "+excelRowList.get(colNum));
-				    System.out.println("Webta cell value not matach  "+ guiRowList.get(colNum) + " rowid " +rowNum +" colid "+ colNum + " Header = "+ header);					
-				}				
-			}			
-		}		
-	}
-	
-	
+				{ 
+					String header=apiTableHeaderList.get(colNum).getText();
+					
+					if((guiRowList.get(colNum).equals("")) && (excelRowList.get(colNum).equalsIgnoreCase("NULL"))) {
+						continue;}
+					if(header.equalsIgnoreCase("API TOKEN EXPIRY"))
+					{
+						SimpleDateFormat dbDateFormate = new SimpleDateFormat("dd-MMM-yyyy");
+						Date excelDate = dbDateFormate.parse(excelRowList.get(colNum).trim());
+						SimpleDateFormat convertedFormate = new SimpleDateFormat("M/d/yyyy");
 
+						String convertedDbDate = convertedFormate.format(excelDate);
 	
-		public void updateEditPopUp(String tableheader,String updateData,int rowID) throws InterruptedException
+						if(!(guiRowList.get(colNum).equalsIgnoreCase(convertedDbDate)))
+						{
+							updateEditPopUp(header,convertedDbDate,rowNum);
+						}
+						
+					}else {
+						 	updateEditPopUp(header,excelRowList.get(colNum),rowNum);		
+					}
+				}
+			  }
+							   		
+			}				
+		}			
+	
+		/*Update the value in edit pop up */
+		public void updateEditPopUp(String tableheader,String updateData,int rowID) throws InterruptedException, ParseException
 		{
+			Thread.sleep(2000);
 			element(By.xpath(beforeEditPath+rowID+afterEditPath)).click();
 			
 			  switch (tableheader)  
@@ -336,12 +354,15 @@ public class ApiConfigurationPage extends PageObject {
 	          case "PARAMETER": 
 	              com.selectListWithElement(parameterDropDwn, updateData);
 	              break;
-	
-	          default: 
-	              System.out.println("Elective courses : Optimization"); 
+		         
 	          } 
-			  
-			  //clickOn(editPopUpdateBtnApiConfig);
+			  			  
+			  Thread.sleep(3000);
+		 
+			  editPopUpdateBtnApiConfig.click();
+		
+			  Thread.sleep(3000);
+		
 		}
 	
 	
